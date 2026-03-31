@@ -11,6 +11,8 @@ setup() {
   load "${TIDE_ROOT_DIR}test/test_helper/bats-support/load"
   load "${TIDE_ROOT_DIR}test/test_helper/bats-assert/load"
   load "${TIDE_ROOT_DIR}test/test_helper/bats-file/load"
+
+  load "${TIDE_ROOT_DIR}test/test_helper/tide_helpers.sh"
 }
 
 teardown() {
@@ -18,10 +20,14 @@ teardown() {
 }
 
 @test 'install can be made with a curl and controlled environment variables' {
-  local url && url="file://${TIDE_ROOT_DIR}src/install"
-  local install_dir && install_dir="${BATS_TEST_TMPDIR}/install/"
+  local tide_install_dir &&
+    tide_install_dir="${BATS_TEST_TMPDIR}/.tide/"
 
-  assert_dir_exists "${install_dir}"
-  assert_file_exists "${install_dir}tideup"
-  assert_file_exists "${install_dir}tide"
+  TIDE_INSTALL_DIR="$tide_install_dir" \
+    TIDE_URL="file://${TIDE_ROOT_DIR}" \
+    run . "${TIDE_ROOT_DIR}src/install"
+
+  assert_dir_exists "${tide_install_dir}"
+  assert_file_executable "${tide_install_dir}tideup"
+  assert_file_executable "${tide_install_dir}tide"
 }

@@ -1,0 +1,16 @@
+#!/bin/env bash
+
+TIDE_INSTALL_DIR="${TIDE_INSTALL_DIR:-$HOME/.tide/}"
+TIDE_URL="${TIDE_URL:-https://raw.githubusercontent.com/m374-crypt0/tide/refs/heads/main/}"
+
+curl \
+  -L "${TIDE_URL}src/tide" \
+  --create-dirs \
+  --output "${TIDE_INSTALL_DIR}tide" &&
+  chmod +x "${TIDE_INSTALL_DIR}tide"
+
+curl \
+  -L "${TIDE_URL}src/tideup" \
+  --create-dirs \
+  --output "${TIDE_INSTALL_DIR}tideup" &&
+  chmod +x "${TIDE_INSTALL_DIR}tideup"
