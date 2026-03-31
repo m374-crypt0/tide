@@ -11,12 +11,14 @@ setup() {
   load "${TIDE_ROOT_DIR}test/test_helper/bats-support/load"
   load "${TIDE_ROOT_DIR}test/test_helper/bats-assert/load"
   load "${TIDE_ROOT_DIR}test/test_helper/bats-file/load"
-
-  load "${TIDE_ROOT_DIR}test/test_helper/tide_helpers.sh"
 }
 
 teardown() {
   :
+}
+
+@test 'install fails if the user shell is not bash' {
+  assert_fail
 }
 
 @test 'install can be made with a curl and controlled environment variables' {

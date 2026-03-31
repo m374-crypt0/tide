@@ -9,10 +9,14 @@ export
 help:
 	@echo targets: help test watch
 
+.PHONY: init_submodules
+init_submodules:
+	@git submodule update --init --recursive
+
 .PHONY: test
-test:
+test: init_submodules
 	@. ./test/runner/test.sh
 
 .PHONY: watch
-watch:
+watch: init_submodules
 	@. ./test/runner/watch.sh
