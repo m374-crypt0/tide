@@ -23,6 +23,7 @@ teardown() {
 
 @test 'tideup has the same effect as installing through install script' {
   rm "${TIDE_INSTALL_DIR}tide"
+  assert_file_not_exists "${TIDE_INSTALL_DIR}tide"
 
   run "${TIDE_INSTALL_DIR}tideup"
 
