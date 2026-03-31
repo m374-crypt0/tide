@@ -1,5 +1,10 @@
 #!/bin/env bash
 
+if [ "$(basename "$SHELL")" != 'bash' ]; then
+  echo bash required >&2
+  exit 1
+fi
+
 TIDE_INSTALL_DIR="${TIDE_INSTALL_DIR:-$HOME/.tide/}"
 TIDE_URL="${TIDE_URL:-https://raw.githubusercontent.com/m374-crypt0/tide/refs/heads/main/}"
 

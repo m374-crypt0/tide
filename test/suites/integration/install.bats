@@ -1,3 +1,5 @@
+# shellcheck disable=SC2030,SC2031
+
 setup_file() {
   bats_require_minimum_version 1.13.0
 }
@@ -18,7 +20,14 @@ teardown() {
 }
 
 @test 'install fails if the user shell is not bash' {
-  assert_fail
+  export TIDE_INSTALL_DIR="${BATS_TEST_TMPDIR}/.tide/"
+  export TIDE_URL="file://${TIDE_ROOT_DIR}/"
+  export SHELL=/bin/sh
+
+  run . "${TIDE_ROOT_DIR}src/install"
+
+  assert_output "bash required"
+  assert_failure
 }
 
 @test 'install can be made with a curl and controlled environment variables' {

@@ -34,3 +34,5 @@
 - plus stuff to create new types, publish them
 - plus stuff to export / import instances
 - plus stuff to customize at build time with user's Dockerfile
+- plus stuff to be scriptable (no interactive mode, could be integrated in
+  CI/CD pipelines)
