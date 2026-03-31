@@ -29,6 +29,10 @@ teardown() {
   run bats_pipe curl -L "${TIDE_URL}src/install" \| bash
 
   assert_dir_exists "${tide_install_dir}"
+
   assert_file_executable "${tide_install_dir}tideup"
   assert_file_executable "${tide_install_dir}tide"
+
+  assert_files_equal "${tide_install_dir}tide" "${TIDE_ROOT_DIR}src/tide"
+  assert_files_equal "${tide_install_dir}tideup" "${TIDE_ROOT_DIR}src/tideup"
 }
