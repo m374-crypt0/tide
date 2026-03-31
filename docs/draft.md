@@ -8,6 +8,8 @@
 - using Alpine instead of Debian
 - can be integrated into any project (.tide dir)
 - allow users to develop their own tide types
+  - global, host local or project local
+  - think about a registry (github repo)
 - allow users to move their built instances easily to avoid rebuild
 - enhance composability
 - rethink the init process, lighter, data file more intuitive (ini + posix tooling)
@@ -20,7 +22,7 @@
   - tideup to install the thing
   - tide ... to use the thing
 - Full test suite and coverage
-  - using ShellSpec
+  - using bats-core
 
 ### tideup - install it
 
