@@ -23,9 +23,10 @@ teardown() {
   local tide_install_dir &&
     tide_install_dir="${BATS_TEST_TMPDIR}/.tide/"
 
-  TIDE_INSTALL_DIR="$tide_install_dir" \
-    TIDE_URL="file://${TIDE_ROOT_DIR}" \
-    run . "${TIDE_ROOT_DIR}src/install"
+  export TIDE_INSTALL_DIR="$tide_install_dir"
+  export TIDE_URL="file://${TIDE_ROOT_DIR}/"
+
+  run bats_pipe curl -L "${TIDE_URL}src/install" \| bash
 
   assert_dir_exists "${tide_install_dir}"
   assert_file_executable "${tide_install_dir}tideup"

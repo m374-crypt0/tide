@@ -8,6 +8,7 @@ function run_test() {
 while true; do
   inotifywait -mqr \
     --event modify \
+    "${TIDE_ROOT_DIR}test" \
     "${TIDE_ROOT_DIR}src" |
     {
       clear && run_test
