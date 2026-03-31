@@ -5,14 +5,11 @@ function run_test() {
   . "${TIDE_ROOT_DIR}test/runner/test.sh"
 }
 
-run_test
-
-# TODO: replace with an infinite loop using inotifywatch to avoid multiple
-# executions
-inotifywait -mqr \
-  --event modify \
-  "${TIDE_ROOT_DIR}src" \
-  --exclude "\.git" |
-  while read -r; do
-    clear && run_test
-  done
+while true; do
+  inotifywait -mqr \
+    --event modify \
+    "${TIDE_ROOT_DIR}src" |
+    {
+      clear && run_test
+    }
+done
