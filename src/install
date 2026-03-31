@@ -1,21 +1,29 @@
 #!/bin/env bash
 
-if [ "$(basename "$SHELL")" != 'bash' ]; then
-  echo bash required >&2
-  exit 1
-fi
-
 TIDE_INSTALL_DIR="${TIDE_INSTALL_DIR:-$HOME/.tide/}"
 TIDE_URL="${TIDE_URL:-https://raw.githubusercontent.com/m374-crypt0/tide/refs/heads/main/}"
 
-curl \
-  -L "${TIDE_URL}src/tide" \
-  --create-dirs \
-  --output "${TIDE_INSTALL_DIR}tide" &&
-  chmod +x "${TIDE_INSTALL_DIR}tide"
+ensure_shell_is_bash() {
+  if [ "$(basename "$SHELL")" != 'bash' ]; then
+    echo bash required >&2
+    return 1
+  fi
+}
 
-curl \
-  -L "${TIDE_URL}src/tideup" \
-  --create-dirs \
-  --output "${TIDE_INSTALL_DIR}tideup" &&
-  chmod +x "${TIDE_INSTALL_DIR}tideup"
+install() {
+  local file && file="$1"
+
+  curl \
+    -L "${TIDE_URL}src/${file}" \
+    --create-dirs \
+    --output "${TIDE_INSTALL_DIR}${file}" &&
+    chmod +x "${TIDE_INSTALL_DIR}${file}"
+}
+
+main() {
+  ensure_shell_is_bash &&
+    install tide &&
+    install tideup
+}
+
+main
