@@ -10,9 +10,16 @@ setup() {
 
   TIDE_ROOT_DIR="${test_file_dir}../../../"
 
+  export TIDE_INSTALL_DIR="${BATS_TEST_TMPDIR}/.tide/"
+  export TIDE_URL="file://${TIDE_ROOT_DIR}/"
+  export BASHRC_PATH="${BATS_TEST_TMPDIR}/.bashrc"
+
   load "${TIDE_ROOT_DIR}test/test_helper/bats-support/load"
   load "${TIDE_ROOT_DIR}test/test_helper/bats-assert/load"
   load "${TIDE_ROOT_DIR}test/test_helper/bats-file/load"
+
+  load "${TIDE_ROOT_DIR}test/test_helper/tide_helpers.sh"
+  load "${TIDE_ROOT_DIR}test/test_helper/tide_assert.sh"
 }
 
 teardown() {
@@ -20,8 +27,6 @@ teardown() {
 }
 
 @test 'install fails if the user shell is not bash' {
-  export TIDE_INSTALL_DIR="${BATS_TEST_TMPDIR}/.tide/"
-  export TIDE_URL="file://${TIDE_ROOT_DIR}/"
   export SHELL=/bin/sh
 
   run . "${TIDE_ROOT_DIR}src/install"
@@ -31,19 +36,17 @@ teardown() {
 }
 
 @test 'install can be made with a curl and controlled environment variables' {
-  local tide_install_dir &&
-    tide_install_dir="${BATS_TEST_TMPDIR}/.tide/"
-
-  export TIDE_INSTALL_DIR="$tide_install_dir"
-  export TIDE_URL="file://${TIDE_ROOT_DIR}/"
+  assert_dir_not_exists "${TIDE_INSTALL_DIR}"
+  assert_not_declared_as_path_in "${BASHRC_PATH}" "${TIDE_INSTALL_DIR}"
 
   run bats_pipe curl -L "${TIDE_URL}src/install" \| bash
 
-  assert_dir_exists "${tide_install_dir}"
+  assert_dir_exists "${TIDE_INSTALL_DIR}"
 
-  assert_file_executable "${tide_install_dir}tideup"
-  assert_file_executable "${tide_install_dir}tide"
+  assert_file_executable "${TIDE_INSTALL_DIR}tideup"
+  assert_file_executable "${TIDE_INSTALL_DIR}tide"
 
-  assert_files_equal "${tide_install_dir}tide" "${TIDE_ROOT_DIR}src/tide"
-  assert_files_equal "${tide_install_dir}tideup" "${TIDE_ROOT_DIR}src/tideup"
+  assert_files_equal "${TIDE_INSTALL_DIR}tide" "${TIDE_ROOT_DIR}src/tide"
+  assert_files_equal "${TIDE_INSTALL_DIR}tideup" "${TIDE_ROOT_DIR}src/tideup"
+  assert_declared_as_path_in "${BASHRC_PATH}" "${TIDE_INSTALL_DIR}"
 }

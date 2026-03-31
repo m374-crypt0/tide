@@ -1,7 +1,13 @@
 #!/bin/env bash
 
+# NOTE: modify this variable at your convenience
 TIDE_INSTALL_DIR="${TIDE_INSTALL_DIR:-$HOME/.tide/}"
+
+# NOTE: fork friendly
 TIDE_URL="${TIDE_URL:-https://raw.githubusercontent.com/m374-crypt0/tide/refs/heads/main/}"
+
+# NOTE: useful for testing purposes
+BASHRC_PATH="${BASHRC_PATH:-${HOME}/.bashrc}"
 
 ensure_shell_is_bash() {
   if [ "$(basename "$SHELL")" != 'bash' ]; then
@@ -20,10 +26,25 @@ install() {
     chmod +x "${TIDE_INSTALL_DIR}${file}"
 }
 
+ensure_tide_install_dir_is_not_in_path() {
+  [[ ! ":${PATH}:" == *":${TIDE_INSTALL_DIR}:"* ]]
+}
+
+write_tide_path_in_bashrc_if_needed() {
+  ensure_tide_install_dir_is_not_in_path &&
+    cat <<HERE >>"${BASHRC_PATH}"
+
+# tide
+export TIDE_INSTALL_DIR="$TIDE_INSTALL_DIR"
+export PATH="\${PATH}:\${TIDE_INSTALL_DIR}"
+HERE
+}
+
 main() {
   ensure_shell_is_bash &&
     install tide &&
-    install tideup
+    install tideup &&
+    write_tide_path_in_bashrc_if_needed
 }
 
 main

@@ -14,6 +14,8 @@ setup() {
 
   export TIDE_INSTALL_DIR="${BATS_TEST_TMPDIR}/.tide/"
   export TIDE_URL="file://${TIDE_ROOT_DIR}/"
+  export BASHRC_PATH="${BATS_TEST_TMPDIR}/.bashrc"
+
   curl -L "${TIDE_URL}src/install" | bash
 }
 
