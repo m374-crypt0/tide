@@ -45,4 +45,5 @@
 - [ ] document it
   - [ ] `tide help`
   - [ ] `tide new help`
-- [ ] look for a way to handle arguments properly
+- [x] look for a way to handle arguments properly
+  - [x] try [bashly](https://github.com/bashly-framework/bashly) (adopted)

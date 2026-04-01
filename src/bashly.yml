@@ -1,0 +1,10 @@
+name: tide
+help: tide is a terminal development environment fabricator
+version: v0.1.0
+
+commands:
+  - name: new
+    help: create a new instance from a template
+
+examples:
+  - tide new

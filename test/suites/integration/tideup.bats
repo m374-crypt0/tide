@@ -30,5 +30,5 @@ teardown() {
   run "${TIDE_INSTALL_DIR}tideup"
 
   assert_file_executable "${TIDE_INSTALL_DIR}tide"
-  assert_files_equal "${TIDE_INSTALL_DIR}tide" "${TIDE_ROOT_DIR}src/tide"
+  assert_files_equal "${TIDE_INSTALL_DIR}tide" "${TIDE_ROOT_DIR}dist/tide"
 }

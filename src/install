@@ -16,14 +16,20 @@ ensure_shell_is_bash() {
   fi
 }
 
-install() {
-  local file && file="$1"
-
+install_tide() {
   curl \
-    -L "${TIDE_URL}src/${file}" \
+    -L "${TIDE_URL}dist/tide" \
     --create-dirs \
-    --output "${TIDE_INSTALL_DIR}${file}" &&
-    chmod +x "${TIDE_INSTALL_DIR}${file}"
+    --output "${TIDE_INSTALL_DIR}tide" &&
+    chmod +x "${TIDE_INSTALL_DIR}tide"
+}
+
+install_tideup() {
+  curl \
+    -L "${TIDE_URL}src/tideup" \
+    --create-dirs \
+    --output "${TIDE_INSTALL_DIR}tideup" &&
+    chmod +x "${TIDE_INSTALL_DIR}tideup"
 }
 
 ensure_tide_install_dir_is_not_in_path() {
@@ -46,8 +52,8 @@ print_installation_status() {
 
 main() {
   ensure_shell_is_bash &&
-    install tide &&
-    install tideup &&
+    install_tide &&
+    install_tideup &&
     write_tide_path_in_bashrc_if_needed &&
     print_installation_status
 }
