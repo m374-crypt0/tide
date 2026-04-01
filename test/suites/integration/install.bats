@@ -49,4 +49,6 @@ teardown() {
   assert_files_equal "${TIDE_INSTALL_DIR}tide" "${TIDE_ROOT_DIR}src/tide"
   assert_files_equal "${TIDE_INSTALL_DIR}tideup" "${TIDE_ROOT_DIR}src/tideup"
   assert_declared_as_path_in "${BASHRC_PATH}" "${TIDE_INSTALL_DIR}"
+
+  assert_line "tide installed in ${TIDE_INSTALL_DIR} and registered in \$PATH. Start a new shell or login to use."
 }

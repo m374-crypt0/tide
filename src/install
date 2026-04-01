@@ -40,11 +40,16 @@ export PATH="\${PATH}:\${TIDE_INSTALL_DIR}"
 HERE
 }
 
+print_installation_status() {
+  echo "tide installed in ${TIDE_INSTALL_DIR} and registered in \$PATH. Start a new shell or login to use."
+}
+
 main() {
   ensure_shell_is_bash &&
     install tide &&
     install tideup &&
-    write_tide_path_in_bashrc_if_needed
+    write_tide_path_in_bashrc_if_needed &&
+    print_installation_status
 }
 
 main
