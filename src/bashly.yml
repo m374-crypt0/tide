@@ -18,21 +18,20 @@ commands:
       - name: list
         alias: [ls, l]
         help: |
-          list existing instances.
-          By default, lists instance that are local to the directory you are
-          currently in.
+          Lists existing instances.
+          By default, lists instances that are local to your current project.
           Use flags to change this behavior.
         flags:
           - long: --global
             short: -g
             help: Take all instances into account, system wide
           - long: --filter
+            short: -f
             arg: status
             allowed:
               - created
               - stopped
               - running
-            short: -f
             help: Filters instances by status
   - name: template
     alias: t
@@ -43,3 +42,28 @@ commands:
       tasks.
       You could have a template for web application development or
       decentralized application development using the blockchain technology.
+    commands:
+      - name: list
+        alias: [ls, l]
+        help: |
+          Lists existing templates.
+          By default, lists all existing templates for tide, both official
+          templates and local templates you may have created in your current
+          project.
+          Use flags to change this behavior.
+        flags:
+          - long: --official
+            short: -o
+            help: |
+              Only list official templates.
+              Official templates are those actively maintained by the tide
+              repository you are using.
+            conflicts:
+              - --local
+          - long: --local
+            short: -l
+            help: |
+              Only list local templates in your project.
+              Local templates are those located in your current project.
+            conflicts:
+              - --official
