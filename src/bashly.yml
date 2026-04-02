@@ -1,10 +1,45 @@
 name: tide
-help: tide is a terminal development environment fabricator
+help: |
+  the terminal development environment fabricator aiming to be the developer entrypoint.
+  It is a full CLI tool allowing you to manage and use all development
+  environments you may need
 version: v0.1.0
-
 commands:
-  - name: new
-    help: create a new instance from a template
-
-examples:
-  - tide new
+  - name: instance
+    alias: i
+    help: |
+      Manage your instances with ease.
+      An instance is a development environment.
+      Each instance may be in one of following states:
+      - created: freshly created from a template, not yet ready to be used (must be built)
+      - stopped: built instance that is not running
+      - running: an instance that is currently running
+    commands:
+      - name: list
+        alias: [ls, l]
+        help: |
+          list existing instances.
+          By default, lists instance that are local to the directory you are
+          currently in.
+          Use flags to change this behavior.
+        flags:
+          - long: --global
+            short: -g
+            help: Take all instances into account, system wide
+          - long: --filter
+            arg: status
+            allowed:
+              - created
+              - stopped
+              - running
+            short: -f
+            help: Filters instances by status
+  - name: template
+    alias: t
+    help: |
+      Manage your templates with ease.
+      A template is some kind of recipe to build an instance.
+      Each template represents a development environment for a specific set of
+      tasks.
+      You could have a template for web application development or
+      decentralized application development using the blockchain technology.
