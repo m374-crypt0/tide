@@ -16,14 +16,6 @@ ensure_shell_is_bash() {
   fi
 }
 
-install_tide() {
-  curl \
-    -L "${TIDE_URL}dist/tide" \
-    --create-dirs \
-    --output "${TIDE_INSTALL_DIR}tide" &&
-    chmod +x "${TIDE_INSTALL_DIR}tide"
-}
-
 install_tideup() {
   curl \
     -L "${TIDE_URL}src/tideup" \
@@ -52,7 +44,6 @@ print_installation_status() {
 
 main() {
   ensure_shell_is_bash &&
-    install_tide &&
     install_tideup &&
     write_tide_path_in_bashrc_if_needed &&
     print_installation_status

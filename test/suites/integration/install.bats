@@ -44,9 +44,7 @@ teardown() {
   assert_dir_exists "${TIDE_INSTALL_DIR}"
 
   assert_file_executable "${TIDE_INSTALL_DIR}tideup"
-  assert_file_executable "${TIDE_INSTALL_DIR}tide"
 
-  assert_files_equal "${TIDE_INSTALL_DIR}tide" "${TIDE_ROOT_DIR}dist/tide"
   assert_files_equal "${TIDE_INSTALL_DIR}tideup" "${TIDE_ROOT_DIR}src/tideup"
   assert_declared_as_path_in "${BASHRC_PATH}" "${TIDE_INSTALL_DIR}"
 
