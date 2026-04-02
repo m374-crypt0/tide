@@ -28,3 +28,15 @@
 - plus stuff to customize at run time with user's compose file
 - plus stuff to be scriptable (no interactive mode, could be integrated in
   CI/CD pipelines)
+
+## user workflows
+
+### user developer (instance user)
+
+1. Create a *tide project* within her git repository: `tide init`
+2. Create an *instance* corresponding to its workload: `tide instance new`
+3. Use her *instance*: `tide instance login`
+4. Work within the *instance* then logout from it
+5. Stop the *instance*: `tide instance stop`
+
+### contributor developer (template creator)
