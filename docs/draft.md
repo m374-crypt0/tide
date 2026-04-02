@@ -19,23 +19,12 @@
   - types (from nideovim), could become templates
   - instances (from nideovim), could stay as is
 
-## pseudo plan
-
-- define how to interact with *tide*
-  - [x] tideup to install the thing
-  - tide ... to use the thing
-- Full test suite and coverage
-  - using bats-core
-
-### tideup - install it
-
-- [x] should be easy, same stuff as *rakeup*, a curl command, interpreted by *bash*
-
-### tide - the CLI
+## tide - the CLI
 
 - almost same command/verb set of *nideovim*
 - plus stuff to create new types, publish them
 - plus stuff to export / import instances
 - plus stuff to customize at build time with user's Dockerfile
+- plus stuff to customize at run time with user's compose file
 - plus stuff to be scriptable (no interactive mode, could be integrated in
   CI/CD pipelines)
