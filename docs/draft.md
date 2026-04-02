@@ -29,6 +29,24 @@
 - plus stuff to be scriptable (no interactive mode, could be integrated in
   CI/CD pipelines)
 
+## requirements
+
+- docker, docker compose and buildx plugins
+- git
+
+## how it works
+
+- pure CLI
+- installed in user home directory in the *.tide* directory
+- must be protected against concurrent accesses
+- first class citizen is the project
+  - installed either in the root dir of the current git repository or in the
+    current directory
+- have an official repository of templates
+- can define per-project user defined templates
+- can be seen as a docker wrapper for full featured development environments
+  (like github dev containers)
+
 ## user workflows
 
 ### user developer (instance user)
