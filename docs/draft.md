@@ -39,11 +39,3 @@
 - plus stuff to customize at build time with user's Dockerfile
 - plus stuff to be scriptable (no interactive mode, could be integrated in
   CI/CD pipelines)
-
-### focus on: tide new
-
-- [ ] document it
-  - [ ] `tide help`
-  - [ ] `tide new help`
-- [x] look for a way to handle arguments properly
-  - [x] try [bashly](https://github.com/bashly-framework/bashly) (adopted)
