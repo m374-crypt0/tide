@@ -2,11 +2,27 @@ name: tide
 help: |
   the terminal development environment fabricator aiming to be the developer entrypoint.
   It is a full CLI tool allowing you to manage and use all development
-  environments you may need
+  environments you may need.
 version: v0.1.0
 commands:
+  - name: init
+    alias: ini
+    help: |
+      Initialize a new tide project.
+      This is where to start. After a tide project is created, you have access
+      to the full set of tide commands to manage and use your development
+      environment instances.
+      By default, create the project within the current directory unless you
+      are within a git repository
+      Use flags to change this behavior.
+    flags:
+      - long: --ignore-git
+        short: -i
+        help: |
+          Ignore the git root directory following.
+          Has no effect if not within a git repository directory
   - name: instance
-    alias: i
+    alias: ins
     help: |
       Manage your instances with ease.
       An instance is a development environment.
