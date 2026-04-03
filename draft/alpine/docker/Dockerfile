@@ -30,6 +30,7 @@ RUN cd || exit $?
 
 FROM user_setup AS install_docker
 ARG USER_NAME=root
+ARG DOCKER_HOST_GID=
 USER root
 RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
@@ -37,7 +38,7 @@ RUN \
   docker-cli=29.3.1-r0 \
   docker-cli-buildx=0.32.1-r0 \
   docker-cli-compose=5.1.1-r0 &&
-  groupadd docker &&
+  groupadd -g ${DOCKER_HOST_GID} docker &&
   usermod -a -G docker ${USER_NAME}
 HERE
 
