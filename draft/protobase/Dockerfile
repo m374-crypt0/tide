@@ -161,3 +161,17 @@ RUN \
   git clone https://github.com/LazyVim/starter /home/${USER_NAME}/.config/nvim &&
   rm -rf /home/${USER_NAME}/.config/nvim/.git*
 HERE
+
+FROM install_neovim AS install_package_for_lazyvim
+ARG USER_NAME=
+USER ${USER_NAME}
+# NOTE: (DL3004) need to figure out why hadolint yells at me for sudo use.
+# Anyway, I need to this way because I want to embed all run execution in one
+# step to get an optimized image layout.
+# hadolint ignore=DL3004
+RUN \
+  --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
+  sudo apk add \
+  python3=3.14.3-r0 \
+  python3-doc=3.14.3-r0
+HERE
