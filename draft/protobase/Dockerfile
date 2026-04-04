@@ -74,7 +74,8 @@ USER ${USER_NAME}
 FROM foundation_packages AS install_npm_pckages
 ARG USER_NAME=
 RUN \
-  --mount=type=tmpfs,target=/tmp <<HERE
+  --mount=type=tmpfs,target=/tmp \
+  --mount=type=tmpfs,target=/home/${USER_NAME}/.npm-cache <<HERE
   npm config set cache /home/${USER_NAME}/.npm-cache &&
   npm config set prefix /home/${USER_NAME}/.npm-prefix &&
   npm install --global neovim@5.4.0 &&
@@ -173,5 +174,9 @@ RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
   sudo apk add \
   python3=3.14.3-r0 \
-  python3-doc=3.14.3-r0
+  python3-doc=3.14.3-r0 \
+  gzip=1.14-r2 \
+  gzip-doc=1.14-r2 \
+  unzip=6.0-r16 \
+  unzip-doc=6.0-r16
 HERE
