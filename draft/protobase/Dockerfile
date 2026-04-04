@@ -136,14 +136,7 @@ WORKDIR /home/${USER_NAME}
 RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
   sudo apk add \
-  gettext-tiny-dev=0.3.3-r0 \
-  libuv-dev=1.51.0-r0 \
-  lua5.1=5.1.5-r13 \
-  lua5.1-lpeg=1.1.0-r1 \
-  luajit-dev=2.1_p20251030-r0 \
-  lua-luv-dev=1.51.0.1-r0 \
-  unibilium-dev=2.1.1-r2 \
-  utf8proc-dev=2.11.3-r0 &&
+  gettext-tiny-dev=0.3.3-r0 &&
   sudo apk add -t .install_neovim \
   ccmake=4.2.3-r0 \
   clang22=22.1.2-r1 \
@@ -154,12 +147,20 @@ RUN \
   lld22=22.1.2-r0 \
   llvm22=22.1.2-r1 \
   musl-dev=1.2.6-r0 \
+  linux-headers=6.19.10-r0 \
   samurai=1.2-r8 &&
   git clone \
   --depth=1 \
   --branch=v0.12.0 \
   https://github.com/neovim/neovim.git &&
   cd neovim &&
+  cmake -S cmake.deps -B .deps -G Ninja \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_C_COMPILER=clang \
+  -DCMAKE_C_COMPILER_AR=llvm22-ar \
+  -DCMAKE_LINKER=ld.lld \
+  -DCMAKE_STRIP=llvm22-strip &&
+  cmake --build .deps &&
   cmake -G Ninja -B build \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_C_COMPILER=clang \
