@@ -77,13 +77,13 @@ RUN \
   --mount=type=tmpfs,target=/tmp <<HERE
   npm config set cache /home/${USER_NAME}/.npm-cache &&
   npm config set prefix /home/${USER_NAME}/.npm-prefix &&
-  npm install --global \
-  neovim@5.4.0 \
-  tree-sitter-cli@0.26.8 &&
+  npm install --global neovim@5.4.0 &&
   rm -rf /home/${USER_NAME}/.npm
 HERE
 
-FROM install_npm_pckages AS install_tree_sitter_lib
+ENV PATH=${PATH}:/home/${USER_NAME}/.npm-prefix/bin
+
+FROM install_npm_pckages AS install_tree_sitter
 ARG USER_NAME=
 USER ${USER_NAME}
 WORKDIR /home/${USER_NAME}
@@ -94,15 +94,14 @@ WORKDIR /home/${USER_NAME}
 # hadolint ignore=DL3004, DL3003
 RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
-  sudo apk add -t .install_tree_sitter_lib \
+  sudo apk add build-base=0.5-r4 &&
+  sudo apk add -t .install_tree_sitter \
   ccmake=4.2.3-r0 \
-  clang22=22.1.2-r1 \
   cmake=4.2.3-r0 \
   cmake-doc=4.2.3-r0 \
-  lld22=22.1.2-r0 \
-  llvm22=22.1.2-r1 \
-  musl-dev=1.2.6-r0 \
-  samurai=1.2-r8 &&
+  samurai=1.2-r8 \
+  cargo=1.94.1-r0 \
+  clang22-libclang=22.1.2-r1 &&
   git clone \
   --depth=1 \
   --branch=v0.26.8 \
@@ -111,20 +110,20 @@ RUN \
   cmake \
   -G Ninja \
   -B build \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_AR=llvm22-ar \
-  -DCMAKE_C_COMPILER=clang \
-  -DCMAKE_LINKER=ld.lld \
-  -DCMAKE_STRIP=llvm22-strip
-  cmake --build build
+  -DCMAKE_BUILD_TYPE=Release &&
+  cmake --build build &&
   sudo cmake --install build &&
+  cd crates/cli &&
+  cargo install --locked tree-sitter-cli &&
   cd /home/${USER_NAME} &&
   rm -rf tree-sitter &&
-  sudo apk del .install_tree_sitter_lib &&
+  sudo apk del .install_tree_sitter &&
   sudo apk fix
 HERE
 
-FROM install_tree_sitter_lib AS install_neovim
+ENV PATH=${PATH}:/home/${USER_NAME}/.cargo/bin
+
+FROM install_tree_sitter AS install_neovim
 ARG USER_NAME=
 USER ${USER_NAME}
 WORKDIR /home/${USER_NAME}
@@ -139,14 +138,8 @@ RUN \
   gettext-tiny-dev=0.3.3-r0 &&
   sudo apk add -t .install_neovim \
   ccmake=4.2.3-r0 \
-  clang22=22.1.2-r1 \
   cmake=4.2.3-r0 \
-  cmake-doc=4.2.3-r0 \
   coreutils=9.10-r1 \
-  coreutils-doc=9.10-r1 \
-  lld22=22.1.2-r0 \
-  llvm22=22.1.2-r1 \
-  musl-dev=1.2.6-r0 \
   linux-headers=6.19.10-r0 \
   samurai=1.2-r8 &&
   git clone \
@@ -155,22 +148,16 @@ RUN \
   https://github.com/neovim/neovim.git &&
   cd neovim &&
   cmake -S cmake.deps -B .deps -G Ninja \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_C_COMPILER=clang \
-  -DCMAKE_C_COMPILER_AR=llvm22-ar \
-  -DCMAKE_LINKER=ld.lld \
-  -DCMAKE_STRIP=llvm22-strip &&
+  -DCMAKE_BUILD_TYPE=Release &&
   cmake --build .deps &&
   cmake -G Ninja -B build \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_C_COMPILER=clang \
-  -DCMAKE_C_COMPILER_AR=llvm22-ar \
-  -DCMAKE_LINKER=ld.lld \
-  -DCMAKE_STRIP=llvm22-strip
-  cmake --build build
+  -DCMAKE_BUILD_TYPE=Release &&
+  cmake --build build &&
   sudo cmake --install build &&
   sudo apk del .install_neovim &&
   sudo apk fix &&
   cd /home/${USER_NAME} &&
-  rm -rf neovim
+  rm -rf neovim &&
+  git clone https://github.com/LazyVim/starter /home/${USER_NAME}/.config/nvim &&
+  rm -rf /home/${USER_NAME}/.config/nvim/.git*
 HERE
