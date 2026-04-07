@@ -22,6 +22,8 @@ commands:
           Ignore the git root directory following and create the project in the
           current directory.
           Has no effect if not within a git repository directory
+    dependencies:
+      git: A recent version of git is required
   - name: instance
     alias: ins
     help: |
