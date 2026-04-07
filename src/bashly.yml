@@ -12,14 +12,15 @@ commands:
       This is where to start. After a tide project is created, you have access
       to the full set of tide commands to manage and use your development
       environment instances.
-      By default, create the project within the current directory unless you
+      By default, creates the project within the current directory unless you
       are within a git repository
       Use flags to change this behavior.
     flags:
       - long: --ignore-git
         short: -i
         help: |
-          Ignore the git root directory following.
+          Ignore the git root directory following and create the project in the
+          current directory.
           Has no effect if not within a git repository directory
   - name: instance
     alias: ins
