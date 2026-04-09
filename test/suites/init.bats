@@ -1,0 +1,32 @@
+setup_file() {
+  bats_require_minimum_version 1.13.0
+}
+
+setup() {
+  load "${TIDE_ROOT_DIR}test/test_helper/bats-support/load"
+  load "${TIDE_ROOT_DIR}test/test_helper/bats-assert/load"
+  load "${TIDE_ROOT_DIR}test/test_helper/bats-file/load"
+
+  load "${TIDE_ROOT_DIR}test/test_helper/tide_helpers.sh"
+  load "${TIDE_ROOT_DIR}test/test_helper/tide_assert.sh"
+
+  # shellcheck disable=SC2329
+  init_command() {
+    load "${TIDE_ROOT_DIR}src/init_command.sh"
+  }
+}
+
+teardown() {
+  :
+}
+
+@test 'Cannot init a project if a project already exists in a non git repository' {
+  local project_location && project_location="${BATS_TEST_TMPDIR}"
+  cd "$project_location"
+  mkdir "${project_location}/.tide"
+
+  run init_command
+
+  assert_failure
+  assert_line "There is already a tide project in that location: $project_location"
+}
