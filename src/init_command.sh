@@ -1,10 +1,15 @@
 in_git_repository() {
-  git rev-parse --show-toplevel 2>/dev/null
+  # NOTE: following check disabled, deps managed by bashly
+  # shellcheck disable=SC2154
+  local git && git="${deps[git]}"
+
+  "$git" rev-parse --show-toplevel 2>/dev/null 1>&2
 }
 
 create_project_in_git_root_directory() {
+  local git && git="${deps[git]}"
   local root_dir &&
-    root_dir="$(git rev-parse --show-toplevel 2>/dev/null)"
+    root_dir="$("$git" rev-parse --show-toplevel 2>/dev/null)"
 
   if [ -d "${root_dir}/.tide" ]; then
     echo "There is already a tide project in that location: $root_dir" >&2

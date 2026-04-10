@@ -12,6 +12,12 @@ setup() {
 
   # shellcheck disable=SC2329
   init_command() {
+    declare -A deps
+
+    # NOTE: used as placeholder, normally these arrays is defined by bashly
+    # shellcheck disable=SC2034
+    deps=([git]=git)
+
     load "${TIDE_ROOT_DIR}src/init_command.sh"
   }
 }
@@ -64,4 +70,8 @@ teardown() {
   run init_command
 
   assert_dir_exists "${project_location}/.tide"
+}
+
+@test 'Initializing a project ignoring git outside of a git repository has no effect' {
+  skip
 }
