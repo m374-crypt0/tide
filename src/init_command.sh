@@ -6,13 +6,21 @@ create_project_in_git_root_directory() {
   local root_dir &&
     root_dir="$(git rev-parse --show-toplevel 2>/dev/null)"
 
-  echo "There is already a tide project in that location: $root_dir" >&2
-  return 1
+  if [ -d "${root_dir}/.tide" ]; then
+    echo "There is already a tide project in that location: $root_dir" >&2
+    return 1
+  fi
+
+  mkdir "${root_dir}/.tide"
 }
 
 create_project_in_current_directory() {
-  echo "There is already a tide project in that location: $(pwd)" >&2
-  return 1
+  if [ -d .tide ]; then
+    echo "There is already a tide project in that location: $(pwd)" >&2
+    return 1
+  fi
+
+  mkdir .tide
 }
 
 run() {

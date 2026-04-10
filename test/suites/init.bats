@@ -44,3 +44,24 @@ teardown() {
   assert_failure
   assert_line "There is already a tide project in that location: $project_location"
 }
+
+@test 'Can init a project in a non git repository in the current working directory' {
+  local project_location && project_location="${BATS_TEST_TMPDIR}/.tide"
+  cd "$BATS_TEST_TMPDIR"
+
+  run init_command
+
+  assert_dir_exists "$project_location"
+}
+
+@test 'Can init a project at the root of a git repository' {
+  local project_location && project_location="${BATS_TEST_TMPDIR}"
+  cd "$project_location"
+  git init
+  mkdir -p foo/bar
+  cd foo/bar
+
+  run init_command
+
+  assert_dir_exists "${project_location}/.tide"
+}
