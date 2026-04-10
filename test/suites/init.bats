@@ -30,3 +30,17 @@ teardown() {
   assert_failure
   assert_line "There is already a tide project in that location: $project_location"
 }
+
+@test 'Cannot init a project if a project already exist in git directory hierarchy' {
+  local project_location && project_location="${BATS_TEST_TMPDIR}"
+  cd "$project_location"
+  git init
+  mkdir -p foo/bar
+  mkdir "${project_location}/.tide"
+  cd foo/bar
+
+  run init_command
+
+  assert_failure
+  assert_line "There is already a tide project in that location: $project_location"
+}

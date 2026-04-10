@@ -1,3 +1,20 @@
+in_git_repository() {
+  git rev-parse --show-toplevel 2>/dev/null
+}
+
+create_project_in_git_root_directory() {
+  local root_dir &&
+    root_dir="$(git rev-parse --show-toplevel 2>/dev/null)"
+
+  echo "There is already a tide project in that location: $root_dir" >&2
+  return 1
+}
+
+create_project_in_current_directory() {
+  echo "There is already a tide project in that location: $(pwd)" >&2
+  return 1
+}
+
 run() {
   # echo "# This file is located at 'src/init_command.sh'."
   # echo "# It contains the implementation for the 'tide init' command."
@@ -5,8 +22,11 @@ run() {
   # echo "# Feel free to edit this file; your changes will persist when regenerating."
   # inspect_args
 
-  echo "There is already a tide project in that location: $(pwd)" >&2
-  return 1
+  if in_git_repository; then
+    create_project_in_git_root_directory
+  else
+    create_project_in_current_directory
+  fi
 }
 
 run
