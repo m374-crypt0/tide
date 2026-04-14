@@ -72,6 +72,16 @@ teardown() {
   assert_dir_exists "${project_location}/.tide"
 }
 
-@test 'Initializing a project ignoring git outside of a git repository has no effect' {
-  skip
+@test 'Initializing a project ignoring git outside of a git repository has no effect on the project creation location' {
+  local project_location && project_location="${BATS_TEST_TMPDIR}/.tide"
+  cd "$BATS_TEST_TMPDIR"
+
+  declare -A args
+  # NOTE: used as placeholder, normally these arrays is defined by bashly
+  # shellcheck disable=SC2034
+  args=([--ignore-git]=1)
+
+  run init_command
+
+  assert_dir_exists "$project_location"
 }
