@@ -85,3 +85,20 @@ teardown() {
 
   assert_dir_exists "$project_location"
 }
+
+@test 'Initializing a project ignoring git within a git repository initializes the project in the current directory' {
+  local git_root_dir && git_root_dir="${BATS_TEST_TMPDIR}"
+  cd "$git_root_dir"
+  git init
+  mkdir -p foo/bar
+  cd foo/bar
+
+  declare -A args
+  # NOTE: used as placeholder, normally these arrays is defined by bashly
+  # shellcheck disable=SC2034
+  args=([--ignore-git]=1)
+
+  run init_command
+
+  assert_dir_exists "${git_root_dir}/foo/bar/.tide"
+}
