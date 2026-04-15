@@ -57,6 +57,7 @@ teardown() {
 
   run init_command
 
+  assert_success
   assert_dir_exists "$project_location"
 }
 
@@ -69,6 +70,7 @@ teardown() {
 
   run init_command
 
+  assert_success
   assert_dir_exists "${project_location}/.tide"
 }
 
@@ -79,10 +81,11 @@ teardown() {
   declare -A args
   # NOTE: used as placeholder, normally these arrays is defined by bashly
   # shellcheck disable=SC2034
-  args=([--ignore-git]=1)
+  args=(['--ignore-git']=1)
 
   run init_command
 
+  assert_success
   assert_dir_exists "$project_location"
 }
 
@@ -96,9 +99,10 @@ teardown() {
   declare -A args
   # NOTE: used as placeholder, normally these arrays is defined by bashly
   # shellcheck disable=SC2034
-  args=([--ignore-git]=1)
+  args=(['--ignore-git']=1)
 
   run init_command
 
+  assert_success
   assert_dir_exists "${git_root_dir}/foo/bar/.tide"
 }
