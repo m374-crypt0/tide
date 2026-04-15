@@ -1,12 +1,6 @@
-in_git_repository() {
-  # NOTE: following check disabled, deps managed by bashly
-  # shellcheck disable=SC2154
-  local git && git="${deps[git]}"
-
-  "$git" rev-parse --show-toplevel 2>/dev/null 1>&2
-}
-
 create_project_in_git_root_directory() {
+  # NOTE: this variable is setup by bashly and in test cases
+  # shellcheck disable=SC2154
   local git && git="${deps[git]}"
   local root_dir &&
     root_dir="$("$git" rev-parse --show-toplevel 2>/dev/null)"
@@ -31,7 +25,7 @@ create_project_in_current_directory() {
 do_not_ignore_git() {
   # NOTE: args is defined by bashly
   # shellcheck disable=SC2154
-  [ "${args[--ignore-git]}" != 1 ]
+  [ "${args["--ignore-git"]}" != 1 ]
 }
 
 run() {

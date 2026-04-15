@@ -18,6 +18,7 @@ setup() {
     # shellcheck disable=SC2034
     deps=([git]=git)
 
+    load "${TIDE_ROOT_DIR}src/lib/git_utils.sh"
     load "${TIDE_ROOT_DIR}src/init_command.sh"
   }
 }
@@ -81,7 +82,7 @@ teardown() {
   declare -A args
   # NOTE: used as placeholder, normally these arrays is defined by bashly
   # shellcheck disable=SC2034
-  args=(['--ignore-git']=1)
+  args=(["--ignore-git"]=1)
 
   run init_command
 
@@ -99,7 +100,7 @@ teardown() {
   declare -A args
   # NOTE: used as placeholder, normally these arrays is defined by bashly
   # shellcheck disable=SC2034
-  args=(['--ignore-git']=1)
+  args=(["--ignore-git"]=1)
 
   run init_command
 
