@@ -43,7 +43,7 @@ teardown() {
   run instance_list_command
 
   assert_failure
-  assert_output 'You are not in a tide project'
+  assert_line 'You are not in a tide project'
 }
 
 @test 'A project with no instance says there are no instance' {
@@ -53,7 +53,7 @@ teardown() {
   run instance_list_command
 
   assert_success
-  assert_output 'No instance in this project'
+  assert_line 'No instance in this project'
 }
 
 @test 'A project within a git repository with no instance says there are no instance' {
@@ -68,5 +68,5 @@ teardown() {
   run instance_list_command
 
   assert_success
-  assert_output 'No instance in this project'
+  assert_line 'No instance in this project'
 }

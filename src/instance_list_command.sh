@@ -14,11 +14,11 @@ run() {
 
     if [ ! -d "${git_root_dir}/.tide" ]; then
       echo You are not in a tide project >&2
-      exit 1
+      return 1
     fi
   elif [ ! -d './.tide' ]; then
     echo You are not in a tide project >&2
-    exit 1
+    return 1
   fi
 
   echo 'No instance in this project'
