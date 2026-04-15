@@ -14,6 +14,17 @@ setup() {
   instance_list_command() {
     load "${TIDE_ROOT_DIR}src/instance_list_command.sh"
   }
+
+  # shellcheck disable=SC2329
+  init_command() {
+    declare -A deps
+
+    # NOTE: used as placeholder, normally these arrays is defined by bashly
+    # shellcheck disable=SC2034
+    deps=([git]=git)
+
+    load "${TIDE_ROOT_DIR}src/init_command.sh"
+  }
 }
 
 teardown() {
@@ -25,4 +36,14 @@ teardown() {
 
   assert_failure
   assert_output 'You are not in a tide project'
+}
+
+@test 'A project with no insntance says there are no instance' {
+  cd "$BATS_TEST_TMPDIR"
+  run init_command
+
+  run instance_list_command
+
+  assert_success
+  assert_output 'No instance in this project'
 }
