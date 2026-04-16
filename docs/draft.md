@@ -49,6 +49,12 @@
 
 ## user workflows
 
+### user setup
+
+1. execute the command to install: `curl -L https://raw.githubusercontent.com/m374-crypt0/tide/refs/heads/main/src/install | bash`
+2. source *bashrc* or start a new shell session
+3. run `tideup` to actually install `tide`
+
 ### user developer (instance user)
 
 1. Create a *tide project* within her git repository: `tide init`
