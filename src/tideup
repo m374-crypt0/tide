@@ -3,5 +3,5 @@
 export TIDE_INSTALL_DIR="${TIDE_INSTALL_DIR:-$HOME/.tide/}"
 export TIDE_URL="${TIDE_URL:-https://raw.githubusercontent.com/m374-crypt0/tide/refs/heads/main/}"
 
-curl -L "${TIDE_URL}dist/tide" -o "${TIDE_INSTALL_DIR}tide"
-chmod +x "${TIDE_INSTALL_DIR}tide"
+curl -L "${TIDE_URL}dist/tide" -o "${TIDE_INSTALL_DIR}dist/tide" --create-dirs
+chmod +x "${TIDE_INSTALL_DIR}dist/tide"
