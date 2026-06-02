@@ -5,11 +5,6 @@ setup_file() {
 }
 
 setup() {
-  local test_file_dir &&
-    test_file_dir="$(cd "$(dirname "$BATS_TEST_FILENAME")" >/dev/null 2>&1 && pwd)/"
-
-  TIDE_ROOT_DIR="${test_file_dir}../../../"
-
   export TIDE_INSTALL_DIR="${BATS_TEST_TMPDIR}/.tide/"
   export TIDE_URL="file://${TIDE_ROOT_DIR}/"
   export BASHRC_PATH="${BATS_TEST_TMPDIR}/.bashrc"

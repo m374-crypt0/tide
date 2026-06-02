@@ -3,11 +3,6 @@ setup_file() {
 }
 
 setup() {
-  local test_file_dir &&
-    test_file_dir="$(cd "$(dirname "$BATS_TEST_FILENAME")" >/dev/null 2>&1 && pwd)/"
-
-  TIDE_ROOT_DIR="${test_file_dir}../../../"
-
   load "${TIDE_ROOT_DIR}test/test_helper/bats-support/load"
   load "${TIDE_ROOT_DIR}test/test_helper/bats-assert/load"
   load "${TIDE_ROOT_DIR}test/test_helper/bats-file/load"
