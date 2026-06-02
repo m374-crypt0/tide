@@ -32,9 +32,9 @@ USER root
 RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
   apk add \
-  docker-cli=29.4.0-r1 \
-  docker-cli-buildx=0.33.0-r1 \
-  docker-cli-compose=5.1.2-r0 &&
+  docker-cli=29.5.2-r0 \
+  docker-cli-buildx=0.34.1-r0 \
+  docker-cli-compose=5.1.4-r0 &&
   groupadd -g ${DOCKER_HOST_GID} docker &&
   usermod -a -G docker ${USER_NAME}
 HERE
@@ -48,27 +48,27 @@ USER root
 RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked \
   apk add \
-  curl=8.19.0-r0 \
-  curl-doc=8.19.0-r0 \
+  curl=8.20.0-r1 \
+  curl-doc=8.20.0-r1 \
   fd=10.2.0-r3 \
   fd-doc=10.2.0-r3 \
-  fzf=0.71.0-r1 \
-  fzf-doc=0.71.0-r1 \
-  git=2.53.0-r1 \
-  git-doc=2.53.0-r1 \
-  lazygit=0.48.0-r11 \
-  lazygit-doc=0.48.0-r11 \
+  fzf=0.72.0-r1 \
+  fzf-doc=0.72.0-r1 \
+  git=2.54.0-r0 \
+  git-doc=2.54.0-r0 \
+  lazygit=0.48.0-r12 \
+  lazygit-doc=0.48.0-r12 \
   make=4.4.1-r4 \
   make-doc=4.4.1-r4 \
   man-db=2.13.1-r1 \
-  nodejs-current=25.8.2-r0 \
-  nodejs-current-doc=25.8.2-r0 \
+  nodejs-current=26.2.0-r0 \
+  nodejs-current-doc=26.2.0-r0 \
   npm=11.12.1-r0 \
   npm-doc=11.12.1-r0 \
   ripgrep=15.1.0-r0 \
   ripgrep-doc=15.1.0-r0 \
-  tmux=3.6a-r1 \
-  tmux-doc=3.6a-r1
+  tmux=3.6b-r0 \
+  tmux-doc=3.6b-r0
 USER ${USER_NAME}
 
 FROM foundation_packages AS install_npm_pckages
@@ -101,8 +101,8 @@ RUN \
   cmake=4.2.3-r0 \
   cmake-doc=4.2.3-r0 \
   samurai=1.2-r8 \
-  cargo=1.94.1-r0 \
-  clang22-libclang=22.1.3-r0 &&
+  cargo=1.96.0-r0 \
+  clang22-libclang=22.1.3-r2 &&
   git clone \
   --depth=1 \
   --branch=v0.26.8 \
@@ -140,8 +140,8 @@ RUN \
   sudo apk add -t .install_neovim \
   ccmake=4.2.3-r0 \
   cmake=4.2.3-r0 \
-  coreutils=9.10-r1 \
-  linux-headers=6.19.12-r0 \
+  coreutils=9.11-r0 \
+  linux-headers=7.0.0-r1 \
   samurai=1.2-r8 &&
   git clone \
   --depth=1 \
