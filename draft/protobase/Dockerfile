@@ -8,6 +8,7 @@ RUN \
   apk add \
   bash=5.3.9-r1 \
   shadow=4.18.0-r1 \
+  su-exec=0.3-r0 \
   sudo=1.9.17_p2-r1 \
   sudo-doc=1.9.17_p2-r1
 HERE
@@ -86,93 +87,87 @@ ENV PATH=${PATH}:/home/${USER_NAME}/.npm-prefix/bin
 
 FROM install_npm_pckages AS install_tree_sitter
 ARG USER_NAME=
-USER ${USER_NAME}
+USER root
 WORKDIR /home/${USER_NAME}
-# NOTE: (DL3004) need to figure out why hadolint yells at me for sudo use.
-# Anyway, I need to this way because I want to embed all run execution in one
-# step to get an optimized image layout.
 # NOTE: (DL3003) only one run command and directory switching is part of this
-# hadolint ignore=DL3004, DL3003
+# hadolint ignore=DL3003
 RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
-  sudo apk add build-base=0.5-r4 &&
-  sudo apk add -t .install_tree_sitter \
+  apk add build-base=0.5-r4 &&
+  apk add -t .install_tree_sitter \
   ccmake=4.2.3-r0 \
   cmake=4.2.3-r0 \
   cmake-doc=4.2.3-r0 \
   samurai=1.2-r8 \
   cargo=1.96.0-r0 \
   clang22-libclang=22.1.3-r2 &&
-  git clone \
+  su-exec ${USER_NAME} git clone \
   --depth=1 \
   --branch=v0.26.8 \
   https://github.com/tree-sitter/tree-sitter.git &&
   cd tree-sitter &&
-  cmake \
+  su-exec ${USER_NAME} cmake \
   -G Ninja \
   -B build \
   -DCMAKE_BUILD_TYPE=Release &&
-  cmake --build build &&
-  sudo cmake --install build &&
+  su-exec ${USER_NAME} cmake --build build &&
+  cmake --install build &&
   cd crates/cli &&
-  cargo install --locked tree-sitter-cli &&
+  su-exec ${USER_NAME} cargo install --locked tree-sitter-cli &&
   cd /home/${USER_NAME} &&
   rm -rf tree-sitter &&
-  sudo apk del .install_tree_sitter &&
-  sudo apk fix
+  apk del .install_tree_sitter &&
+  apk fix
 HERE
+
+USER ${USER_NAME}
 
 ENV PATH=${PATH}:/home/${USER_NAME}/.cargo/bin
 
 FROM install_tree_sitter AS install_neovim
 ARG USER_NAME=
-USER ${USER_NAME}
+USER root
 WORKDIR /home/${USER_NAME}
-# NOTE: (DL3004) need to figure out why hadolint yells at me for sudo use.
-# Anyway, I need to this way because I want to embed all run execution in one
-# step to get an optimized image layout.
 # NOTE: (DL3003) only one run command and directory switching is part of this
-# hadolint ignore=DL3004, DL3003
+# hadolint ignore=DL3003
 RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
-  sudo apk add \
+  apk add \
   gettext-tiny-dev=0.3.3-r0 &&
-  sudo apk add -t .install_neovim \
+  apk add -t .install_neovim \
   ccmake=4.2.3-r0 \
   cmake=4.2.3-r0 \
   coreutils=9.11-r0 \
   linux-headers=7.0.0-r1 \
   samurai=1.2-r8 &&
-  git clone \
+  su-exec ${USER_NAME} git clone \
   --depth=1 \
   --branch=v0.12.0 \
   https://github.com/neovim/neovim.git &&
   cd neovim &&
-  cmake -S cmake.deps -B .deps -G Ninja \
+  su-exec ${USER_NAME} cmake -S cmake.deps -B .deps -G Ninja \
   -DCMAKE_BUILD_TYPE=Release &&
-  cmake --build .deps &&
-  cmake -G Ninja -B build \
+  su-exec ${USER_NAME} cmake --build .deps &&
+  su-exec ${USER_NAME} cmake -G Ninja -B build \
   -DCMAKE_BUILD_TYPE=Release &&
-  cmake --build build &&
-  sudo cmake --install build &&
-  sudo apk del .install_neovim &&
-  sudo apk fix &&
+  su-exec ${USER_NAME} cmake --build build &&
+  cmake --install build &&
+  apk del .install_neovim &&
+  apk fix &&
   cd /home/${USER_NAME} &&
   rm -rf neovim &&
-  git clone https://github.com/LazyVim/starter /home/${USER_NAME}/.config/nvim &&
+  su-exec ${USER_NAME} git clone https://github.com/LazyVim/starter /home/${USER_NAME}/.config/nvim &&
   rm -rf /home/${USER_NAME}/.config/nvim/.git*
 HERE
 
+USER ${USER_NAME}
+
 FROM install_neovim AS install_package_for_lazyvim
 ARG USER_NAME=
-USER ${USER_NAME}
-# NOTE: (DL3004) need to figure out why hadolint yells at me for sudo use.
-# Anyway, I need to this way because I want to embed all run execution in one
-# step to get an optimized image layout.
-# hadolint ignore=DL3004
+USER root
 RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
-  sudo apk add \
+  apk add \
   python3=3.14.3-r0 \
   python3-doc=3.14.3-r0 \
   gzip=1.14-r2 \
@@ -180,3 +175,5 @@ RUN \
   unzip=6.0-r16 \
   unzip-doc=6.0-r16
 HERE
+
+USER ${USER_NAME}
