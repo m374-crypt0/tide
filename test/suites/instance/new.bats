@@ -28,7 +28,7 @@ teardown() {
 }
 
 @test 'Cannot create a new instance outside of a project' {
-  run tide_instance_new base
+  run tide_instance_new lazyvim
 
   assert_failure
   assert_line 'You are not in a tide project'
@@ -42,4 +42,25 @@ teardown() {
 
   assert_failure
   assert_line 'the template unexisting_problem does not exist'
+}
+
+@test 'Can create the first instance of the lazyvim template' {
+  skip
+  cd "$BATS_TEST_TMPDIR"
+  run tide_init
+
+  run tide_instance_new lazyvim
+
+  assert_success
+  assert_dir_exists "${BATS_TEST_TMPDIR}/.tide/instances/lazyvim/0"
+  assert_file_exists "${BATS_TEST_TMPDIR}/.tide/instances/lazyvim/0/config.build.ini"
+  assert_file_exists "${BATS_TEST_TMPDIR}/.tide/instances/lazyvim/0/config.run.ini"
+}
+
+@test 'Can create the several instances of the lazyvim template' {
+  skip
+}
+
+@test 'After instance creation, display instance info' {
+  skip
 }
