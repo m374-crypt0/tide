@@ -10,28 +10,12 @@ setup() {
   load "${TIDE_ROOT_DIR}test/test_helper/tide_helpers.sh"
   load "${TIDE_ROOT_DIR}test/test_helper/tide_assert.sh"
 
-  # shellcheck disable=SC2329
-  instance_list_command() {
-    declare -A deps
-
-    # NOTE: used as placeholder, normally these arrays is defined by bashly
-    # shellcheck disable=SC2034
-    deps=([git]=git)
-
-    load "${TIDE_ROOT_DIR}src/lib/git_utils.sh"
-    load "${TIDE_ROOT_DIR}src/instance_list_command.sh"
+  tide_instance_list() {
+    exec bash -c "${TIDE_ROOT_DIR}dist/tide instance list"
   }
 
-  # shellcheck disable=SC2329
-  init_command() {
-    declare -A deps
-
-    # NOTE: used as placeholder, normally these arrays is defined by bashly
-    # shellcheck disable=SC2034
-    deps=([git]=git)
-
-    load "${TIDE_ROOT_DIR}src/lib/git_utils.sh"
-    load "${TIDE_ROOT_DIR}src/init_command.sh"
+  tide_init() {
+    exec bash -c "${TIDE_ROOT_DIR}dist/tide init"
   }
 }
 
@@ -40,7 +24,7 @@ teardown() {
 }
 
 @test 'Listing instances outside of a project fails' {
-  run instance_list_command
+  run tide_instance_list
 
   assert_failure
   assert_line 'You are not in a tide project'
@@ -48,9 +32,9 @@ teardown() {
 
 @test 'A project with no instance says there are no instance' {
   cd "$BATS_TEST_TMPDIR"
-  run init_command
+  run tide_init
 
-  run instance_list_command
+  run tide_instance_list
 
   assert_success
   assert_line 'No instance in this project'
@@ -63,9 +47,9 @@ teardown() {
   mkdir -p foo/bar
   cd foo/bar
 
-  run init_command
+  run tide_init
 
-  run instance_list_command
+  run tide_instance_list
 
   assert_success
   assert_line 'No instance in this project'

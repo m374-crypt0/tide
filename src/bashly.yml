@@ -33,6 +33,8 @@ commands:
       - created: freshly created from a template, not yet ready to be used (must be built)
       - stopped: built instance that is not running
       - running: an instance that is currently running
+    dependencies:
+      git: A recent version of git is required
     commands:
       - name: list
         alias: [ls, l]
@@ -52,6 +54,22 @@ commands:
               - stopped
               - running
             help: Filters instances by status
+      - name: new
+        alias: n
+        help: |
+          Create a brand new instance within the current project.
+          An instance is an environment defined by an existing template.
+          You may have several instances per template.
+          The creation of an instance is a fast process. However, to use your
+          instance, it must be build.
+          The build process may be invoked explicitely or implicitly when
+          needed.
+        flags:
+          - long: --template
+            short: -t
+            arg: name
+            required: true
+            help: The template to create this instance from
   - name: template
     alias: t
     help: |
