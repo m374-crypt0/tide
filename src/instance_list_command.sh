@@ -4,10 +4,10 @@
 # echo "# Feel free to edit this file; your changes will persist when regenerating."
 # inspect_args
 
-run() {
+main() {
   ensure_initialized_tide_project
 
   echo 'No instance in this project'
 }
 
-run
+main

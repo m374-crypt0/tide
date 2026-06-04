@@ -16,6 +16,11 @@ setup() {
 
     exec bash -c "${TIDE_ROOT_DIR}dist/tide instance new --template=${template_name}"
   }
+
+  # shellcheck disable=SC2329
+  tide_init() {
+    exec bash -c "${TIDE_ROOT_DIR}dist/tide init"
+  }
 }
 
 teardown() {
@@ -27,4 +32,14 @@ teardown() {
 
   assert_failure
   assert_line 'You are not in a tide project'
+}
+
+@test 'Cannot create an instance from unexisting template' {
+  cd "$BATS_TEST_TMPDIR"
+  run tide_init
+
+  run tide_instance_new unexisting_problem
+
+  assert_failure
+  assert_line 'the template unexisting_problem does not exist'
 }
