@@ -10,6 +10,7 @@ setup() {
   load "${TIDE_ROOT_DIR}test/test_helper/tide_helpers.sh"
   load "${TIDE_ROOT_DIR}test/test_helper/tide_assert.sh"
 
+  # shellcheck disable=SC2329
   tide_instance_new() {
     local template_name && template_name="$1"
 

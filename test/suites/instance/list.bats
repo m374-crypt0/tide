@@ -10,10 +10,12 @@ setup() {
   load "${TIDE_ROOT_DIR}test/test_helper/tide_helpers.sh"
   load "${TIDE_ROOT_DIR}test/test_helper/tide_assert.sh"
 
+  # shellcheck disable=SC2329
   tide_instance_list() {
     exec bash -c "${TIDE_ROOT_DIR}dist/tide instance list"
   }
 
+  # shellcheck disable=SC2329
   tide_init() {
     exec bash -c "${TIDE_ROOT_DIR}dist/tide init"
   }
