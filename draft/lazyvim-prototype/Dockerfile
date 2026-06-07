@@ -62,8 +62,8 @@ RUN \
   make=4.4.1-r4 \
   make-doc=4.4.1-r4 \
   man-db=2.13.1-r1 \
-  nodejs-current=26.2.0-r0 \
-  nodejs-current-doc=26.2.0-r0 \
+  nodejs-current=26.3.0-r0 \
+  nodejs-current-doc=26.3.0-r0 \
   npm=11.12.1-r0 \
   npm-doc=11.12.1-r0 \
   ripgrep=15.1.0-r0 \
