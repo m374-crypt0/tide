@@ -1,19 +1,6 @@
-FROM alpine:edge AS pinned_world
-# NOTE: pinned basic packages in world. Any update will break the build, it is
-# intentional
-COPY world /etc/apk/world
-RUN \
-  --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
-  apk fix -U
-  apk add \
-  bash=5.3.9-r1 \
-  shadow=4.18.0-r1 \
-  su-exec=0.3-r0 \
-  sudo=1.9.17_p2-r1 \
-  sudo-doc=1.9.17_p2-r1
-HERE
+ARG BASE_STAMP=edge
 
-FROM pinned_world AS user_setup
+FROM m374crypt0/tide-alpine:${BASE_STAMP} AS user_setup
 USER root
 ARG USER_UID=
 ARG USER_GID=
@@ -33,7 +20,7 @@ USER root
 RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
   apk add \
-  docker-cli=29.5.2-r0 \
+  docker-cli=29.5.3-r0 \
   docker-cli-buildx=0.34.1-r0 \
   docker-cli-compose=5.1.4-r0 &&
   groupadd -g ${DOCKER_HOST_GID} docker &&
@@ -53,8 +40,8 @@ RUN \
   curl-doc=8.20.0-r1 \
   fd=10.2.0-r3 \
   fd-doc=10.2.0-r3 \
-  fzf=0.72.0-r1 \
-  fzf-doc=0.72.0-r1 \
+  fzf=0.73.1-r0 \
+  fzf-doc=0.73.1-r0 \
   git=2.54.0-r0 \
   git-doc=2.54.0-r0 \
   lazygit=0.48.0-r12 \
@@ -128,6 +115,8 @@ FROM install_tree_sitter AS install_neovim
 ARG USER_NAME=
 USER root
 WORKDIR /home/${USER_NAME}
+# NOTE: prevent cmake download process to fail with default method
+ENV CMAKE_DOWNLOAD_METHOD=curl
 # NOTE: (DL3003) only one run command and directory switching is part of this
 # hadolint ignore=DL3003
 RUN \
@@ -142,7 +131,7 @@ RUN \
   samurai=1.2-r8 &&
   su-exec ${USER_NAME} git clone \
   --depth=1 \
-  --branch=v0.12.0 \
+  --branch=v0.12.2 \
   https://github.com/neovim/neovim.git &&
   cd neovim &&
   su-exec ${USER_NAME} cmake -S cmake.deps -B .deps -G Ninja \
@@ -168,6 +157,7 @@ USER root
 RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
   apk add \
+  py3-pynvim=0.6.0-r1 \
   python3=3.14.3-r0 \
   python3-doc=3.14.3-r0 \
   gzip=1.14-r2 \
