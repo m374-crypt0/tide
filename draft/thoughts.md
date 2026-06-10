@@ -10,6 +10,7 @@
 - allow users to develop their own tide templates
   - official, host local or project local
   - think about a registry (github repo) for official templates
+  - push official template in docker hub repositories
 - allow users to move their built instances easily to avoid rebuild
   - ideally, dedicated feature not using underlying docker inner details
 - enhance composability of templates
@@ -35,6 +36,7 @@
 - plus stuff to be scriptable (no interactive mode, could be integrated in
   CI/CD pipelines)
   - such as hook scripts
+- plus stuff to configure tide itself (`tide config ...`)
 
 ## requirements
 
@@ -69,13 +71,14 @@
 1. Create a *tide project* within her git repository: `tide init`
 2. Create an *instance* corresponding to its workload: `tide instance new`
 3. Query the *instance* information: `tide instance info`
-   - status: *created (not built), stopped (built, not running) and running*
-   - underlying template name and provenance
-   - customization points
+   - status: *created (not built or pulled), stopped (built or pulled, not
+    running) and running*
+   - underlying template name and provenance of this template
+   - customization points (on-demand, dedicated verb)
      - build data file and Dockerfile
      - run data file and compose.yaml
 4. Use her *instance*: `tide instance login`
-   - may ask for build if not already done
+   - may ask for build if not already done or pulled
      `tide instance build`
    - may ask for run if not already done
      `tide instance run`

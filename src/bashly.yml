@@ -24,6 +24,17 @@ commands:
           Has no effect if not within a git repository directory
     dependencies:
       git: A recent version of git is required
+  - name: config
+    alias: c
+    help: |
+      Expose configuration features for either the global tide install or for
+      the current project. By default, query or set the project configuration.
+      Use flags to alter this behavior.
+    flags:
+      - long: --global
+        short: -g
+        help: |
+          Query or modify the system wide tide configuration
   - name: instance
     alias: ins
     help: |
@@ -60,16 +71,20 @@ commands:
           Create a brand new instance within the current project.
           An instance is an environment defined by an existing template.
           You may have several instances per template.
-          The creation of an instance is a fast process. However, to use your
-          instance, it must be build.
-          The build process may be invoked explicitely or implicitly when
-          needed.
+          Creating an instance attempt to pull an image from a specified docker
+          image registry (see the tide config). You may modify this behavior
+          using flags.
         flags:
           - long: --template
             short: -t
             arg: name
             required: true
             help: The template to create this instance from
+          - long: --no-pull
+            short: -n
+            help: |
+              Prevent tide to pull the template image from the configured
+              docker registry. Instead, let the user to explicitely build it.
   - name: template
     alias: t
     help: |

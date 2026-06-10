@@ -57,7 +57,7 @@ teardown() {
   assert_file_exists "${BATS_TEST_TMPDIR}/.tide/instances/lazyvim/0/config.run.ini"
 }
 
-@test 'Can create the several instances of the lazyvim template' {
+@test 'Can create several instances of the lazyvim template' {
   skip
 }
 
