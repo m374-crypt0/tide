@@ -15,3 +15,20 @@ ensure_initialized_tide_project() {
     return 1
   fi
 }
+
+# get_project_dir() {
+#   if [ -d './.tide' ]; then
+#     echo "$(pwd)/.tide/"
+#     return 0
+#   elif in_git_repository; then
+#     local git && git="${deps[git]}"
+#     local git_root_dir &&
+#       git_root_dir="$("$git" rev-parse --show-toplevel 2>/dev/null)"
+#     if [ -d "${git_root_dir}/.tide" ]; then
+#       echo "${git_root_dir}/.tide"
+#       return 0
+#     fi
+#   fi
+
+#   return 1
+# }

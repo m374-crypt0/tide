@@ -5,17 +5,22 @@
 # inspect_args
 
 ensure_template_exist() {
+  echo "the template ${1} does not exist" >&2
+  return 1
+}
+
+create_instance() {
+  :
+}
+
+main() {
   # NOTE: this variable is setup by bashly and in test cases
   # shellcheck disable=SC2154
   local template && template="${args[--template]}"
 
-  echo "the template ${template} does not exist"
-  return 1
-}
-
-main() {
   ensure_initialized_tide_project &&
-    ensure_template_exist || return 1
+    ensure_template_exist "$template" &&
+    create_instance "$template"
 }
 
 main
