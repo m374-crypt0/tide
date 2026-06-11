@@ -36,5 +36,7 @@ teardown() {
   local template
   for template in $templates; do
     assert_file_exists "${template_dir}${template}/Dockerfile"
+    assert_file_exists "${template_dir}${template}/config.build.ini"
+    assert_file_exists "${template_dir}${template}/config.run.ini"
   done
 }

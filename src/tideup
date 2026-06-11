@@ -6,4 +6,11 @@ export TIDE_URL="${TIDE_URL:-https://raw.githubusercontent.com/m374-crypt0/tide/
 curl -L "${TIDE_URL}dist/tide" -o "${TIDE_INSTALL_DIR}tide" --create-dirs
 chmod +x "${TIDE_INSTALL_DIR}tide"
 
-curl -L "${TIDE_URL}/templates/lazyvim/Dockerfile" -o "${TIDE_INSTALL_DIR}templates/lazyvim/Dockerfile" --create-dirs
+curl -L "${TIDE_URL}/templates/lazyvim/Dockerfile" -o \
+  "${TIDE_INSTALL_DIR}templates/lazyvim/Dockerfile" --create-dirs
+
+curl -L "${TIDE_URL}/templates/lazyvim/config.build.ini" -o \
+  "${TIDE_INSTALL_DIR}templates/lazyvim/config.build.ini" --create-dirs
+
+curl -L "${TIDE_URL}/templates/lazyvim/config.run.ini" -o \
+  "${TIDE_INSTALL_DIR}templates/lazyvim/config.run.ini" --create-dirs
