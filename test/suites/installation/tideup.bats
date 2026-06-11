@@ -25,6 +25,16 @@ teardown() {
 
   run "${TIDE_INSTALL_DIR}tideup"
 
-  assert_file_executable "${TIDE_INSTALL_DIR}dist/tide"
-  assert_files_equal "${TIDE_INSTALL_DIR}dist/tide" "${TIDE_ROOT_DIR}dist/tide"
+  assert_file_executable "${TIDE_INSTALL_DIR}tide"
+  assert_files_equal "${TIDE_INSTALL_DIR}tide" "${TIDE_ROOT_DIR}dist/tide"
+
+  local template_dir && template_dir="${TIDE_INSTALL_DIR}templates/"
+
+  local templates &&
+    templates='lazyvim'
+
+  local template
+  for template in $templates; do
+    assert_file_exists "${template_dir}${template}/Dockerfile"
+  done
 }
