@@ -1,7 +1,7 @@
 IFS=':' read -r _ _ docker_group_id _ <<<"$(getent group docker)"
 
-base_stamp=20260608085914
-this_stamp=$(date -u +%+4Y%m%d%H%M%S)
+base_stamp=20260810100257
+this_stamp=$(date -u +%4Y%m%d%H%M%S)
 
 docker build \
   -f tide-lazyvim-prototype.Dockerfile \

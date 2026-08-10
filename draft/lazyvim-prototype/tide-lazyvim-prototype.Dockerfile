@@ -20,9 +20,9 @@ USER root
 RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
   apk add \
-  docker-cli=29.5.3-r0 \
-  docker-cli-buildx=0.34.1-r0 \
-  docker-cli-compose=5.1.4-r0 &&
+  docker-cli=29.7.2-r0 \
+  docker-cli-buildx=0.36.1-r0 \
+  docker-cli-compose=5.4.0-r0 &&
   groupadd -g ${DOCKER_HOST_GID} docker &&
   usermod -a -G docker ${USER_NAME}
 HERE
@@ -36,27 +36,27 @@ USER root
 RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked \
   apk add \
-  curl=8.20.0-r1 \
-  curl-doc=8.20.0-r1 \
-  fd=10.2.0-r3 \
-  fd-doc=10.2.0-r3 \
-  fzf=0.73.1-r0 \
-  fzf-doc=0.73.1-r0 \
-  git=2.54.0-r0 \
-  git-doc=2.54.0-r0 \
-  lazygit=0.48.0-r12 \
-  lazygit-doc=0.48.0-r12 \
+  curl=8.21.0-r0 \
+  curl-doc=8.21.0-r0 \
+  fd=10.4.2-r0 \
+  fd-doc=10.4.2-r0 \
+  fzf=0.74.2-r0 \
+  fzf-doc=0.74.2-r0 \
+  git=2.55.0-r1 \
+  git-doc=2.55.0-r1 \
+  lazygit=0.63.1-r0 \
+  lazygit-doc=0.63.1-r0 \
   make=4.4.1-r4 \
   make-doc=4.4.1-r4 \
   man-db=2.13.1-r1 \
-  nodejs-current=26.3.0-r0 \
-  nodejs-current-doc=26.3.0-r0 \
-  npm=11.12.1-r0 \
-  npm-doc=11.12.1-r0 \
-  ripgrep=15.1.0-r0 \
-  ripgrep-doc=15.1.0-r0 \
-  tmux=3.6b-r0 \
-  tmux-doc=3.6b-r0
+  nodejs-current=26.7.0-r0 \
+  nodejs-current-doc=26.7.0-r0 \
+  npm=11.17.0-r0 \
+  npm-doc=11.17.0-r0 \
+  ripgrep=15.2.0-r0 \
+  ripgrep-doc=15.2.0-r0 \
+  tmux=3.7b-r0 \
+  tmux-doc=3.7b-r0
 USER ${USER_NAME}
 
 FROM foundation_packages AS install_npm_pckages
@@ -82,12 +82,12 @@ RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
   apk add build-base=0.5-r4 &&
   apk add -t .install_tree_sitter \
-  ccmake=4.2.3-r0 \
-  cmake=4.2.3-r0 \
-  cmake-doc=4.2.3-r0 \
-  samurai=1.2-r8 \
-  cargo=1.96.0-r0 \
-  clang22-libclang=22.1.3-r2 &&
+  ccmake=4.3.4-r0 \
+  cmake=4.3.4-r0 \
+  cmake-doc=4.3.4-r0 \
+  samurai=1.3-r0 \
+  cargo=1.97.0-r0 \
+  clang22-libclang=22.1.8-r0 &&
   su-exec ${USER_NAME} git clone \
   --depth=1 \
   --branch=v0.26.8 \
@@ -124,11 +124,11 @@ RUN \
   apk add \
   gettext-tiny-dev=0.3.3-r0 &&
   apk add -t .install_neovim \
-  ccmake=4.2.3-r0 \
-  cmake=4.2.3-r0 \
+  ccmake=4.3.4-r0 \
+  cmake=4.3.4-r0 \
   coreutils=9.11-r0 \
-  linux-headers=7.0.0-r1 \
-  samurai=1.2-r8 &&
+  linux-headers=7.1.5-r0 \
+  samurai=1.3-r0 &&
   su-exec ${USER_NAME} git clone \
   --depth=1 \
   --branch=v0.12.2 \
@@ -158,8 +158,8 @@ RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
   apk add \
   py3-pynvim=0.6.0-r1 \
-  python3=3.14.3-r0 \
-  python3-doc=3.14.3-r0 \
+  python3=3.14.5-r2 \
+  python3-doc=3.14.5-r2 \
   gzip=1.14-r2 \
   gzip-doc=1.14-r2 \
   unzip=6.0-r16 \

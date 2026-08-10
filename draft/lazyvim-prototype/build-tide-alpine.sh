@@ -1,4 +1,4 @@
-stamp=$(date -u +%+4Y%m%d%H%M%S)
+stamp=$(date -u +%4Y%m%d%H%M%S)
 
 docker build \
   -f tide-alpine.Dockerfile \
