@@ -6,4 +6,4 @@ docker build \
   -t m374crypt0/tide-alpine:"$stamp" \
   --label IMAGE_KIND=tide \
   --label IMAGE_STAMP="$stamp" \
-  .
+  ./docker

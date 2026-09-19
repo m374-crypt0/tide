@@ -22,9 +22,9 @@ USER root
 RUN \
   --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
   apk add \
-  docker-cli=29.7.2-r0 \
-  docker-cli-buildx=0.36.1-r0 \
-  docker-cli-compose=5.4.0-r0 &&
+  docker-cli=29.8.1-r0 \
+  docker-cli-buildx=0.37.1-r0 \
+  docker-cli-compose=5.5.1-r0 &&
   groupadd -g ${DOCKER_HOST_GID} docker &&
   usermod -a -G docker ${USER_NAME}
 HERE
@@ -52,7 +52,20 @@ RUN \
   tmux-doc=3.7c-r0
 USER ${USER_NAME}
 
-FROM foundation_packages AS install_npm_pckages
+FROM foundation_packages AS install_emacs
+ARG USER_NAME=
+# hadolint ignore=DL3066
+USER root
+RUN \
+  --mount=type=cache,target=/var/cache/apk,sharing=locked \
+  apk add \
+  emacs-nox=31.1-r0 \
+  emacs-doc=31.1-r0
+USER ${USER_NAME}
+RUN mkdir /home/${USER_NAME}/.emacs.d
+COPY --chown=${USER_NAME} init.el /home/${USER_NAME}/.emacs.d
+
+FROM install_emacs AS install_npm_packages
 ARG USER_NAME=
 RUN \
   --mount=type=tmpfs,target=/tmp \
@@ -60,7 +73,7 @@ RUN \
   npm config set cache /home/${USER_NAME}/.npm-cache &&
   npm config set prefix /home/${USER_NAME}/.npm-prefix &&
   npm install --global \
-    bash-language-server@5.6.0 \
+    bash-language-server@5.8.0 \
     dockerfile-language-server-nodejs@0.15.0 \
     markdownlint-lsp@0.9.2 \
     yaml-language-server@1.24.0 \
@@ -69,3 +82,11 @@ RUN \
 HERE
 
 ENV PATH=${PATH}:/home/${USER_NAME}/.npm-prefix/bin
+
+FROM install_npm_packages AS install_toolchains
+# hadolint ignore=DL3066
+USER root
+RUN \
+  --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
+  apk add \
+  docker-cli=29.8.1-r0

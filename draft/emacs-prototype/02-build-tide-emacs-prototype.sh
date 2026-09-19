@@ -2,7 +2,7 @@
 
 IFS=':' read -r _ _ docker_group_id _ <<<"$(getent group docker)"
 
-base_stamp=20260918171034
+base_stamp=edge
 this_stamp=$(date -u +%4Y%m%d%H%M%S)
 
 docker build \
@@ -14,4 +14,4 @@ docker build \
   --build-arg DOCKER_HOST_GID="$docker_group_id" \
   -t m374crypt0/tide-emacs-prototype:edge \
   -t m374crypt0/tide-emacs-prototype:"$this_stamp" \
-  .
+  ./docker
