@@ -82,11 +82,3 @@ RUN \
 HERE
 
 ENV PATH=${PATH}:/home/${USER_NAME}/.npm-prefix/bin
-
-FROM install_npm_packages AS install_toolchains
-# hadolint ignore=DL3066
-USER root
-RUN \
-  --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
-  apk add \
-  docker-cli=29.8.1-r0
