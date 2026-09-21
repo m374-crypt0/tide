@@ -4,7 +4,8 @@ base_stamp=edge
 this_stamp=$(date -u +%4Y%m%d%H%M%S)
 
 docker build \
-  -f docker/tide-llvm-prototype.Dockerfile \
+  --target build_llvm \
+  -f docker/tide-llvm.Dockerfile \
   --build-arg BASE_STAMP=$base_stamp \
   --build-arg USER_UID="$(id -u)" \
   --build-arg USER_GID="$(id -g)" \
