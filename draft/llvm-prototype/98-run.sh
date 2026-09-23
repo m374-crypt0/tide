@@ -4,4 +4,4 @@ stamp=edge
 docker run --rm -it \
   -e DOCKER_HOST_SOCKET_PATH="$docker_host_socket_path" \
   -v "$docker_host_socket_path":/var/run/docker.sock \
-  m374crypt0/tide-alpine-docker:"$stamp" bash
+  m374crypt0/tide-alpine-llvm:"$stamp" bash
