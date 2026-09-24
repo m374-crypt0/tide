@@ -31,28 +31,27 @@ WORKDIR /home/${USER_NAME}
 RUN git clone --depth 1 --rev=${LLVM_COMMIT} \
     https://github.com/llvm/llvm-project.git	
 
-# TODO: sort cmake variables
 FROM clone_repository AS build_stage_1_clang_lld
 ARG USER_NAME=
 USER ${USER_NAME}
 WORKDIR /home/${USER_NAME}/llvm-project
 RUN \
     cmake -G Ninja -S llvm -B llvm-build \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/home/"${USER_NAME}"/.llvm-stage-1 \
-    -DLLVM_ENABLE_PROJECTS="clang;lld" \
-    -DLLVM_TARGETS_TO_BUILD="host" \
     -DCLANG_DEFAULT_LINKER=lld \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
-    -DLLVM_ENABLE_ZLIB=FORCE_ON \
     -DCLANG_ENABLE_ARCMT=OFF \
-    -DCLANG_ENABLE_STATIC_ANALYZER=OFF \
     -DCLANG_PLUGIN_SUPPORT=OFF \
-    -DLLVM_INCLUDE_TESTS=OFF \
+    -DCLANG_ENABLE_STATIC_ANALYZER=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/home/"${USER_NAME}"/.llvm-stage-1 \
+    -DLLVM_DEFAULT_TARGET_TRIPLE="$(gcc -dumpmachine)" \
+    -DLLVM_ENABLE_PROJECTS="clang;lld" \
+    -DLLVM_ENABLE_ZLIB=FORCE_ON \
+    -DLLVM_TARGETS_TO_BUILD="host" \
+    -DLLVM_INCLUDE_BENCHMARKS=OFF \
     -DLLVM_INCLUDE_DOCS=OFF \
     -DLLVM_INCLUDE_EXAMPLES=OFF \
-    -DLLVM_INCLUDE_BENCHMARKS=OFF \
-    -DLLVM_DEFAULT_TARGET_TRIPLE="$(gcc -dumpmachine)" && \
+    -DLLVM_INCLUDE_TESTS=OFF && \
     cmake --build llvm-build --target install
 
 FROM clone_repository AS build_stage_2_crt
@@ -64,14 +63,16 @@ COPY \
     /home/${USER_NAME}/.llvm-stage-1 /home/${USER_NAME}/.llvm-stage-1
 RUN \
     STAGE_1_DIR="/home/${USER_NAME}/.llvm-stage-1" && \
+    STAGE_2_DIR="/home/${USER_NAME}/.llvm-stage-2" && \
+    TRIPLE="$(${STAGE_1_DIR}/bin/clang -print-target-triple)" && \
     cmake -G Ninja -S runtimes -B crt-build \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
-    -DCMAKE_C_COMPILER=/home/${USER_NAME}/.llvm-stage-1/bin/clang \
-    -DCMAKE_C_COMPILER_TARGET="$(${STAGE_1_DIR}/bin/clang -print-target-triple)" \
-    -DCMAKE_CXX_COMPILER=/home/${USER_NAME}/.llvm-stage-1/bin/clang++ \
-    -DCMAKE_INSTALL_PREFIX=/home/${USER_NAME}/.llvm-stage-2 \
-    -DCMAKE_LINKER=/home/${USER_NAME}/.llvm-stage-1/bin/ld.lld \
+    -DCMAKE_C_COMPILER="${STAGE_1_DIR}/bin/clang" \
+    -DCMAKE_C_COMPILER_TARGET="${TRIPLE}" \
+    -DCMAKE_CXX_COMPILER="${STAGE_1_DIR}/bin/clang++" \
+    -DCMAKE_INSTALL_PREFIX="${STAGE_2_DIR}" \
+    -DCMAKE_LINKER="${STAGE_1_DIR}/bin/ld.lld" \
     -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY \
     -DCOMPILER_RT_BUILD_BUILTINS=ON \
     -DCOMPILER_RT_BUILD_CRT=ON \
@@ -79,6 +80,7 @@ RUN \
     -DCOMPILER_RT_BUILD_PROFILE=OFF \
     -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
     -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
+    -DCOMPILER_RT_EXCLUDE_ATOMIC_BUILTIN=OFF \
     -DCOMPILER_RT_USE_LIBCXX=ON \
     -DCOMPILER_RT_USE_LLVM_UNWINDER=OFF \
     -DLIBCXX_INCLUDE_BENCHMARKS=OFF \
@@ -86,37 +88,60 @@ RUN \
     -DLIBCXXABI_HAS_MUSL_LIBC=ON \
     -DLIBCXXABI_USE_COMPILER_RT=ON \
     -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
-    -DLLVM_DEFAULT_TARGET_TRIPLE="$(${STAGE_1_DIR}/bin/clang -print-target-triple)" \
+    -DLLVM_DEFAULT_TARGET_TRIPLE="${TRIPLE}" \
     -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=ON \
     -DLLVM_ENABLE_RUNTIMES="compiler-rt" \
     -DLLVM_INCLUDE_BENCHMARKS=OFF \
     -DLLVM_INCLUDE_DOCS=OFF \
     -DLLVM_INCLUDE_EXAMPLES=OFF \
     -DLLVM_INCLUDE_TESTS=OFF \
-    -DLLVM_TARGETS_TO_BUILD="host"
-RUN cmake --build crt-build --target install
+    -DLLVM_TARGETS_TO_BUILD="host" && \
+    cmake --build crt-build --target install
+RUN \
+    STAGE_2_DIR="/home/${USER_NAME}/.llvm-stage-2" && \
+    TRIPLE="$(gcc -dumpmachine)" && \
+    cmake -G Ninja -S llvm -B headers-build \
+    -DCLANG_ENABLE_ARCMT=OFF \
+    -DCLANG_ENABLE_STATIC_ANALYZER=OFF \
+    -DCLANG_PLUGIN_SUPPORT=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_C_COMPILER_TARGET="${TRIPLE}" \
+    -DCMAKE_CXX_COMPILER_TARGET="${TRIPLE}" \
+    -DCMAKE_INSTALL_PREFIX="${STAGE_2_DIR}" \
+    -DLLVM_DEFAULT_TARGET_TRIPLE="${TRIPLE}" \
+    -DLLVM_ENABLE_PROJECTS="clang" \
+    -DLLVM_TARGETS_TO_BUILD="host" \
+    -DLLVM_INCLUDE_BENCHMARKS=OFF \
+    -DLLVM_INCLUDE_DOCS=OFF \
+    -DLLVM_INCLUDE_EXAMPLES=OFF \
+    -DLLVM_INCLUDE_TESTS=OFF && \
+    cmake --build headers-build --target install-clang-resource-headers
 
-FROM build_stage_2_crt AS build_stage_2_runtimes
+FROM clone_repository AS build_stage_3_runtimes
 ARG USER_NAME=
 USER ${USER_NAME}
 WORKDIR /home/${USER_NAME}/llvm-project
 COPY \
     --from=build_stage_1_clang_lld --chown=${USER_NAME} \
     /home/${USER_NAME}/.llvm-stage-1 /home/${USER_NAME}/.llvm-stage-1
+COPY \
+    --from=build_stage_2_crt --chown=${USER_NAME} \
+    /home/${USER_NAME}/.llvm-stage-2 /home/${USER_NAME}/.llvm-stage-2
 RUN \
     STAGE_1_DIR="/home/${USER_NAME}/.llvm-stage-1" && \
     STAGE_2_DIR="/home/${USER_NAME}/.llvm-stage-2" && \
-    TRIPLE="$(${STAGE_1_DIR}/bin/clang -print-target-triple)" \
+    STAGE_3_DIR="/home/${USER_NAME}/.llvm-stage-3" && \
+    TRIPLE="$(${STAGE_1_DIR}/bin/clang -print-target-triple)" && \
     cmake -G Ninja -S runtimes -B runtimes-build \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
-    -DCMAKE_C_COMPILER=/home/${USER_NAME}/.llvm-stage-1/bin/clang \
-    -DCMAKE_C_COMPILER_TARGET="$(${STAGE_1_DIR}/bin/clang -print-target-triple)" \
-    -DCMAKE_C_FLAGS="-resource-dir ${STAGE_2_DIR}/${TRIPLE}" \
+    -DCMAKE_C_COMPILER="${STAGE_1_DIR}/bin/clang" \
+    -DCMAKE_C_COMPILER_TARGET="$TRIPLE" \
+    -DCMAKE_C_FLAGS="-resource-dir ${STAGE_2_DIR}" \
     -DCMAKE_CXX_COMPILER=/home/${USER_NAME}/.llvm-stage-1/bin/clang++ \
-    -DCMAKE_CXX_FLAGS="-resource-dir ${STAGE_2_DIR}/${TRIPLE}" \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_2_DIR} \
-    -DCMAKE_LINKER=/home/${USER_NAME}/.llvm-stage-1/bin/ld.lld \
+    -DCMAKE_CXX_FLAGS="-resource-dir ${STAGE_2_DIR}" \
+    -DCMAKE_INSTALL_PREFIX=${STAGE_3_DIR} \
+    -DCMAKE_LINKER="${STAGE_1_DIR}/bin/ld.lld" \
     -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY \
     -DCOMPILER_RT_BUILD_BUILTINS=ON \
     -DCOMPILER_RT_BUILD_CRT=ON \
@@ -125,6 +150,7 @@ RUN \
     -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
     -DCOMPILER_RT_USE_LIBCXX=ON \
     -DCOMPILER_RT_USE_LLVM_UNWINDER=ON \
+    -DLIBCXX_HAS_ATOMIC_LIB=OFF \
     -DLIBCXX_INCLUDE_BENCHMARKS=OFF \
     -DLIBCXXABI_HAS_CXA_THREAD_ATEXIT_IMPL=OFF \
     -DLIBCXX_HAS_MUSL_LIBC=ON \
@@ -139,3 +165,46 @@ RUN \
     -DLLVM_INCLUDE_TESTS=OFF \
     -DLLVM_TARGETS_TO_BUILD="host"
 RUN cmake --build runtimes-build --target install
+
+FROM clone_repository AS build_stage_4_clang_lld
+ARG USER_NAME=
+USER ${USER_NAME}
+WORKDIR /home/${USER_NAME}/llvm-project
+COPY \
+    --from=build_stage_1_clang_lld --chown=${USER_NAME} \
+    /home/${USER_NAME}/.llvm-stage-1 /home/${USER_NAME}/.llvm-stage-1
+COPY \
+    --from=build_stage_2_crt --chown=${USER_NAME} \
+    /home/${USER_NAME}/.llvm-stage-2 /home/${USER_NAME}/.llvm-stage-2
+COPY \
+    --from=build_stage_3_runtimes --chown=${USER_NAME} \
+    /home/${USER_NAME}/.llvm-stage-3 /home/${USER_NAME}/.llvm-stage-3
+RUN \
+    STAGE_1_DIR="/home/${USER_NAME}/.llvm-stage-1" && \
+    STAGE_2_DIR="/home/${USER_NAME}/.llvm-stage-2" && \
+    STAGE_3_DIR="/home/${USER_NAME}/.llvm-stage-3" && \
+    STAGE_4_DIR="/home/${USER_NAME}/.llvm-stage-4" && \
+    TRIPLE="$(${STAGE_1_DIR}/bin/clang -print-target-triple)" && \
+    CLANG_VER="$(basename "$(${STAGE_1_DIR}/bin/clang -print-resource-dir)")" && \
+    cmake -G Ninja -S llvm -B clang-lld-build \
+    -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
+    -DCLANG_DEFAULT_LINKER=lld \
+    -DCLANG_DEFAULT_RTLIB=compiler-rt \
+    -DCLANG_DEFAULT_UNWINDLIB=libunwind \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_C_COMPILER="${STAGE_1_DIR}/bin/clang" \
+    -DCMAKE_C_FLAGS="-resource-dir ${STAGE_2_DIR} -isystem ${STAGE_2_DIR}/lib/clang/${CLANG_VER}/include" \
+    -DCMAKE_CXX_COMPILER="${STAGE_1_DIR}/bin/clang++" \
+    -DCMAKE_CXX_FLAGS="-resource-dir ${STAGE_2_DIR} -isystem ${STAGE_3_DIR}/include/c++/v1 -isystem ${STAGE_2_DIR}/lib/clang/${CLANG_VER}/include -stdlib=libc++ -L${STAGE_3_DIR}/lib -Wno-unused-command-line-argument" \
+    -DCMAKE_INSTALL_PREFIX="${STAGE_4_DIR}" \
+    -DCMAKE_EXE_LINKER_FLAGS="-rtlib=compiler-rt -unwindlib=libunwind -L${STAGE_3_DIR}/lib -L${STAGE_2_RESOURCE_DIR}/lib/${TRIPLE} -Wl,-rpath,${STAGE_3_DIR}/lib" \
+    -DCMAKE_LINKER="${STAGE_1_DIR}/bin/ld.lld" \
+    -DCMAKE_SHARED_LINKER_FLAGS="-rtlib=compiler-rt -unwindlib=libunwind -L${STAGE_3_DIR}/lib -L${STAGE_2_RESOURCE_DIR}/lib/${TRIPLE} -Wl,-rpath,${STAGE_3_DIR}/lib" \
+    -DLLVM_DEFAULT_TARGET_TRIPLE="${TRIPLE}" \
+    -DLLVM_ENABLE_LIBCXX=ON \
+    -DLLVM_ENABLE_PCH=OFF \
+    -DLLVM_ENABLE_POLLY=OFF \
+    -DLLVM_ENABLE_PROJECTS="clang;lld" \
+    -DLLVM_TARGETS_TO_BUILD="host" \
+    -DLLVM_USE_LINKER=lld
+RUN cmake --build clang-lld-build --target=install
