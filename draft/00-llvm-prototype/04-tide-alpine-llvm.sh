@@ -1,6 +1,6 @@
 base_stamp=edge
 this_stamp=$(date -u +%4Y%m%d%H%M%S)
-llvm_commit=06b71c9085beffd088f8e6e8b8da79b452acb786
+llvm_commit=935c0d5a3e704b8b21a1738d1e0ea8305f855a37
 
 docker build \
   --target install_llvm \
