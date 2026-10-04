@@ -14,11 +14,11 @@ RUN \
     apk add \
     --virtual .llvm-dependencies \
     cmake=4.3.4-r0 \
-    git=2.55.0-r1 \
+    git=2.56.0-r0 \
     libffi-dev=3.8.0-r0 \
     linux-headers=7.2.1-r0 \
     musl-dev=1.2.6-r4 \
-    python3=3.14.7-r0 \
+    python3=3.14.8-r0 \
     samurai=1.3-r0 \
     zlib-dev=1.3.2-r0 \
     zstd-dev=1.5.7-r2
