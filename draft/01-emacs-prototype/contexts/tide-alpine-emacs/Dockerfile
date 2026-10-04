@@ -12,7 +12,6 @@ RUN \
     git=2.56.0-r0 \
     linux-headers=7.2.1-r0 \
     make=4.4.1-r4 \
-    musl-dev=1.2.6-r4 \
     ncurses-dev=6.6_p20260822-r0 \
     texinfo=7.3-r1 \
     tree-sitter-dev=0.26.7-r1 \
@@ -27,9 +26,11 @@ WORKDIR "/home/${USER_NAME}"
 RUN git clone \
     --depth 1 --rev "${EMACS_COMMIT}" \
     https://github.com/emacs-mirror/emacs.git
+
+FROM clone_repository AS build_emacs
+ARG USER_NAME=
 WORKDIR "/home/${USER_NAME}/emacs"
-RUN ./autogen.sh all
-RUN \
+RUN ./autogen.sh all && \
     LLVM_DIR="/home/${USER_NAME}/.llvm" && \
     CLANG_VER="$(basename $(ls ${LLVM_DIR}/lib/clang))" && \
     AR=llvm-ar \
@@ -67,5 +68,22 @@ RUN \
     --without-gpm \
     --without-gnutls \
     --without-xinput2 \
-    --with-native-compilation=no
-RUN make -j"$(nproc)" install
+    --with-native-compilation=no && \
+    make -j"$(nproc)" install
+
+FROM m374crypt0/tide-alpine-llvm:${BASE_STAMP} AS install_emacs
+ARG USER_NAME=
+# hadolint ignore=DL3066
+USER root
+RUN \
+    --mount=type=cache,target=/var/cache/apk,sharing=locked \
+    apk add \
+    libncursesw=6.6_p20260822-r0 \
+    ncurses-terminfo-base=6.6_p20260822-r0 \
+    tree-sitter=0.26.7-r1
+USER ${USER_NAME}
+WORKDIR /home/${USER_NAME}
+COPY --chown=${USER_NAME} --from=build_emacs \
+    "/home/${USER_NAME}/.emacs" "/home/${USER_NAME}/.emacs"
+ENV EMACS_INSTALL_DIR="/home/${USER_NAME}/.emacs"
+ENV PATH="${PATH}:${EMACS_INSTALL_DIR}/bin"

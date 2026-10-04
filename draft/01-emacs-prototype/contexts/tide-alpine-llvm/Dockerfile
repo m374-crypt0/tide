@@ -460,6 +460,7 @@ USER root
 RUN \
     --mount=type=cache,target=/var/cache/apk,sharing=locked <<HERE
     apk add \
+    musl-dev=1.2.6-r4 \
     zlib=1.3.2-r0 \
     zstd=1.5.7-r2
 HERE
