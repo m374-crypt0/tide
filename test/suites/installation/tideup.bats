@@ -1,0 +1,42 @@
+setup_file() {
+  bats_require_minimum_version 1.13.0
+}
+
+setup() {
+  load "${TIDE_ROOT_DIR}test/test_helper/bats-support/load"
+  load "${TIDE_ROOT_DIR}test/test_helper/bats-assert/load"
+  load "${TIDE_ROOT_DIR}test/test_helper/bats-file/load"
+
+  load "${TIDE_ROOT_DIR}test/test_helper/tide_helpers.sh"
+
+  export TIDE_INSTALL_DIR="${BATS_TEST_TMPDIR}/.tide/"
+
+  export TIDE_URL="file://${TIDE_ROOT_DIR}/"
+  export BASHRC_PATH="${BATS_TEST_TMPDIR}/.bashrc"
+  curl -L "${TIDE_URL}src/install" | bash
+}
+
+teardown() {
+  :
+}
+
+@test 'tideup installs tide' {
+  assert_file_not_exists "${TIDE_INSTALL_DIR}tide"
+
+  run "${TIDE_INSTALL_DIR}tideup"
+
+  assert_file_executable "${TIDE_INSTALL_DIR}tide"
+  assert_files_equal "${TIDE_INSTALL_DIR}tide" "${TIDE_ROOT_DIR}dist/tide"
+
+  local template_dir && template_dir="${TIDE_INSTALL_DIR}templates/"
+
+  local templates &&
+    templates='lazyvim'
+
+  local template
+  for template in $templates; do
+    assert_file_exists "${template_dir}${template}/Dockerfile"
+    assert_file_exists "${template_dir}${template}/config.build.ini"
+    assert_file_exists "${template_dir}${template}/config.run.ini"
+  done
+}
