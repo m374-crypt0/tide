@@ -14,4 +14,4 @@ RUN \
 
 FROM ${REGISTRY_OFFICIAL_REGISTRY_IMAGE_NAME} AS end
 COPY --from=generate_htpasswd /root/htpasswd /root/htpasswd
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh", "/etc/distribution/config.yml"]

@@ -16,5 +16,24 @@ help:
 
 .PHONY: build
 build:
-	@ . $(REGISTRY_ROOT_DIR)/.env
 	@ . $(REGISTRY_ROOT_DIR)/scripts/build.bash
+
+.PHONY: up
+up:
+	@ . $(REGISTRY_ROOT_DIR)/scripts/up.bash
+
+.PHONY: down
+down:
+	@ . $(REGISTRY_ROOT_DIR)/scripts/down.bash
+
+.PHONY: rm
+rm:
+	@ . $(REGISTRY_ROOT_DIR)/scripts/rm.bash
+
+.PHONY: ps
+ps:
+	@ . $(REGISTRY_ROOT_DIR)/scripts/ps.bash
+
+.PHONY: push
+push:
+	@ . $(REGISTRY_ROOT_DIR)/scripts/push.bash

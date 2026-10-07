@@ -3,7 +3,27 @@ name: tide
 services:
   registry:
     build:
+      args:
+        REGISTRY_USER_NAME: ${REGISTRY_USER_NAME}
+        REGISTRY_USER_PASSWORD: ${REGISTRY_USER_PASSWORD}
       context: build/context
       dockerfile: ../Dockerfile
       tags:
         - localhost:${REGISTRY_PORT}/${REGISTRY_IMAGE_NAME}
+    container_name: ${REGISTRY_CONTAINER_NAME}
+    environment:
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+      REGISTRY_AUTH_HTPASSWD_PATH: /root/htpasswd
+    image: localhost:${REGISTRY_PORT}/${REGISTRY_IMAGE_NAME}
+    ports:
+      - host_ip: 0.0.0.0
+        mode: host
+        name: registry_port
+        protocol: tcp
+        published: "${REGISTRY_PORT}"
+        target: ${REGISTRY_PORT}
+    volumes:
+      - source: ${REGISTRY_STORAGE_PATH}
+        target: /var/lib/registry
+        type: bind

@@ -18,9 +18,14 @@ need.
 Edit the generated \`.env\` file to alter the behavior of the registry both at
 build time and at run time.
 
+- \`make help\` to display this message
 - \`make build\` to build the registry docker image
-- \`make run\` to run the registry locally
-- \`make stop\` to stop the registry
+- \`make up\` to run the registry locally
+- \`make down\` to stop the registry and delete the container
+- \`make rm\` to delete the registry docker image
+- \`make ps\` to see tide services currently running (TODO: might be
+  transversal)
+- \`make push\` to push this service image into the local running registry
 - \`make export\` TODO
 - \`make import\` TODO
 
