@@ -1,6 +1,12 @@
 SHELL := /bin/bash
 MAKEFLAGS += --no-print-directory
-MAKEFILE_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword $(MAKEFILE_LIST)))))
+REGISTRY_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
+	$(MAKEFILE_LIST)))))
+
+export
 
 help:
-	@ . $(MAKEFILE_DIR)/scripts/help.bash
+	@ . $(REGISTRY_ROOT_DIR)/scripts/help.bash
+
+init:
+	@ . $(REGISTRY_ROOT_DIR)/scripts/init.bash
