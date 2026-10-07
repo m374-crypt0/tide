@@ -8,7 +8,7 @@ append_in_env_file() {
 	echo "$line" >> "${REGISTRY_ROOT_DIR}/.env"
 }
 
-create_env_file(){
+generate_env_file(){
 	# shellcheck source=/dev/null
 	. "${REGISTRY_ROOT_DIR}/.env.defaults"
 
@@ -25,13 +25,13 @@ create_env_file(){
 		
 		local variable
 		IFS='=' read -r variable _ <<< "$line"
-		append_in_env_file "$variable=\"${!variable}\""
+		append_in_env_file "$variable=${!variable}"
 	done <<< "$(cat "${REGISTRY_ROOT_DIR}/.env.defaults")"
 }
 
 main(){
 	exit_if_env_file_exists
-	create_env_file
+	generate_env_file
 }
 
 main

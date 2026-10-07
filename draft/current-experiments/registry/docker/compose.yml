@@ -1,9 +1,9 @@
-name: tide-registry
+name: tide
 
 services:
   registry:
     build:
-      context: ../build/context
-      dockerfile: ../build/Dockerfile
+      context: build/context
+      dockerfile: ../Dockerfile
       tags:
         - localhost:${REGISTRY_PORT}/${REGISTRY_IMAGE_NAME}
