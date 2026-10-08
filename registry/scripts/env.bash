@@ -17,12 +17,12 @@ generate_env_file(){
 		if [ -z "$line" ]; then
 			continue
 		fi
-		
+
 		if [[ "$line" =~ ^[[:space:]]*# ]]; then
 			append_in_env_file "$line"
 			continue
 		fi
-		
+
 		local variable
 		IFS='=' read -r variable _ <<< "$line"
 		append_in_env_file "$variable=${!variable}"
