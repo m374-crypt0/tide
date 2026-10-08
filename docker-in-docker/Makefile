@@ -11,12 +11,9 @@ include $(DOCKER_IN_DOCKER_ROOT_DIR)/.env
 include $(REGISTRY_ROOT_DIR)/.env
 include $(NON_ROOT_USER_ROOT_DIR)/.env
 
-# TODO: remove comments in Makefiles
-# There is a dependency to the registry service
 $(REGISTRY_ROOT_DIR)/.env:
 	@ $(MAKE) -C $(REGISTRY_ROOT_DIR) $(REGISTRY_ROOT_DIR)/.env
 
-# There is a dependency to the alpine-pinned service
 $(NON_ROOT_USER_ROOT_DIR)/.env:
 	@ $(MAKE) -C $(NON_ROOT_USER_ROOT_DIR) $(NON_ROOT_USER_ROOT_DIR)/.env
 

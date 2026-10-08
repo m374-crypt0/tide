@@ -8,7 +8,6 @@ REGISTRY_ROOT_DIR := $(patsubst %/,%,$(abspath \
 include $(ALPINE_PINNED_ROOT_DIR)/.env
 include $(REGISTRY_ROOT_DIR)/.env
 
-# There is a dependency to the registry service
 $(REGISTRY_ROOT_DIR)/.env:
 	@ $(MAKE) -C $(REGISTRY_ROOT_DIR) $(REGISTRY_ROOT_DIR)/.env
 

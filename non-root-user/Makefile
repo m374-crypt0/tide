@@ -11,11 +11,9 @@ include $(NON_ROOT_USER_ROOT_DIR)/.env
 include $(REGISTRY_ROOT_DIR)/.env
 include $(ALPINE_PINNED_ROOT_DIR)/.env
 
-# There is a dependency to the registry service
 $(REGISTRY_ROOT_DIR)/.env:
 	@ $(MAKE) -C $(REGISTRY_ROOT_DIR) $(REGISTRY_ROOT_DIR)/.env
 
-# There is a dependency to the alpine-pinned service
 $(ALPINE_PINNED_ROOT_DIR)/.env:
 	@ $(MAKE) -C $(ALPINE_PINNED_ROOT_DIR) $(ALPINE_PINNED_ROOT_DIR)/.env
 
