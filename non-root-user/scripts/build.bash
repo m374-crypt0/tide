@@ -6,7 +6,7 @@ login_to_registry_service(){
 	docker login \
 				 -u "$REGISTRY_USER_NAME" \
 				 -p "$REGISTRY_USER_PASSWORD" \
-				 "http://localhost:$REGISTRY_PORT" \
+				 "http://${REGISTRY_HOST}:$REGISTRY_PORT" \
 				 2>/dev/null
 }
 
