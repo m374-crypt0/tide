@@ -45,3 +45,7 @@ ps:
 .PHONY: push
 push:
 	@ . $(DOCKER_IN_DOCKER_ROOT_DIR)/scripts/push.bash
+
+.PHONY: login
+login:
+	@ . $(DOCKER_IN_DOCKER_ROOT_DIR)/scripts/login.bash

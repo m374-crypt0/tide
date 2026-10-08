@@ -11,4 +11,13 @@ services:
       dockerfile: ../Dockerfile
       tags:
         - ${REGISTRY_HOST}:${REGISTRY_PORT}/${DOCKER_IN_DOCKER_IMAGE_NAME}
+    environment:
+      LC_ALL: en_US.UTF-8
+      TERM: xterm-256color
     image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${DOCKER_IN_DOCKER_IMAGE_NAME}
+    init: true
+    volumes:
+      - type: bind
+        read_only: false
+        source: ${DOCKER_IN_DOCKER_SOCKET_PATH}
+        target: /var/run/docker.sock

@@ -15,6 +15,7 @@ services:
       REGISTRY_AUTH: htpasswd
       REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
       REGISTRY_AUTH_HTPASSWD_PATH: /root/htpasswd
+    init: true
     image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${REGISTRY_IMAGE_NAME}
     ports:
       - host_ip: 0.0.0.0

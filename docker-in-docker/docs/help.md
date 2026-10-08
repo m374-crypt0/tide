@@ -2,7 +2,6 @@
 
 This is a very basic docker image capable of interacting with the docker daemon
 on the host machine.
-It is only a build project, there is no service to run.
 
 ## why
 
@@ -16,6 +15,7 @@ Edit the generated `.env` file to alter the behavior of the build.
 
 - `make help` to display this message
 - `make build` to build the alpine-pinned docker image
+- `make login` to get into the shell
 - `make rm` to delete the alpine-pinned docker image
 - `make ps` to see tide services currently running (TODO: might be
   transversal)

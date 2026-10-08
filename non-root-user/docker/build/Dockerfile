@@ -23,7 +23,7 @@ RUN \
 		-m \
 		-s /bin/bash \
 		-l "${NON_ROOT_USER_NAME}" && \
-		echo "${USER_NAME} ALL=(ALL:ALL) NOPASSWD: ALL" \
+		echo "${NON_ROOT_USER_NAME} ALL=(ALL:ALL) NOPASSWD: ALL" \
 		> "/etc/sudoers.d/${NON_ROOT_USER_NAME}"
 USER ${NON_ROOT_USER_NAME}
 WORKDIR /home/${NON_ROOT_USER_NAME}}
