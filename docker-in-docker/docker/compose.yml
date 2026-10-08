@@ -1,0 +1,14 @@
+name: tide
+
+services:
+  docker-in-docker:
+    build:
+      args:
+        NON_ROOT_USER_IMAGE_NAME: ${REGISTRY_HOST}:${REGISTRY_PORT}/${NON_ROOT_USER_IMAGE_NAME}
+        NON_ROOT_USER_NAME: ${NON_ROOT_USER_NAME}
+        DOCKER_IN_DOCKER_DOCKER_GID: ${DOCKER_IN_DOCKER_DOCKER_GID}
+      context: build/context
+      dockerfile: ../Dockerfile
+      tags:
+        - ${REGISTRY_HOST}:${REGISTRY_PORT}/${DOCKER_IN_DOCKER_IMAGE_NAME}
+    image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${DOCKER_IN_DOCKER_IMAGE_NAME}
