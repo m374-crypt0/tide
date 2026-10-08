@@ -1,0 +1,10 @@
+name: tide
+
+services:
+  alpine-pinned:
+    build:
+      context: build/context
+      dockerfile: ../Dockerfile
+      tags:
+        - localhost:${REGISTRY_PORT}/${ALPINE_PINNED_IMAGE_NAME}
+    image: localhost:${REGISTRY_PORT}/${ALPINE_PINNED_IMAGE_NAME}

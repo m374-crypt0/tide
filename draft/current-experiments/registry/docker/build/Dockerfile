@@ -12,6 +12,6 @@ RUN \
 		"${REGISTRY_USER_NAME}" "${REGISTRY_USER_PASSWORD}" \
 		> /root/htpasswd
 
-FROM ${REGISTRY_OFFICIAL_REGISTRY_IMAGE_NAME} AS end
+FROM ${REGISTRY_OFFICIAL_REGISTRY_IMAGE_NAME} AS reconfigure_entrypoint
 COPY --from=generate_htpasswd /root/htpasswd /root/htpasswd
 ENTRYPOINT ["/entrypoint.sh", "/etc/distribution/config.yml"]
