@@ -46,3 +46,7 @@ push:
 .PHONY: login
 login:
 	@ . $(DOCKER_IN_DOCKER_ROOT_DIR)/scripts/login.bash
+
+.PHONY: pull
+pull:
+	@ . $(DOCKER_IN_DOCKER_ROOT_DIR)/scripts/pull.bash

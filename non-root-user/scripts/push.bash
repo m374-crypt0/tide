@@ -1,3 +1,8 @@
+# shellcheck source=/dev/null
+. "${NON_ROOT_USER_ROOT_DIR}/../lib/image-pusher.bash"
+
+push_image "$NON_ROOT_USER_IMAGE_NAME"
+
 main(){
 	docker login \
 				 -u "${REGISTRY_USER_NAME}" \

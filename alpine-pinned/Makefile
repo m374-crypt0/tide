@@ -35,3 +35,7 @@ ps:
 .PHONY: push
 push:
 	@ . $(ALPINE_PINNED_ROOT_DIR)/scripts/push.bash
+
+.PHONY: pull
+pull:
+	@ . $(ALPINE_PINNED_ROOT_DIR)/scripts/pull.bash

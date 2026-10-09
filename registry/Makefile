@@ -37,3 +37,7 @@ ps:
 .PHONY: push
 push:
 	@ . $(REGISTRY_ROOT_DIR)/scripts/push.bash
+
+.PHONY: pull
+pull:
+	@ . $(REGISTRY_ROOT_DIR)/scripts/pull.bash

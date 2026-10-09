@@ -42,3 +42,7 @@ ps:
 .PHONY: push
 push:
 	@ . $(NON_ROOT_USER_ROOT_DIR)/scripts/push.bash
+
+.PHONY: pull
+pull:
+	@ . $(NON_ROOT_USER_ROOT_DIR)/scripts/pull.bash

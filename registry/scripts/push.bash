@@ -1,10 +1,4 @@
-main(){
-	docker login \
-				 -u "${REGISTRY_USER_NAME}" \
-				 -p "${REGISTRY_USER_PASSWORD}" \
-				 "http://${REGISTRY_HOST}:${REGISTRY_PORT}" \
-				 2>/dev/null &&
-		docker push "${REGISTRY_HOST}:${REGISTRY_PORT}/${REGISTRY_IMAGE_NAME}"
-}
+# shellcheck source=/dev/null
+. "${REGISTRY_ROOT_DIR}/../lib/image-pusher.bash"
 
-main
+push_image "$REGISTRY_IMAGE_NAME"
