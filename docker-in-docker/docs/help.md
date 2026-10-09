@@ -11,6 +11,8 @@ on the host machine.
 
 ## how
 
+### build
+
 Edit the generated `.env` file to alter the behavior of the build.
 
 - `make help` to display this message
@@ -22,3 +24,11 @@ Edit the generated `.env` file to alter the behavior of the build.
 - `make push` to push this service image into the local running registry
 - `make export` TODO
 - `make import` TODO
+
+### run
+
+It's an `interactive` project. It means it can be used as is or used as a base for
+other projects by specifying its image as a base in a `FROM` directive.
+Besides, the `docker compose` file can (and should) be nerged in other projects
+to leverage runtime settings such as environment variables and volumes for
+instance.

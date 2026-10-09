@@ -1,0 +1,17 @@
+name: tide
+
+services:
+  llvm:
+    build:
+      args:
+        NON_ROOT_USER_IMAGE_NAME: ${REGISTRY_HOST}:${REGISTRY_PORT}/${NON_ROOT_USER_IMAGE_NAME}
+        NON_ROOT_USER_NAME: ${NON_ROOT_USER_NAME}
+        LLVM_REVISION: ${LLVM_REVISION}
+        LLVM_OUTPUT_RESOURCE_DIR: ${LLVM_OUTPUT_RESOURCE_DIR}
+      context: build/context
+      dockerfile: ../Dockerfile
+      tags:
+        - ${REGISTRY_HOST}:${REGISTRY_PORT}/${LLVM_IMAGE_NAME}
+    environment:
+      - LLVM_OUTPUT_RESOURCE_DIR
+    image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${LLVM_IMAGE_NAME}
