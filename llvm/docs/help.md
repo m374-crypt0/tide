@@ -32,6 +32,4 @@ Edit the generated `.env` file to alter the behavior of the build.
 ### use
 
 It's a `resource` project. That means there are files and directory you can copy
-in other projects. Besides, the `docker compose` file can (and should) be nerged
-in other projects to leverage runtime settings such as environment variables and
-volumes for instance.
+in other projects.

@@ -1,0 +1,19 @@
+name: tide
+
+# TODO: environment must be in an interactive shell service
+services:
+  emacs:
+    build:
+      args:
+        LLVM_IMAGE_NAME: ${REGISTRY_HOST}:${REGISTRY_PORT}/${LLVM_IMAGE_NAME}
+        LLVM_OUTPUT_RESOURCE_DIR: ${LLVM_OUTPUT_RESOURCE_DIR}
+        NON_ROOT_USER_NAME: ${NON_ROOT_USER_NAME}
+        EMACS_REVISION: ${EMACS_REVISION}
+        EMACS_OUTPUT_RESOURCE_DIR: ${EMACS_OUTPUT_RESOURCE_DIR}
+      context: build/context
+      dockerfile: ../Dockerfile
+      tags:
+        - ${REGISTRY_HOST}:${REGISTRY_PORT}/${EMACS_IMAGE_NAME}
+    environment:
+      - EMACS_OUTPUT_RESOURCE_DIR
+    image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${EMACS_IMAGE_NAME}

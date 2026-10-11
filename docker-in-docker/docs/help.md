@@ -29,6 +29,6 @@ Edit the generated `.env` file to alter the behavior of the build.
 
 It's an `interactive` project. It means it can be used as is or used as a base for
 other projects by specifying its image as a base in a `FROM` directive.
-Besides, the `docker compose` file can (and should) be nerged in other projects
+Besides, the `docker compose` file can (and should) be merged in other projects
 to leverage runtime settings such as environment variables and volumes for
 instance.

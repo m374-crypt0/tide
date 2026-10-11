@@ -1,5 +1,6 @@
 name: tide
 
+# TODO: docker-in-docker must be a build service, shell is the runnable service
 services:
   docker-in-docker:
     build:

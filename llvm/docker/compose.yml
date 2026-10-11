@@ -1,5 +1,6 @@
 name: tide
 
+# TODO: environment must be in an interactive shell service
 services:
   llvm:
     build:
