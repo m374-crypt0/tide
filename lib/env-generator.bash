@@ -1,7 +1,7 @@
-exit_if_env_file_exists(){
+does_env_file_exist(){
 	local project_root_dir="$1"
 
-	[ ! -f "${project_root_dir}/.env" ] || exit 0
+	[ -f "${project_root_dir}/.env" ]
 }
 
 append_in_env_file() {
@@ -38,7 +38,6 @@ generate_env_file_content(){
 generate_env_file_in(){
 	local project_root_dir="$1"
 
-	exit_if_env_file_exists "$project_root_dir"
+	does_env_file_exist "$project_root_dir" && return 0
 	generate_env_file_content "$project_root_dir"
-
 }
