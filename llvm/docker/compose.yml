@@ -1,6 +1,5 @@
 name: ${TIDE_PROJECT_NAME}
 
-# TODO: environment must be in an interactive shell service
 services:
   llvm:
     build:
@@ -13,6 +12,4 @@ services:
       dockerfile: ../Dockerfile
       tags:
         - ${REGISTRY_HOST}:${REGISTRY_PORT}/${LLVM_IMAGE_NAME}
-    environment:
-      - LLVM_OUTPUT_RESOURCE_DIR
     image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${LLVM_IMAGE_NAME}

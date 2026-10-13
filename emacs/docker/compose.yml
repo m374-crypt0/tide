@@ -1,6 +1,5 @@
 name: ${TIDE_PROJECT_NAME}
 
-# TODO: environment must be in an interactive shell service
 services:
   emacs:
     build:
@@ -14,6 +13,4 @@ services:
       dockerfile: ../Dockerfile
       tags:
         - ${REGISTRY_HOST}:${REGISTRY_PORT}/${EMACS_IMAGE_NAME}
-    environment:
-      - EMACS_OUTPUT_RESOURCE_DIR
     image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${EMACS_IMAGE_NAME}

@@ -1,6 +1,5 @@
 name: ${TIDE_PROJECT_NAME}
 
-# TODO: docker-in-docker must be a build service, shell is the runnable service
 services:
   docker-in-docker:
     build:
@@ -12,6 +11,8 @@ services:
       dockerfile: ../Dockerfile
       tags:
         - ${REGISTRY_HOST}:${REGISTRY_PORT}/${DOCKER_IN_DOCKER_IMAGE_NAME}
+    image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${DOCKER_IN_DOCKER_IMAGE_NAME}
+  shell:
     environment:
       LC_ALL: en_US.UTF-8
       TERM: xterm-256color
