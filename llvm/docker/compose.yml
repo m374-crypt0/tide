@@ -1,4 +1,4 @@
-name: tide
+name: ${TIDE_PROJECT_NAME}
 
 # TODO: environment must be in an interactive shell service
 services:

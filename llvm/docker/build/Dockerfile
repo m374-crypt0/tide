@@ -316,7 +316,7 @@ COPY \
     /home/${NON_ROOT_USER_NAME}/.llvm-stage-4 /home/${NON_ROOT_USER_NAME}/.llvm-stage-4
 COPY \
     --from=build_stage_5_crt --chown=${NON_ROOT_USER_NAME} \
-    /home/${NON_ROOT_USER_NAME}/.llvm-stage-5 /home/${NON_ROOT_USER_NAME}/.llvm
+    /home/${NON_ROOT_USER_NAME}/.llvm-stage-5 "${LLVM_OUTPUT_RESOURCE_DIR}"
 RUN \
     STAGE_4_DIR="/home/${NON_ROOT_USER_NAME}/.llvm-stage-4" && \
     STAGE_5_DIR="${LLVM_OUTPUT_RESOURCE_DIR}" && \

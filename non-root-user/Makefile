@@ -1,22 +1,19 @@
 SHELL := /bin/bash
 MAKEFLAGS += --no-print-directory
-NON_ROOT_USER_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
-	$(MAKEFILE_LIST)))))
-REGISTRY_ROOT_DIR := $(patsubst %/,%,$(abspath \
-	$(NON_ROOT_USER_ROOT_DIR)/../registry))
-ALPINE_PINNED_ROOT_DIR := $(patsubst %/,%,$(abspath \
-	$(NON_ROOT_USER_ROOT_DIR)/../alpine-pinned))
 
-include $(NON_ROOT_USER_ROOT_DIR)/.env
+TIDE_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
+	$(MAKEFILE_LIST))))/..)
+
+NON_ROOT_USER_ROOT_DIR := $(TIDE_ROOT_DIR)/non-root-user
+REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/registry
+ALPINE_PINNED_ROOT_DIR := $(TIDE_ROOT_DIR)/alpine-pinned
+
 include $(REGISTRY_ROOT_DIR)/.env
 include $(ALPINE_PINNED_ROOT_DIR)/.env
+include $(NON_ROOT_USER_ROOT_DIR)/.env
 
 $(REGISTRY_ROOT_DIR)/.env:
-	@ $(MAKE) -C $(REGISTRY_ROOT_DIR) $(REGISTRY_ROOT_DIR)/.env
-
 $(ALPINE_PINNED_ROOT_DIR)/.env:
-	@ $(MAKE) -C $(ALPINE_PINNED_ROOT_DIR) $(ALPINE_PINNED_ROOT_DIR)/.env
-
 $(NON_ROOT_USER_ROOT_DIR)/.env:
 	@ . $(NON_ROOT_USER_ROOT_DIR)/scripts/env.bash
 

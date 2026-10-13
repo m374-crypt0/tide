@@ -1,22 +1,22 @@
 SHELL := /bin/bash
 MAKEFLAGS += --no-print-directory
-DOCKER_IN_DOCKER_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
-	$(MAKEFILE_LIST)))))
-REGISTRY_ROOT_DIR := $(patsubst %/,%,$(abspath \
-	$(DOCKER_IN_DOCKER_ROOT_DIR)/../registry))
-NON_ROOT_USER_ROOT_DIR := $(patsubst %/,%,$(abspath \
-	$(DOCKER_IN_DOCKER_ROOT_DIR)/../non-root-user))
 
-include $(DOCKER_IN_DOCKER_ROOT_DIR)/.env
+TIDE_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
+	$(MAKEFILE_LIST))))/..)
+
+DOCKER_IN_DOCKER_ROOT_DIR := $(TIDE_ROOT_DIR)/docker-in-docker
+REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/registry
+ALPINE_PINNED_ROOT_DIR := $(TIDE_ROOT_DIR)/alpine-pinned
+NON_ROOT_USER_ROOT_DIR := $(TIDE_ROOT_DIR)/non-root-user
+
 include $(REGISTRY_ROOT_DIR)/.env
+include $(ALPINE_PINNED_ROOT_DIR)/.env
 include $(NON_ROOT_USER_ROOT_DIR)/.env
+include $(DOCKER_IN_DOCKER_ROOT_DIR)/.env
 
 $(REGISTRY_ROOT_DIR)/.env:
-	@ $(MAKE) -C $(REGISTRY_ROOT_DIR) $(REGISTRY_ROOT_DIR)/.env
-
+$(ALPINE_PINNED_ROOT_DIR)/.env:
 $(NON_ROOT_USER_ROOT_DIR)/.env:
-	@ $(MAKE) -C $(NON_ROOT_USER_ROOT_DIR) $(NON_ROOT_USER_ROOT_DIR)/.env
-
 $(DOCKER_IN_DOCKER_ROOT_DIR)/.env:
 	@ . $(DOCKER_IN_DOCKER_ROOT_DIR)/scripts/env.bash
 

@@ -1,4 +1,4 @@
-name: tide
+name: ${TIDE_PROJECT_NAME}
 
 services:
   non-root-user:

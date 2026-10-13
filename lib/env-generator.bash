@@ -20,6 +20,7 @@ generate_env_file_content(){
 	local line
 	while IFS='' read -r line; do
 		if [ -z "$line" ]; then
+			append_in_env_file "$project_root_dir" ''
 			continue
 		fi
 

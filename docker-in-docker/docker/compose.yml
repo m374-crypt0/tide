@@ -1,4 +1,4 @@
-name: tide
+name: ${TIDE_PROJECT_NAME}
 
 # TODO: docker-in-docker must be a build service, shell is the runnable service
 services:
