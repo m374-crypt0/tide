@@ -1,3 +1,4 @@
+ARG NON_ROOT_USER_IMAGE_NAME=localhost:5000/tide-non-root-user
 ARG LLVM_IMAGE_NAME=localhost:5000/tide-llvm
 
 FROM ${LLVM_IMAGE_NAME} AS install_packages
@@ -35,13 +36,13 @@ USER ${NON_ROOT_USER_NAME}
 WORKDIR "/home/${NON_ROOT_USER_NAME}/emacs"
 RUN ./autogen.sh all && \
     LLVM_DIR="${LLVM_OUTPUT_RESOURCE_DIR}" && \
-    CLANG_VER="$(basename "$(ls ${LLVM_DIR}/lib/clang)")" && \
+    CLANG_VER="$(basename "$(ls "${LLVM_DIR}/lib/clang")")" && \
     AR="llvm-ar" \
     CC="clang" \
     CFLAGS="-O3 -resource-dir=${LLVM_DIR}/lib/clang/${CLANG_VER}" \
     CXX="clang++" \
     CXXFLAGS="-O3 -resource-dir=${LLVM_DIR}/lib/clang/${CLANG_VER}" \
-    DOCLANGS='en' \
+    DOCLANGS=en \
     ./configure \
     --prefix="${EMACS_OUTPUT_RESOURCE_DIR}" \
     --with-sound=no \
@@ -74,7 +75,7 @@ RUN ./autogen.sh all && \
     --with-native-compilation=no && \
     make -j"$(nproc)" install
 
-FROM ${LLVM_IMAGE_NAME} AS install_emacs
+FROM ${NON_ROOT_USER_IMAGE_NAME} AS install_emacs
 ARG EMACS_OUTPUT_RESOURCE_DIR=
 ARG NON_ROOT_USER_NAME=
 # hadolint ignore=DL3066

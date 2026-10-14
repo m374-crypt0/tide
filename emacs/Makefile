@@ -5,10 +5,10 @@ TIDE_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
 	$(MAKEFILE_LIST))))/..)
 
 EMACS_ROOT_DIR := $(TIDE_ROOT_DIR)/emacs
-LLVM_ROOT_DIR := $(TIDE_ROOT_DIR)/llvm
 REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/registry
 ALPINE_PINNED_ROOT_DIR := $(TIDE_ROOT_DIR)/alpine-pinned
 NON_ROOT_USER_ROOT_DIR := $(TIDE_ROOT_DIR)/non-root-user
+LLVM_ROOT_DIR := $(TIDE_ROOT_DIR)/llvm
 
 include $(REGISTRY_ROOT_DIR)/.env
 include $(ALPINE_PINNED_ROOT_DIR)/.env
