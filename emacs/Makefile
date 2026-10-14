@@ -31,7 +31,6 @@ help:
 
 .PHONY: build
 build:
-	@ $(MAKE) -C $(LLVM_ROOT_DIR) build
 	@ . $(EMACS_ROOT_DIR)/scripts/build.bash
 
 .PHONY: rm

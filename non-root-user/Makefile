@@ -25,7 +25,6 @@ help:
 
 .PHONY: build
 build:
-	@ $(MAKE) -C $(ALPINE_PINNED_ROOT_DIR) build
 	@ . $(NON_ROOT_USER_ROOT_DIR)/scripts/build.bash
 
 .PHONY: rm

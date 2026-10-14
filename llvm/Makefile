@@ -28,7 +28,6 @@ help:
 
 .PHONY: build
 build:
-	@ $(MAKE) -C $(NON_ROOT_USER_ROOT_DIR) build
 	@ . $(LLVM_ROOT_DIR)/scripts/build.bash
 
 .PHONY: rm
