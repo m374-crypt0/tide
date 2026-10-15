@@ -16,9 +16,9 @@ on the host machine.
 Edit the generated `.env` file to alter the behavior of the build.
 
 - `make help` to display this message
-- `make build` to build the alpine-pinned docker image
+- `make build` to build the docker-in-docker docker image
 - `make login` to get into the shell
-- `make rm` to delete the alpine-pinned docker image
+- `make rm` to delete the docker-in-docker docker image
 - `make ps` to see tide services currently running (TODO: might be
   transversal)
 - `make push` to push this service image into the local running registry
