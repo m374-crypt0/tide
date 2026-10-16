@@ -507,7 +507,7 @@ RUN \
     --mount=type=cache,target=/var/cache/apk,sharing=locked \
 		apk add \
     musl-dev=1.2.6-r5 \
-    zlib=1.3.2-r0 \
+    zlib=1.3.2-r1 \
     zstd=1.5.7-r2
 ARG LLVM_OUTPUT_RESOURCE_DIR=
 ARG NON_ROOT_USER_NAME=
