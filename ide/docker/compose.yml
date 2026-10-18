@@ -28,6 +28,7 @@ services:
     environment:
       LANG: en_US.UTF-8
       COLORTERM: truecolor
+      SSH_AUTH_SOCK: ${IDE_SSH_AUTH_SOCK_CONTAINER}
     extends:
       file: ${TIDE_ROOT_DIR}/docker-in-docker/docker/compose.yml
       service: shell
@@ -52,6 +53,9 @@ services:
       - type: volume
         source: ide_npm
         target: "/home/${NON_ROOT_USER_NAME}/.npm"
+      - type: bind
+        source: ${IDE_SSH_AUTH_SOCK_HOST}
+        target: ${IDE_SSH_AUTH_SOCK_CONTAINER}
 volumes:
   ide_emacs_var:
   ide_npm:
