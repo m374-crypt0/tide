@@ -112,7 +112,9 @@ FROM configure_npm AS install_interactive_tooling
 ARG NON_ROOT_USER_NAME=
 USER ${NON_ROOT_USER_NAME}
 WORKDIR /home/${NON_ROOT_USER_NAME}
-RUN git clone --depth=1 \
+RUN git clone \
+		--depth=1 \
+		--rev="${IDE_BASH_IT_REVISION}" \
 		https://github.com/Bash-it/bash-it.git \
 		"/home/${NON_ROOT_USER_NAME}/.bash_it" && \
 		".bash_it/install.sh" -s
