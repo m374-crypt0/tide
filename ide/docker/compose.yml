@@ -1,9 +1,5 @@
 name: ${TIDE_PROJECT_NAME}
 
-include:
-  - path:
-      - ${TIDE_ROOT_DIR}/docker-in-docker/docker/compose.yml
-
 services:
   ide:
     build:
@@ -31,6 +27,9 @@ services:
     environment:
       LANG: en_US.UTF-8
       COLORTERM: truecolor
+    extends:
+      file: ${TIDE_ROOT_DIR}/docker-in-docker/docker/compose.yml
+      service: shell
     hostname: ${IDE_HOSTNAME}
     image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${IDE_IMAGE_NAME}
     post_start:
