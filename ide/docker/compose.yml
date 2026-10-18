@@ -47,11 +47,11 @@ services:
         hard: -1
     volumes:
       - type: volume
-        source: emacs_var
+        source: ide_emacs_var
         target: "/home/${NON_ROOT_USER_NAME}/.emacs.d/var"
       - type: volume
-        source: npm
+        source: ide_npm
         target: "/home/${NON_ROOT_USER_NAME}/.npm"
 volumes:
-  emacs_var:
-  npm:
+  ide_emacs_var:
+  ide_npm:
