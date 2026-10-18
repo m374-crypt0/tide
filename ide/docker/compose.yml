@@ -1,0 +1,57 @@
+name: ${TIDE_PROJECT_NAME}
+
+include:
+  - path:
+      - ${TIDE_ROOT_DIR}/docker-in-docker/docker/compose.yml
+
+services:
+  ide:
+    build:
+      args:
+        DOCKER_IN_DOCKER_IMAGE_NAME: ${REGISTRY_HOST}:${REGISTRY_PORT}/${DOCKER_IN_DOCKER_IMAGE_NAME}
+        LLVM_OUTPUT_RESOURCE_DIR: ${LLVM_OUTPUT_RESOURCE_DIR}
+        EMACS_IMAGE_NAME: ${REGISTRY_HOST}:${REGISTRY_PORT}/${EMACS_IMAGE_NAME}
+        EMACS_OUTPUT_RESOURCE_DIR: ${EMACS_OUTPUT_RESOURCE_DIR}
+        NON_ROOT_USER_NAME: ${NON_ROOT_USER_NAME}
+        IDE_MINIMAL_EMACS_REVISION: ${IDE_MINIMAL_EMACS_REVISION}
+      context: build/context
+      dockerfile: ../Dockerfile
+      tags:
+        - ${REGISTRY_HOST}:${REGISTRY_PORT}/${IDE_IMAGE_NAME}
+    image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${IDE_IMAGE_NAME}
+  shell:
+    cap_add:
+      - SYS_PTRACE
+      - SYS_ADMIN
+      - NET_ADMIN
+    container_name: ${IDE_CONTAINER_NAME}
+    entrypoint:
+      - sleep
+      - infinity
+    environment:
+      LANG: en_US.UTF-8
+      COLORTERM: truecolor
+    hostname: ${IDE_HOSTNAME}
+    image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${IDE_IMAGE_NAME}
+    post_start:
+      - command: chown -R ${NON_ROOT_USER_NAME}:${NON_ROOT_USER_NAME} /home/${NON_ROOT_USER_NAME}/.emacs.d/var
+        user: root
+      - command: chown -R ${NON_ROOT_USER_NAME}:${NON_ROOT_USER_NAME} /home/${NON_ROOT_USER_NAME}/.npm
+        user: root
+    tmpfs:
+      - /tmp:exec,dev
+      - /home/${NON_ROOT_USER_NAME}/tmp:exec,dev
+    ulimits:
+      core:
+        soft: -1
+        hard: -1
+    volumes:
+      - type: volume
+        source: emacs_var
+        target: "/home/${NON_ROOT_USER_NAME}/.emacs.d/var"
+      - type: volume
+        source: npm
+        target: "/home/${NON_ROOT_USER_NAME}/.npm"
+volumes:
+  emacs_var:
+  npm:
