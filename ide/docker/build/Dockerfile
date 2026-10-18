@@ -133,3 +133,11 @@ COPY --chown=${NON_ROOT_USER_NAME} \
 		emacs/pre-init.el \
 		emacs/post-init.el \
 		"/home/${NON_ROOT_USER_NAME}/.emacs.d"/
+
+FROM install_minimal_emacs_d AS configure_tmux
+ARG NON_ROOT_USER_NAME=
+USER ${NON_ROOT_USER_NAME}
+WORKDIR /home/${NON_ROOT_USER_NAME}
+COPY --chown=${NON_ROOT_USER_NAME} \
+		tmux/tmux.conf \
+		"/home/${NON_ROOT_USER_NAME}/.config/tmux/tmux.conf"
