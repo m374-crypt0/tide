@@ -94,7 +94,7 @@ RUN \
 		shellcheck-doc=0.11.0-r2
 USER ${NON_ROOT_USER_NAME}
 
-FROM install_utility_packages AS configure_npm
+FROM install_utility_packages AS setup_global_npm
 ARG NON_ROOT_USER_NAME=
 USER ${NON_ROOT_USER_NAME}
 RUN npm config edit \
@@ -104,11 +104,12 @@ RUN npm config edit \
 		npm install -g \
 		bash-language-server@5.8.1 \
 		dockerfile-language-server-nodejs@0.15.0 \
-		markdownlint-lsp@0.10.0 
-	ENV NPM_BIN_PATH="/home/${NON_ROOT_USER_NAME}/.npm/bin"
+		markdownlint-lsp@0.10.0 \
+		yaml-language-server@2.0.0
+ENV NPM_BIN_PATH="/home/${NON_ROOT_USER_NAME}/.npm/bin"
 ENV PATH="${PATH}:${NPM_BIN_PATH}"
 
-FROM configure_npm AS install_interactive_tooling
+FROM setup_global_npm AS install_interactive_tooling
 ARG NON_ROOT_USER_NAME=
 USER ${NON_ROOT_USER_NAME}
 WORKDIR /home/${NON_ROOT_USER_NAME}
