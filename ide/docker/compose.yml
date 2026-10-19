@@ -41,6 +41,8 @@ services:
         user: root
       - command: chown -R ${NON_ROOT_USER_NAME}:${NON_ROOT_USER_NAME} /home/${NON_ROOT_USER_NAME}/${IDE_USER_STORAGE_DIR_NAME}
         user: root
+      - command: chown -R ${NON_ROOT_USER_NAME}:${NON_ROOT_USER_NAME} /home/${NON_ROOT_USER_NAME}/.ssh
+        user: root
     tmpfs:
       - /tmp:exec,dev
       - /home/${NON_ROOT_USER_NAME}/tmp:exec,dev
@@ -58,6 +60,9 @@ services:
       - type: volume
         source: ide_user_storage
         target: "/home/${NON_ROOT_USER_NAME}/${IDE_USER_STORAGE_DIR_NAME}"
+      - type: volume
+        source: ide_ssh
+        target: "/home/${NON_ROOT_USER_NAME}/.ssh"
       - type: bind
         source: ${IDE_SSH_AUTH_SOCK_HOST}
         target: ${IDE_SSH_AUTH_SOCK_CONTAINER}
@@ -65,3 +70,4 @@ volumes:
   ide_emacs_var:
   ide_npm:
   ide_user_storage:
+  ide_ssh:
