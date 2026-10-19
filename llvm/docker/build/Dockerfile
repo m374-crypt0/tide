@@ -363,7 +363,8 @@ RUN \
     -DLLVM_INCLUDE_DOCS=OFF \
     -DLLVM_INCLUDE_EXAMPLES=OFF \
     -DLLVM_INCLUDE_TESTS=OFF \
-    -DLLVM_TARGETS_TO_BUILD="host" && \
+    -DLLVM_TARGETS_TO_BUILD="host" \
+		-DSANITIZER_CXX_ABI=libc++ && \
     cmake --build runtimes-build --target install
 
 FROM clone_repository AS build_stage_7_projects
@@ -391,7 +392,8 @@ RUN \
     -Qunused-arguments \
     -frtlib-add-rpath \
     -resource-dir %s/lib/clang/%s \
-    -L%s/lib \
+		-stdlib=libc++ \
+		-L%s/lib \
     -L%s/lib/%s \
     -fPIC "$@"\n' \
     "${STAGE_4_DIR}" \
@@ -408,7 +410,8 @@ RUN \
     -resource-dir %s/lib/clang/%s \
     -isystem %s/include/c++/v1 \
     -idirafter %s/include/%s/c++/v1 \
-    -L%s/lib \
+		-stdlib=libc++ \
+		-L%s/lib \
     -L%s/lib/%s \
     -fPIC "$@"\n' \
     "${STAGE_4_DIR}" \
