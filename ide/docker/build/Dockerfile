@@ -34,7 +34,7 @@ RUN \
     coreutils=9.11-r2 \
     coreutils-env=9.11-r2 \
     coreutils-fmt=9.11-r2 \
-    curl=8.22.0-r0 \
+    curl=8.23.0-r0 \
     findutils=4.11.0-r2 \
     findutils-locate=4.11.0-r2 \
     git=2.56.0-r0 \
@@ -58,7 +58,7 @@ RUN \
     bc-doc=1.08.2-r1 \
     btop-doc=1.4.7-r0 \
     coreutils-doc=9.11-r2 \
-    curl-doc=8.22.0-r0 \
+    curl-doc=8.23.0-r0 \
     findutils-doc=4.11.0-r2 \
     findutils-locate-doc=4.11.0-r2 \
     git-doc=2.56.0-r0 \
