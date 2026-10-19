@@ -25,6 +25,8 @@ services:
         published: "${REGISTRY_PORT}"
         target: ${REGISTRY_PORT}
     volumes:
-      - source: ${REGISTRY_STORAGE_PATH}
+      - source: registry_storage
         target: /var/lib/registry
-        type: bind
+        type: volume
+volumes:
+  registry_storage:
