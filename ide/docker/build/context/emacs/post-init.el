@@ -160,6 +160,13 @@
     nil t)))
 
 (add-hook
+ 'dockerfile-mode-hook
+ (lambda ()
+   (add-hook
+    'before-save-hook (lambda () (save-excursion (eglot-format-buffer)))
+    nil t)))
+
+(add-hook
  'emacs-lisp-mode-hook
  (lambda ()
    (add-hook
