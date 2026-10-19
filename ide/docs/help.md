@@ -20,6 +20,7 @@ Edit the generated `.env` file to alter the behavior of the build.
 - `make help` to display this message
 - `make build` to build the ide docker image
 - `make up` to run the ide service
+- `make down` to shut down the ide service and remove its container
 - `make login` to get into the shell
 - `make rm` to delete the ide docker image
 - `make ps` to see tide services currently running (TODO: might be

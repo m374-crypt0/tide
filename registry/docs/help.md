@@ -19,6 +19,7 @@ build time and at run time.
 - `make help` to display this message
 - `make build` to build the registry docker image
 - `make up` to run the registry locally
+- `make gc` to run the garbage collect feature of the registry
 - `make down` to stop the registry and delete the container
 - `make rm` to delete the registry docker image
 - `make ps` to see tide services currently running (TODO: might be
