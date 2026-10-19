@@ -1,7 +1,10 @@
 SHELL := /bin/bash
 MAKEFLAGS += --no-print-directory
-REGISTRY_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
-	$(MAKEFILE_LIST)))))
+
+TIDE_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
+	$(MAKEFILE_LIST))))/..)
+
+REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/registry
 
 include $(REGISTRY_ROOT_DIR)/.env
 
@@ -21,6 +24,10 @@ build:
 .PHONY: up
 up:
 	@ . $(REGISTRY_ROOT_DIR)/scripts/up.bash
+
+.PHONY: gc
+gc:
+	@ . $(REGISTRY_ROOT_DIR)/scripts/gc.bash
 
 .PHONY: down
 down:
