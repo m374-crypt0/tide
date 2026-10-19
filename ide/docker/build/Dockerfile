@@ -28,6 +28,7 @@ USER root
 RUN \
     --mount=type=cache,target=/var/cache/apk,sharing=locked \
     apk add \
+    bash-completion=2.17.0-r1 \
     bc=1.08.2-r1 \
     btop=1.4.7-r0 \
     coreutils=9.11-r2 \
@@ -53,6 +54,7 @@ RUN \
     tmux=3.8-r0 \
     unzip=6.0-r16 \
     wget=1.25.0-r3 \
+    bash-completion-doc=2.17.0-r1 \
     bc-doc=1.08.2-r1 \
     btop-doc=1.4.7-r0 \
     coreutils-doc=9.11-r2 \
