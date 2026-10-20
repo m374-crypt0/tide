@@ -10,5 +10,7 @@ RUN \
 		ccmake=4.3.4-r0 \
 		cmake=4.3.4-r0 \
 		cmake-bash-completion=4.3.4-r0 \
-		cmake-doc=4.3.4-r0
-USER ${NON_ROOT_USER_NAME}
+		samurai=1.3-r0 \
+		cmake-doc=4.3.4-r0 \
+		samurai-doc=1.3-r0
+	USER ${NON_ROOT_USER_NAME}
