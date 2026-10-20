@@ -1,0 +1,20 @@
+name: ${TIDE_PROJECT_NAME}
+
+include:
+  - path: ${TIDE_ROOT_DIR}/ide/docker/compose.yml
+
+services:
+  ide-modern-cpp:
+    build:
+      args:
+        IDE_MODERN_CPP_IMAGE_NAME: ${REGISTRY_HOST}:${REGISTRY_PORT}/${IDE_MODERN_CPP_IMAGE_NAME}
+        NON_ROOT_USER_NAME: ${NON_ROOT_USER_NAME}
+      context: build/context
+      dockerfile: ../Dockerfile
+      tags:
+        - ${REGISTRY_HOST}:${REGISTRY_PORT}/${IDE_MODERN_CPP_IMAGE_NAME}
+    image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${IDE_MODERN_CPP_IMAGE_NAME}
+  shell:
+    container_name: ${IDE_MODERN_CPP_CONTAINER_NAME}
+    hostname: ${IDE_MODERN_CPP_HOSTNAME}
+    image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${IDE_MODERN_CPP_IMAGE_NAME}
