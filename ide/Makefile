@@ -8,17 +8,20 @@ IDE_ROOT_DIR := $(TIDE_ROOT_DIR)/ide
 REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/registry
 NON_ROOT_USER_ROOT_DIR := $(TIDE_ROOT_DIR)/non-root-user
 DOCKER_IN_DOCKER_ROOT_DIR := $(TIDE_ROOT_DIR)/docker-in-docker
+LLVM_ROOT_DIR := $(TIDE_ROOT_DIR)/llvm
 EMACS_ROOT_DIR := $(TIDE_ROOT_DIR)/emacs
 
 include $(REGISTRY_ROOT_DIR)/.env
 include $(NON_ROOT_USER_ROOT_DIR)/.env
 include $(DOCKER_IN_DOCKER_ROOT_DIR)/.env
+include $(LLVM_ROOT_DIR)/.env
 include $(EMACS_ROOT_DIR)/.env
 include $(IDE_ROOT_DIR)/.env
 
 $(REGISTRY_ROOT_DIR)/.env:
 $(NON_ROOT_USER_ROOT_DIR)/.env:
 $(DOCKER_IN_DOCKER_ROOT_DIR)/.env:
+$(LLVM_ROOT_DIR)/.env:
 $(EMACS_ROOT_DIR)/.env:
 $(IDE_ROOT_DIR)/.env:
 	@ . $(IDE_ROOT_DIR)/scripts/env.bash
