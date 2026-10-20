@@ -145,6 +145,29 @@
 
 (use-package flymake-hadolint :ensure t)
 
+(use-package cc-mode :ensure nil :hook (c++-mode . eglot-ensure))
+
+(with-eval-after-load 'eglot
+  (add-to-list
+   'eglot-server-programs
+   `(c++-mode
+     .
+     ("clangd"
+      "-j=4"
+      "--background-index"
+      "--clang-tidy"
+      "--header-insertion=never"))))
+
+(use-package
+ cmake-mode
+ :ensure t
+ :mode (("CMakeLists\\.txt\\'" . cmake-mode) ("\\.cmake\\'" . cmake-mode))
+ :hook (cmake-mode . eglot-ensure))
+
+;; Register neocmakelsp with Eglot
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs '(cmake-mode . ("neocmakelsp" "stdio"))))
+
 ;; Register markdownlint-lsp with Eglot
 (with-eval-after-load 'eglot
   (add-to-list
@@ -171,6 +194,13 @@
  (lambda ()
    (add-hook
     'before-save-hook (lambda () (save-excursion (elisp-autofmt-buffer)))
+    nil t)))
+
+(add-hook
+ 'cmake-mode-hook
+ (lambda ()
+   (add-hook
+    'before-save-hook (lambda () (save-excursion (eglot-format-buffer)))
     nil t)))
 
 ;; --- Theme hook, avoiding race condition with safe theme ---
