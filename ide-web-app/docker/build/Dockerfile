@@ -12,4 +12,10 @@ ENV BUN_BIN_DIR="/home/${NON_ROOT_USER_NAME}/.bun/bin"
 ENV PATH="${PATH}:${BUN_BIN_DIR}"
 RUN bun install -g \
 		typescript@7.0.2 \
-		typescript-language-server@6.0.2
+		typescript-language-server@6.0.2 \
+		@astrojs/language-server@2.17.2 \
+		vscode-langservers-extracted@4.10.0 \
+		@tailwindcss/language-server@0.16.0 \
+		@biomejs/biome@2.5.15 \
+		eslint@10.13.0 \
+		prettier@3.9.10
