@@ -145,12 +145,21 @@
 
 (use-package flymake-hadolint :ensure t)
 
-(use-package cc-mode :ensure nil :hook (c++-mode . eglot-ensure))
+(use-package
+ cc-mode
+ :ensure nil
+ :hook
+ ((c-mode . eglot-ensure)
+  (c++-mode . eglot-ensure)
+  (c-or-c++-mode . eglot-ensure))
+ :config
+ ;; .h files as C++
+ (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)))
 
 (with-eval-after-load 'eglot
   (add-to-list
    'eglot-server-programs
-   `(c++-mode
+   '((c-mode de c-or-c++-mode)
      .
      ("clangd"
       "-j=4"
@@ -163,6 +172,11 @@
  :ensure t
  :mode (("CMakeLists\\.txt\\'" . cmake-mode) ("\\.cmake\\'" . cmake-mode))
  :hook (cmake-mode . eglot-ensure))
+
+;; auto highlighting
+(use-package auto-highlight-symbol :ensure t)
+(global-auto-highlight-symbol-mode t)
+(add-to-list 'ahs-modes 'dockerfile-mode)
 
 ;; Register neocmakelsp with Eglot
 (with-eval-after-load 'eglot
@@ -198,6 +212,13 @@
 
 (add-hook
  'cmake-mode-hook
+ (lambda ()
+   (add-hook
+    'before-save-hook (lambda () (save-excursion (eglot-format-buffer)))
+    nil t)))
+
+(add-hook
+ 'c++-mode-hook
  (lambda ()
    (add-hook
     'before-save-hook (lambda () (save-excursion (eglot-format-buffer)))
