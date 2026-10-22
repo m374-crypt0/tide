@@ -12,8 +12,8 @@ DOCKER_REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/docker-registry
 NON_ROOT_USER_ROOT_DIR := $(TIDE_ROOT_DIR)/base-images/non-root-user
 IDE_ROOT_DIR := $(TIDE_ROOT_DIR)/interactive-projects/ide
 DOCKER_IN_DOCKER_ROOT_DIR := $(TIDE_ROOT_DIR)/base-images/docker-in-docker
-LLVM_ROOT_DIR := $(TIDE_ROOT_DIR)/resources/llvm
-EMACS_ROOT_DIR := $(TIDE_ROOT_DIR)/resources/emacs
+LLVM_ROOT_DIR := $(TIDE_ROOT_DIR)/resource-images/llvm
+EMACS_ROOT_DIR := $(TIDE_ROOT_DIR)/resource-images/emacs
 
 include $(DOCKER_REGISTRY_ROOT_DIR)/.env
 include $(NON_ROOT_USER_ROOT_DIR)/.env

@@ -11,8 +11,8 @@ IDE_MODERN_CPP_ROOT_DIR := $(THIS_ROOT_DIR)
 DOCKER_REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/docker-registry
 NON_ROOT_USER_ROOT_DIR := $(TIDE_ROOT_DIR)/base-images/non-root-user
 DOCKER_IN_DOCKER_ROOT_DIR := $(TIDE_ROOT_DIR)/base-images/docker-in-docker
-LLVM_ROOT_DIR := $(TIDE_ROOT_DIR)/resources/llvm
-EMACS_ROOT_DIR := $(TIDE_ROOT_DIR)/resources/emacs
+LLVM_ROOT_DIR := $(TIDE_ROOT_DIR)/resource-images/llvm
+EMACS_ROOT_DIR := $(TIDE_ROOT_DIR)/resource-images/emacs
 IDE_ROOT_DIR := $(TIDE_ROOT_DIR)/interactive-projects/ide
 
 include $(DOCKER_REGISTRY_ROOT_DIR)/.env

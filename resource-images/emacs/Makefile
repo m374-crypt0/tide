@@ -11,7 +11,7 @@ EMACS_ROOT_DIR := $(THIS_ROOT_DIR)
 DOCKER_REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/docker-registry
 ALPINE_PINNED_ROOT_DIR := $(TIDE_ROOT_DIR)/base-images/alpine-pinned
 NON_ROOT_USER_ROOT_DIR := $(TIDE_ROOT_DIR)/base-images/non-root-user
-LLVM_ROOT_DIR := $(TIDE_ROOT_DIR)/resources/llvm
+LLVM_ROOT_DIR := $(TIDE_ROOT_DIR)/resource-images/llvm
 
 include $(DOCKER_REGISTRY_ROOT_DIR)/.env
 include $(ALPINE_PINNED_ROOT_DIR)/.env
