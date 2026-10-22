@@ -1,6 +1,6 @@
 # TODO: ensure sourcing is done from TIDE_ROOT_DIR everywhere for all scripts
 # shellcheck source=/dev/null
-. "${TIDE_ROOT_DIR}/lib/env-generator.bash"
+. "${TIDE_ROOT_DIR}/.scripts/env-generator.bash"
 
 generate_env_file_in "$DOCKER_REGISTRY_ROOT_DIR"
 generate_env_file_in "$ALPINE_PINNED_ROOT_DIR"
