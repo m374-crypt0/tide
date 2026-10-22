@@ -6,5 +6,5 @@ services:
       context: build/context
       dockerfile: ../Dockerfile
       tags:
-        - ${REGISTRY_HOST}:${REGISTRY_PORT}/${ALPINE_PINNED_IMAGE_NAME}
-    image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${ALPINE_PINNED_IMAGE_NAME}
+        - ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${ALPINE_PINNED_IMAGE_NAME}
+    image: ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${ALPINE_PINNED_IMAGE_NAME}

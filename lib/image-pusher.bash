@@ -3,11 +3,11 @@ push_image(){
 	
 	{
 		docker login \
-					 -u "${REGISTRY_USER_NAME}" \
-					 -p "${REGISTRY_USER_PASSWORD}" \
-					 "http://${REGISTRY_HOST}:${REGISTRY_PORT}" \
+					 -u "${DOCKER_REGISTRY_USER_NAME}" \
+					 -p "${DOCKER_REGISTRY_USER_PASSWORD}" \
+					 "http://${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}" \
 					 2>/dev/null &&
-			docker push "${REGISTRY_HOST}:${REGISTRY_PORT}/$image_name"
+			docker push "${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/$image_name"
 	} ||
 		echo 'error: push failed. Is registry service running?' >&2
 }

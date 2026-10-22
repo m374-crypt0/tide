@@ -9,7 +9,7 @@ of the constraint it addresses.
 
 Produce a self-contained LLVM toolchain — clang, lld, lldb, the clang tools,
 MLIR, BOLT, Polly — installed into a fixed prefix under the
-`${REGISTRY_HOST}:${REGISTRY_PORT}/${LLVM_IMAGE_NAME}` base image. The toolchain
+`${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${LLVM_IMAGE_NAME}` base image. The toolchain
 must:
 
 - contain **no GNU components** (no libstdc++, no libgcc_s, no GCC at runtime);
@@ -39,17 +39,17 @@ services:
   llvm:
     build:
       args:
-        NON_ROOT_USER_IMAGE_NAME: ${REGISTRY_HOST}:${REGISTRY_PORT}/${NON_ROOT_USER_IMAGE_NAME}
+        NON_ROOT_USER_IMAGE_NAME: ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${NON_ROOT_USER_IMAGE_NAME}
         NON_ROOT_USER_NAME: ${NON_ROOT_USER_NAME}
         LLVM_REVISION: ${LLVM_REVISION}
         LLVM_OUTPUT_RESOURCE_DIR: ${LLVM_OUTPUT_RESOURCE_DIR}
       context: build/context
       dockerfile: ../Dockerfile
       tags:
-        - ${REGISTRY_HOST}:${REGISTRY_PORT}/${LLVM_IMAGE_NAME}
+        - ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${LLVM_IMAGE_NAME}
     environment:
       - LLVM_OUTPUT_RESOURCE_DIR
-    image: ${REGISTRY_HOST}:${REGISTRY_PORT}/${LLVM_IMAGE_NAME}
+    image: ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${LLVM_IMAGE_NAME}
 ```
 
 The `test` stage is built thanks to a clever trick (`RUN --mount=type=bind...`)

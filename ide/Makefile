@@ -5,20 +5,20 @@ TIDE_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
 	$(MAKEFILE_LIST))))/..)
 
 IDE_ROOT_DIR := $(TIDE_ROOT_DIR)/ide
-REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/registry
+DOCKER_REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/docker-registry
 NON_ROOT_USER_ROOT_DIR := $(TIDE_ROOT_DIR)/non-root-user
 DOCKER_IN_DOCKER_ROOT_DIR := $(TIDE_ROOT_DIR)/docker-in-docker
 LLVM_ROOT_DIR := $(TIDE_ROOT_DIR)/llvm
 EMACS_ROOT_DIR := $(TIDE_ROOT_DIR)/emacs
 
-include $(REGISTRY_ROOT_DIR)/.env
+include $(DOCKER_REGISTRY_ROOT_DIR)/.env
 include $(NON_ROOT_USER_ROOT_DIR)/.env
 include $(DOCKER_IN_DOCKER_ROOT_DIR)/.env
 include $(LLVM_ROOT_DIR)/.env
 include $(EMACS_ROOT_DIR)/.env
 include $(IDE_ROOT_DIR)/.env
 
-$(REGISTRY_ROOT_DIR)/.env:
+$(DOCKER_REGISTRY_ROOT_DIR)/.env:
 $(NON_ROOT_USER_ROOT_DIR)/.env:
 $(DOCKER_IN_DOCKER_ROOT_DIR)/.env:
 $(LLVM_ROOT_DIR)/.env:

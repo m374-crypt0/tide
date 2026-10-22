@@ -5,11 +5,11 @@ push_image "$NON_ROOT_USER_IMAGE_NAME"
 
 main(){
 	docker login \
-				 -u "${REGISTRY_USER_NAME}" \
-				 -p "${REGISTRY_USER_PASSWORD}" \
-				 "http://${REGISTRY_HOST}:${REGISTRY_PORT}" \
+				 -u "${DOCKER_REGISTRY_USER_NAME}" \
+				 -p "${DOCKER_REGISTRY_USER_PASSWORD}" \
+				 "http://${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}" \
 				 2>/dev/null &&
-		docker push "${REGISTRY_HOST}:${REGISTRY_PORT}/${NON_ROOT_USER_IMAGE_NAME}"
+		docker push "${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${NON_ROOT_USER_IMAGE_NAME}"
 }
 
 main

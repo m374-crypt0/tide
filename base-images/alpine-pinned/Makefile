@@ -8,12 +8,12 @@ TIDE_ROOT_DIR := $(shell git -C '$(MAKEFILE_DIR)' rev-parse \
 	--show-toplevel 2>/dev/null)
 
 ALPINE_PINNED_ROOT_DIR := $(THIS_ROOT_DIR)
-REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/registry
+DOCKER_REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/docker-registry
 
-include $(REGISTRY_ROOT_DIR)/.env
+include $(DOCKER_REGISTRY_ROOT_DIR)/.env
 include $(ALPINE_PINNED_ROOT_DIR)/.env
 
-$(REGISTRY_ROOT_DIR)/.env:
+$(DOCKER_REGISTRY_ROOT_DIR)/.env:
 $(ALPINE_PINNED_ROOT_DIR)/.env:
 	@ . $(ALPINE_PINNED_ROOT_DIR)/scripts/env.bash
 

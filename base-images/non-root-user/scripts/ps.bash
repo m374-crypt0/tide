@@ -1,5 +1,5 @@
 main(){
-	docker compose -f "${REGISTRY_ROOT_DIR}/docker/compose.yml" ps
+	docker compose -f "${DOCKER_REGISTRY_ROOT_DIR}/docker/compose.yml" ps
 }
 
 main
