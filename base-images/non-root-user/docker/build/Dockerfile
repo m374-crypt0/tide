@@ -6,9 +6,9 @@ RUN \
     apk add \
 		shadow=4.20.3-r2 \
     su-exec=0.3-r0 \
-    sudo=1.9.17_p2-r3 \
+    sudo=1.9.17_p2-r4 \
     shadow-doc=4.20.3-r2 \
-    sudo-doc=1.9.17_p2-r3
+    sudo-doc=1.9.17_p2-r4
 
 FROM install_packages AS configure_user
 ARG NON_ROOT_USER_GID=
