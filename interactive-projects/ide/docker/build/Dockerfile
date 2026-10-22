@@ -14,7 +14,7 @@ USER root
 RUN \
 	--mount=type=cache,target=/var/cache/apk,sharing=locked \
 	apk add \
-	musl-dev=1.2.6-r5 \
+	musl-dev=1.2.6-r6 \
 	zlib=1.3.2-r1 \
 	zstd=1.5.7-r2
 USER ${NON_ROOT_USER_NAME}
@@ -106,7 +106,7 @@ RUN \
 	--mount=type=cache,target=/var/cache/apk,sharing=locked \
 	apk add \
 	jq=1.8.2-r0 \
-	nodejs-current=26.12.0-r0 \
+	nodejs-current=26.12.1-r0 \
 	npm=12.0.2-r0 \
 	npm-bash-completion=12.0.2-r0 \
 	py3-pip=26.2.1-r0 \
@@ -115,7 +115,7 @@ RUN \
 	python3-extra=3.14.8-r0 \
 	shellcheck=0.11.0-r2 \
 	jq-doc=1.8.2-r0 \
-	nodejs-current-doc=26.12.0-r0 \
+	nodejs-current-doc=26.12.1-r0 \
 	npm-doc=12.0.2-r0 \
 	py3-pip-doc=26.2.1-r0 \
 	python3-doc=3.14.8-r0 \

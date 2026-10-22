@@ -31,7 +31,7 @@ services:
       COLORTERM: truecolor
       SSH_AUTH_SOCK: ${IDE_SSH_AUTH_SOCK_CONTAINER}
     extends:
-      file: ${TIDE_ROOT_DIR}/docker-in-docker/docker/compose.yml
+      file: ${TIDE_ROOT_DIR}/base-images/docker-in-docker/docker/compose.yml
       service: shell
     hostname: ${IDE_HOSTNAME}
     image: ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${IDE_IMAGE_NAME}
