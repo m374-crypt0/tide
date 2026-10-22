@@ -1,16 +1,19 @@
 SHELL := /bin/bash
 MAKEFLAGS += --no-print-directory
 
-TIDE_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
-	$(MAKEFILE_LIST))))/..)
+THIS_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
+	$(MAKEFILE_LIST)))))
 
-IDE_WEB_APP_ROOT_DIR := $(TIDE_ROOT_DIR)/ide-web-app
+TIDE_ROOT_DIR := $(shell git -C '$(MAKEFILE_DIR)' rev-parse \
+	--show-toplevel 2>/dev/null)
+
+IDE_WEB_APP_ROOT_DIR := $(THIS_ROOT_DIR)
 DOCKER_REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/docker-registry
-NON_ROOT_USER_ROOT_DIR := $(TIDE_ROOT_DIR)/non-root-user
-IDE_ROOT_DIR := $(TIDE_ROOT_DIR)/ide
-DOCKER_IN_DOCKER_ROOT_DIR := $(TIDE_ROOT_DIR)/docker-in-docker
-LLVM_ROOT_DIR := $(TIDE_ROOT_DIR)/llvm
-EMACS_ROOT_DIR := $(TIDE_ROOT_DIR)/emacs
+NON_ROOT_USER_ROOT_DIR := $(TIDE_ROOT_DIR)/base-images/non-root-user
+IDE_ROOT_DIR := $(TIDE_ROOT_DIR)/interactive-projects/ide
+DOCKER_IN_DOCKER_ROOT_DIR := $(TIDE_ROOT_DIR)/base-images/docker-in-docker
+LLVM_ROOT_DIR := $(TIDE_ROOT_DIR)/resources/llvm
+EMACS_ROOT_DIR := $(TIDE_ROOT_DIR)/resources/emacs
 
 include $(DOCKER_REGISTRY_ROOT_DIR)/.env
 include $(NON_ROOT_USER_ROOT_DIR)/.env
