@@ -1,4 +1,4 @@
 # shellcheck source=/dev/null
-. "${IDE_ROOT_DIR}/../.scripts/image-puller.bash"
+. "${TIDE_ROOT_DIR}/.scripts/image-puller.bash"
 
 pull_image "$IDE_IMAGE_NAME"
