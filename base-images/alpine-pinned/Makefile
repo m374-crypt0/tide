@@ -1,10 +1,13 @@
 SHELL := /bin/bash
 MAKEFLAGS += --no-print-directory
 
-TIDE_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
-	$(MAKEFILE_LIST))))/..)
+THIS_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
+	$(MAKEFILE_LIST)))))
 
-ALPINE_PINNED_ROOT_DIR := $(TIDE_ROOT_DIR)/alpine-pinned
+TIDE_ROOT_DIR := $(shell git -C '$(MAKEFILE_DIR)' rev-parse \
+	--show-toplevel 2>/dev/null)
+
+ALPINE_PINNED_ROOT_DIR := $(THIS_ROOT_DIR)
 REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/registry
 
 include $(REGISTRY_ROOT_DIR)/.env
