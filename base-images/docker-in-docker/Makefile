@@ -1,10 +1,13 @@
 SHELL := /bin/bash
 MAKEFLAGS += --no-print-directory
 
-TIDE_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
-	$(MAKEFILE_LIST))))/..)
+THIS_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
+	$(MAKEFILE_LIST)))))
 
-DOCKER_IN_DOCKER_ROOT_DIR := $(TIDE_ROOT_DIR)/docker-in-docker
+TIDE_ROOT_DIR := $(shell git -C '$(MAKEFILE_DIR)' rev-parse \
+	--show-toplevel 2>/dev/null)
+
+DOCKER_IN_DOCKER_ROOT_DIR := $(THIS_ROOT_DIR)
 REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/registry
 ALPINE_PINNED_ROOT_DIR := $(TIDE_ROOT_DIR)/alpine-pinned
 NON_ROOT_USER_ROOT_DIR := $(TIDE_ROOT_DIR)/non-root-user
