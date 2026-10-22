@@ -17,7 +17,7 @@ RUN \
     git=2.56.0-r0 \
     libffi-dev=3.8.0-r0 \
     linux-headers=7.2.1-r0 \
-    musl-dev=1.2.6-r5 \
+    musl-dev=1.2.6-r6 \
     python3=3.14.8-r0 \
     samurai=1.3-r0 \
     zlib-dev=1.3.2-r1 \
@@ -509,7 +509,7 @@ RUN \
 RUN \
     --mount=type=cache,target=/var/cache/apk,sharing=locked \
     apk add \
-    musl-dev=1.2.6-r5 \
+    musl-dev=1.2.6-r6 \
     zlib=1.3.2-r1 \
     zstd=1.5.7-r2
 ARG LLVM_OUTPUT_RESOURCE_DIR=
