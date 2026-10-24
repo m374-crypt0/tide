@@ -9,8 +9,34 @@ services:
         LLVM_IMAGE_NAME: ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${LLVM_IMAGE_NAME}
         LLVM_OUTPUT_RESOURCE_DIR: ${LLVM_OUTPUT_RESOURCE_DIR}
         STRIX_HALO_ROCMPFX_REVISION: ${STRIX_HALO_ROCMPFX_REVISION}
+        STRIX_HALO_RENDER_GROUP_ID: ${STRIX_HALO_RENDER_GROUP_ID}
+        STRIX_HALO_VIDEO_GROUP_ID: ${STRIX_HALO_VIDEO_GROUP_ID}
       context: build/context
       dockerfile: ../Dockerfile
       tags:
         - ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${STRIX_HALO_IMAGE_NAME}
+    devices:
+      - /dev/dri
+      - /dev/kfd
+    environment:
+      - AMD_VULKAN_ICD=RADV
+      - VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json
+    group_add:
+      - ${STRIX_HALO_RENDER_GROUP_ID}
+      - ${STRIX_HALO_VIDEO_GROUP_ID}
     image: ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${STRIX_HALO_IMAGE_NAME}
+    ports:
+      - name: inference_server
+        target: ${STRIX_HALO_SERVER_PORT}
+        host_ip: 0.0.0.0
+        protocol: tcp
+        published: "${STRIX_HALO_SERVER_PORT}"
+    post_start:
+      - command: chown ${NON_ROOT_USER_NAME}:${NON_ROOT_USER_NAME} "/home/${NON_ROOT_USER_NAME}/.cache/huggingface"
+        user: root
+    volumes:
+      - type: volume
+        source: strix_halo_huggingface_cache
+        target: "/home/${NON_ROOT_USER_NAME}/.cache/huggingface"
+volumes:
+  strix_halo_huggingface_cache:

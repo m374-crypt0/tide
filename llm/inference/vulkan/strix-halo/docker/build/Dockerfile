@@ -94,7 +94,10 @@ USER root
 RUN \
 		--mount=type=cache,target=/var/cache/apk,sharing=locked \
 		apk add \
-		vulkan-loader=1.4.360-r0
+		vulkan-loader=1.4.360-r0 \
+		vulkan-tools=1.4.360-r0 \
+		mesa-vulkan-ati=26.2.5-r0 \
+		mesa-dri-gallium=26.2.5-r0
 USER ${NON_ROOT_USER_NAME}
 WORKDIR "/home/${NON_ROOT_USER_NAME}"
 RUN mkdir -p "/home/${NON_ROOT_USER_NAME}/.local/.ROCmFPX/bin"
@@ -119,3 +122,13 @@ WORKDIR "/home/${NON_ROOT_USER_NAME}"
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -LsSf https://hf.co/cli/install.sh | bash -s -- --no-modify-path
 ENV PATH="${PATH}:/home/${NON_ROOT_USER_NAME}/.local/bin"
+
+FROM install_huggingface_cli AS setup_groups
+ARG NON_ROOT_USER_NAME=
+ARG STRIX_HALO_RENDER_GROUP_ID=
+ARG STRIX_HALO_VIDEO_GROUP_ID=
+# hadolint ignore=DL3066
+USER root
+RUN groupadd -fg "${STRIX_HALO_RENDER_GROUP_ID}" render \
+		&& groupmod -g "${STRIX_HALO_VIDEO_GROUP_ID}" video
+USER ${NON_ROOT_USER_NAME}
