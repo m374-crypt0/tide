@@ -1,0 +1,147 @@
+diff --git a/common/ngram-mod.cpp b/common/ngram-mod.cpp
+index 76f7257..1b5a09a 100644
+--- a/common/ngram-mod.cpp
++++ b/common/ngram-mod.cpp
+@@ -1,5 +1,7 @@
+ #include "ngram-mod.h"
+ 
++#include <algorithm>
++
+ //
+ // common_ngram_mod
+ //
+diff --git a/ggml/src/ggml-vulkan/CMakeLists.txt b/ggml/src/ggml-vulkan/CMakeLists.txt
+index 64b0368..b7aaf40 100644
+--- a/ggml/src/ggml-vulkan/CMakeLists.txt
++++ b/ggml/src/ggml-vulkan/CMakeLists.txt
+@@ -158,6 +158,8 @@ if (Vulkan_FOUND)
+         CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/$<CONFIG>
+                    -DCMAKE_INSTALL_BINDIR=.
+                    -DCMAKE_BUILD_TYPE=$<CONFIG>
++		   "-DCMAKE_CXX_FLAGS=-static -stdlib=libc++"
++		   "-DCMAKE_EXE_LINKER_FLAGS=-static -stdlib=libc++ -lc++abi"
+                    ${VULKAN_SHADER_GEN_CMAKE_ARGS}
+ 
+         BUILD_COMMAND ${CMAKE_COMMAND} --build . --config $<CONFIG>
+diff --git a/ggml/src/gguf.cpp b/ggml/src/gguf.cpp
+index ab3cc97..69c958d 100644
+--- a/ggml/src/gguf.cpp
++++ b/ggml/src/gguf.cpp
+@@ -3,6 +3,7 @@
+ #include "ggml-impl.h"
+ #include "gguf.h"
+ 
++#include <cerrno>
+ #include <cinttypes>
+ #include <cstddef>
+ #include <cstdint>
+diff --git a/src/llama-context.cpp b/src/llama-context.cpp
+index 142500c..cacedcc 100644
+--- a/src/llama-context.cpp
++++ b/src/llama-context.cpp
+@@ -12,6 +12,7 @@
+ #include "llama-ext.h"
+ #include "llama.h"
+ 
++#include <cstdlib>
+ #include <cinttypes>
+ #include <cmath>
+ #include <cstring>
+diff --git a/src/llama-graph.h b/src/llama-graph.h
+index 5130122..228bcc5 100644
+--- a/src/llama-graph.h
++++ b/src/llama-graph.h
+@@ -5,6 +5,7 @@
+ #include "llama-hparams.h"
+ #include "llama-adapter.h"
+ 
++#include <cstdlib>
+ #include <cstdint>
+ #include <vector>
+ #include <memory>
+diff --git a/src/llama-mmap.cpp b/src/llama-mmap.cpp
+index ed572da..f11362e 100644
+--- a/src/llama-mmap.cpp
++++ b/src/llama-mmap.cpp
+@@ -4,6 +4,7 @@
+ 
+ #include "ggml.h"
+ 
++#include <cstdlib>
+ #include <cstring>
+ #include <climits>
+ #include <stdexcept>
+diff --git a/src/llama-model-loader.cpp b/src/llama-model-loader.cpp
+index 7c31b2e..3d80943 100644
+--- a/src/llama-model-loader.cpp
++++ b/src/llama-model-loader.cpp
+@@ -5,6 +5,7 @@
+ #include "gguf.h"
+ #include "llama-hparams.h"
+ 
++#include <mutex>
+ #include <algorithm>
+ #include <array>
+ #include <cinttypes>
+diff --git a/src/llama-vocab.cpp b/src/llama-vocab.cpp
+index 741c8b9..99fc741 100644
+--- a/src/llama-vocab.cpp
++++ b/src/llama-vocab.cpp
+@@ -7,6 +7,7 @@
+ 
+ #include "unicode.h"
+ 
++#include <cstdlib>
+ #include <algorithm>
+ #include <cassert>
+ #include <cctype>
+diff --git a/tools/cli/CMakeLists.txt b/tools/cli/CMakeLists.txt
+index 7e01abb..7a95ab2 100644
+--- a/tools/cli/CMakeLists.txt
++++ b/tools/cli/CMakeLists.txt
+@@ -1,6 +1,20 @@
+ set(TARGET llama-cli)
+ add_executable(${TARGET} cli.cpp)
++
++find_library(STATIC_LIBCXX NAMES libc++.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++find_library(STATIC_LIBCXXABI NAMES libc++abi.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++find_library(STATIC_LIBUNWIND NAMES libunwind.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++
+ target_link_libraries(${TARGET} PRIVATE server-context PUBLIC llama-common ${CMAKE_THREAD_LIBS_INIT})
++
++# Link the static C++ runtime archives
++target_link_libraries(${TARGET} PRIVATE
++    -Wl,-Bstatic
++    ${STATIC_LIBCXX}
++    ${STATIC_LIBCXXABI}
++    ${STATIC_LIBUNWIND}
++    -Wl,-Bdynamic)
++
+ target_compile_features(${TARGET} PRIVATE cxx_std_17)
+ 
+ include_directories(../server)
+diff --git a/tools/server/CMakeLists.txt b/tools/server/CMakeLists.txt
+index 9778e63..8a5b84b 100644
+--- a/tools/server/CMakeLists.txt
++++ b/tools/server/CMakeLists.txt
+@@ -27,8 +27,20 @@ endif()
+ target_include_directories(${TARGET} PRIVATE ../mtmd)
+ target_include_directories(${TARGET} PRIVATE ${CMAKE_SOURCE_DIR})
+ target_include_directories(${TARGET} PRIVATE ${CMAKE_SOURCE_DIR}/examples/diffusion)
++
++find_library(STATIC_LIBCXX NAMES libc++.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++find_library(STATIC_LIBCXXABI NAMES libc++abi.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++find_library(STATIC_LIBUNWIND NAMES libunwind.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++
+ target_link_libraries(${TARGET} PUBLIC llama-common mtmd ${CMAKE_THREAD_LIBS_INIT})
+ 
++# Link the static C++ runtime archives
++target_link_libraries(${TARGET} PRIVATE
++    -Wl,-Bstatic
++    ${STATIC_LIBCXX}
++    ${STATIC_LIBCXXABI}
++    ${STATIC_LIBUNWIND}
++    -Wl,-Bdynamic)
+ 
+ # llama-server executable
+ 
