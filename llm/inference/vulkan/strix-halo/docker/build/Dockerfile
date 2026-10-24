@@ -87,7 +87,7 @@ RUN \
 		llama-cli \
 		llama-server
 
-FROM ${NON_ROOT_USER_IMAGE_NAME} as install_rcmfpx
+FROM ${NON_ROOT_USER_IMAGE_NAME} as install_rocmfpx
 ARG NON_ROOT_USER_NAME=
 # hadolint ignore=DL3066
 USER root
@@ -104,3 +104,18 @@ COPY --chown=${NON_ROOT_USER_NAME} --from=build_rocmfpx \
 		"/home/${NON_ROOT_USER_NAME}/.local/.ROCmFPX/bin"/
 ENV ROCMFPX_BIN_DIR="/home/${NON_ROOT_USER_NAME}/.local/.ROCmFPX/bin"
 ENV PATH="${PATH}:$ROCMFPX_BIN_DIR"
+
+FROM install_rocmfpx AS install_huggingface_cli
+ARG NON_ROOT_USER_NAME=
+# hadolint ignore=DL3066
+USER root
+RUN \
+		--mount=type=cache,target=/var/cache/apk,sharing=locked \
+		apk add \
+		curl=8.23.0-r0 \
+		python3=3.14.9-r2
+USER ${NON_ROOT_USER_NAME}
+WORKDIR "/home/${NON_ROOT_USER_NAME}"
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN curl -LsSf https://hf.co/cli/install.sh | bash -s -- --no-modify-path
+ENV PATH="${PATH}:/home/${NON_ROOT_USER_NAME}/.local/bin"
