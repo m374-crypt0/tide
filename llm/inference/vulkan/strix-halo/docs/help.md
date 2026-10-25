@@ -18,7 +18,7 @@ Edit the generated `.env` file to alter the behavior of the build.
 - `make help` to display this message
 - `make build` to build the strix-halo docker image
 - `make up` to run the strix-halo inference service locally
-- `make model-download` to download the model specified in the .env file
+- `make model-fetch` to download the model specified in the .env file
   using the hugging face cli. The repository will be cached into a volume.
 - `make model-set script=<path/to/script>` to specify the script to run
   for the selected model. The script will be cached into a volume and tied to

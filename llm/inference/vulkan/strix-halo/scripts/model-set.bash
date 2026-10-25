@@ -4,7 +4,7 @@ ensure_model_has_been_dowloaded(){
 
 	if  ! docker exec "$STRIX_HALO_CONTAINER_NAME" \
 				[ -L "/home/${NON_ROOT_USER_NAME}/inference-setup/${STRIX_HALO_MODEL}/$file" ]; then
-		echo 'the model has not yet been downloaded, run make model-download first!' >&2
+		echo 'the model has not yet been downloaded, run make model-fetch first!' >&2
 		return 1
 	fi
 }

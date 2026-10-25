@@ -49,9 +49,9 @@ build: ensure-non-rootless
 up: ensure-non-rootless
 	@ . $(STRIX_HALO_ROOT_DIR)/scripts/up.bash
 
-.PHONY: model-download
-model-download: ensure-non-rootless ensure-env-is-set  ensure-running
-	@ . $(STRIX_HALO_ROOT_DIR)/scripts/model-download.bash
+.PHONY: model-fetch
+model-fetch: ensure-non-rootless ensure-env-is-set  ensure-running
+	@ . $(STRIX_HALO_ROOT_DIR)/scripts/model-fetch.bash
 
 .PHONY: model-set
 model-set: script=
