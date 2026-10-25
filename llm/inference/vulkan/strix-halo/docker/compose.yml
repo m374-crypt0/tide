@@ -15,28 +15,42 @@ services:
       dockerfile: ../Dockerfile
       tags:
         - ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${STRIX_HALO_IMAGE_NAME}
+    container_name: ${STRIX_HALO_CONTAINER_NAME}
     devices:
       - /dev/dri
       - /dev/kfd
+    entrypoint:
+      - sleep
+      - infinity
     environment:
       - AMD_VULKAN_ICD=RADV
-      - VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json
+      - VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.x86_64.json
+      - STRIX_HALO_MODEL_SERVER_PORT
+      - STRIX_HALO_HUGGING_FACE_TOKEN
+      - STRIX_HALO_MODEL
     group_add:
       - ${STRIX_HALO_RENDER_GROUP_ID}
       - ${STRIX_HALO_VIDEO_GROUP_ID}
     image: ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${STRIX_HALO_IMAGE_NAME}
+    init: true
     ports:
       - name: inference_server
-        target: ${STRIX_HALO_SERVER_PORT}
+        target: ${STRIX_HALO_MODEL_SERVER_PORT}
         host_ip: 0.0.0.0
         protocol: tcp
-        published: "${STRIX_HALO_SERVER_PORT}"
+        published: "${STRIX_HALO_MODEL_SERVER_PORT}"
     post_start:
       - command: chown ${NON_ROOT_USER_NAME}:${NON_ROOT_USER_NAME} "/home/${NON_ROOT_USER_NAME}/.cache/huggingface"
         user: root
+      - command: chown ${NON_ROOT_USER_NAME}:${NON_ROOT_USER_NAME} "/home/${NON_ROOT_USER_NAME}/inference-setup"
+        user: root
     volumes:
       - type: volume
-        source: strix_halo_huggingface_cache
+        source: strix_halo_hugging_face_cache
         target: "/home/${NON_ROOT_USER_NAME}/.cache/huggingface"
+      - type: volume
+        source: strix_halo_inference_setup
+        target: "/home/${NON_ROOT_USER_NAME}/inference-setup"
 volumes:
-  strix_halo_huggingface_cache:
+  strix_halo_hugging_face_cache:
+  strix_halo_inference_setup:

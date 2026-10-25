@@ -35,6 +35,7 @@ services:
       service: shell
     hostname: ${IDE_HOSTNAME}
     image: ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${IDE_IMAGE_NAME}
+    init: true
     post_start:
       - command: chown -R ${NON_ROOT_USER_NAME}:${NON_ROOT_USER_NAME} /home/${NON_ROOT_USER_NAME}/.emacs.d/var
         user: root

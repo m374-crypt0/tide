@@ -238,6 +238,9 @@
 
 (add-hook 'eglot-managed-mode-hook #'my-eglot-flymake-reactivate)
 
+;; magit hooks
+(add-hook 'magit-post-refresh-hook #'git-gutter:update-all-windows)
+
 ;; --- Git prefix keymap ---
 (define-prefix-command 'git-tools-prefix)
 (global-set-key (kbd "C-x g") 'git-tools-prefix)
@@ -245,6 +248,8 @@
 (define-key git-tools-prefix (kbd "v") #'git-gutter:popup-hunk)
 (define-key git-tools-prefix (kbd "n") #'git-gutter:next-hunk)
 (define-key git-tools-prefix (kbd "p") #'git-gutter:previous-hunk)
+(define-key git-tools-prefix (kbd "r") #'git-gutter:revert-hunk)
+(define-key git-tools-prefix (kbd "s") #'git-gutter:stage-hunk)
 
 ;; --- misc ---
 (global-hl-todo-mode 1)

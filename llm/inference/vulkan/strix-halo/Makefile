@@ -29,24 +29,49 @@ export
 help:
 	@ . $(STRIX_HALO_ROOT_DIR)/scripts/help.bash
 
-.PHONY: ensure_non_rootless
-ensure_non_rootless:
+.PHONY: ensure-non-rootless
+ensure-non-rootless:
 	@ . $(STRIX_HALO_ROOT_DIR)/scripts/ensure-non-rootless.bash
 
+.PHONY: ensure-env-is-set
+ensure-env-is-set:
+	@ . $(STRIX_HALO_ROOT_DIR)/scripts/ensure-env-is-set.bash
+
+.PHONY: ensure-running
+ensure-running:
+	@ . $(STRIX_HALO_ROOT_DIR)/scripts/ensure-running.bash
+
 .PHONY: build
-build: ensure_non_rootless
+build: ensure-non-rootless
 	@ . $(STRIX_HALO_ROOT_DIR)/scripts/build.bash
 
 .PHONY: up
-up: ensure_non_rootless
+up: ensure-non-rootless
 	@ . $(STRIX_HALO_ROOT_DIR)/scripts/up.bash
 
+.PHONY: model-download
+model-download: ensure-non-rootless ensure-env-is-set  ensure-running
+	@ . $(STRIX_HALO_ROOT_DIR)/scripts/model-download.bash
+
+.PHONY: model-set
+model-set: script=
+model-set: ensure-non-rootless ensure-env-is-set ensure-running
+	@ . $(STRIX_HALO_ROOT_DIR)/scripts/model-set.bash
+
+.PHONY: model-up
+model-up: ensure-non-rootless ensure-env-is-set ensure-running
+	@ . $(STRIX_HALO_ROOT_DIR)/scripts/model-up.bash
+
+.PHONY: model-down
+model-down: ensure-non-rootless ensure-env-is-set ensure-running
+	@ . $(STRIX_HALO_ROOT_DIR)/scripts/model-down.bash
+
 .PHONY: down
-down: ensure_non_rootless
+down: ensure-non-rootless
 	@ . $(STRIX_HALO_ROOT_DIR)/scripts/down.bash
 
 .PHONY: rm
-rm: ensure_non_rootless
+rm: ensure-non-rootless
 	@ . $(STRIX_HALO_ROOT_DIR)/scripts/rm.bash
 
 .PHONY: ps
@@ -54,9 +79,9 @@ ps:
 	@ . $(STRIX_HALO_ROOT_DIR)/scripts/ps.bash
 
 .PHONY: push
-push: ensure_non_rootless
+push: ensure-non-rootless
 	@ . $(STRIX_HALO_ROOT_DIR)/scripts/push.bash
 
 .PHONY: pull
-pull: ensure_non_rootless
+pull: ensure-non-rootless
 	@ . $(STRIX_HALO_ROOT_DIR)/scripts/pull.bash
