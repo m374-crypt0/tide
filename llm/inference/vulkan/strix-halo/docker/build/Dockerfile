@@ -47,7 +47,7 @@ WORKDIR "/home/${NON_ROOT_USER_NAME}"
 RUN git clone \
 		--depth 1 \
 		--rev=${STRIX_HALO_ROCMPFX_REVISION} \
-		https://github.com/charlie12345/ROCmFPX.git ROCmFPX
+		https://github.com/m374-crypt0/ROCmFPX.git ROCmFPX
 WORKDIR "/home/${NON_ROOT_USER_NAME}/ROCmFPX"
 
 FROM clone_repository AS configure_rocmfpx
