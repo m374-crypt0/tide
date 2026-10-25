@@ -85,9 +85,10 @@ USER ${NON_ROOT_USER_NAME}
 RUN \
 	  cmake --build build -j "$(nproc)" --target \
 		llama-cli \
-		llama-server
+		llama-server \
+		llama-bench
 
-FROM ${NON_ROOT_USER_IMAGE_NAME} as install_rocmfpx
+FROM ${NON_ROOT_USER_IMAGE_NAME} AS install_rocmfpx
 ARG NON_ROOT_USER_NAME=
 # hadolint ignore=DL3066
 USER root
@@ -104,6 +105,7 @@ RUN mkdir -p "/home/${NON_ROOT_USER_NAME}/.local/.ROCmFPX/bin"
 COPY --chown=${NON_ROOT_USER_NAME} --from=build_rocmfpx \
 		"/home/${NON_ROOT_USER_NAME}/ROCmFPX/build/bin/llama-cli" \
 		"/home/${NON_ROOT_USER_NAME}/ROCmFPX/build/bin/llama-server" \
+		"/home/${NON_ROOT_USER_NAME}/ROCmFPX/build/bin/llama-bench" \
 		"/home/${NON_ROOT_USER_NAME}/.local/.ROCmFPX/bin"/
 ENV ROCMFPX_BIN_DIR="/home/${NON_ROOT_USER_NAME}/.local/.ROCmFPX/bin"
 ENV PATH="${PATH}:$ROCMFPX_BIN_DIR"

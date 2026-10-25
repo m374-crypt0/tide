@@ -120,6 +120,31 @@ index 7e01abb..7a95ab2 100644
  target_compile_features(${TARGET} PRIVATE cxx_std_17)
  
  include_directories(../server)
+diff --git a/tools/llama-bench/CMakeLists.txt b/tools/llama-bench/CMakeLists.txt
+index 93d6a3a..f380153 100644
+--- a/tools/llama-bench/CMakeLists.txt
++++ b/tools/llama-bench/CMakeLists.txt
+@@ -1,6 +1,20 @@
+ set(TARGET llama-bench)
+ add_executable(${TARGET} llama-bench.cpp)
++
++find_library(STATIC_LIBCXX NAMES libc++.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++find_library(STATIC_LIBCXXABI NAMES libc++abi.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++find_library(STATIC_LIBUNWIND NAMES libunwind.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++
+ target_link_libraries(${TARGET} PRIVATE llama-common llama ${CMAKE_THREAD_LIBS_INIT})
++
++# Link the static C++ runtime archives
++target_link_libraries(${TARGET} PRIVATE
++    -Wl,-Bstatic
++    ${STATIC_LIBCXX}
++    ${STATIC_LIBCXXABI}
++    ${STATIC_LIBUNWIND}
++    -Wl,-Bdynamic)
++
+ target_compile_features(${TARGET} PRIVATE cxx_std_17)
+ 
+ if(LLAMA_TOOLS_INSTALL)
 diff --git a/tools/server/CMakeLists.txt b/tools/server/CMakeLists.txt
 index 9778e63..8a5b84b 100644
 --- a/tools/server/CMakeLists.txt
