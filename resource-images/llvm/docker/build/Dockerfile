@@ -18,7 +18,7 @@ RUN \
     libffi-dev=3.8.0-r0 \
     linux-headers=7.2.1-r0 \
     musl-dev=1.2.6-r6 \
-    python3=3.14.8-r0 \
+    python3=3.14.9-r2 \
     samurai=1.3-r0 \
     zlib-dev=1.3.2-r1 \
     zstd-dev=1.5.7-r2
@@ -43,7 +43,8 @@ RUN \
     -DCLANG_ENABLE_ARCMT=OFF \
     -DCLANG_PLUGIN_SUPPORT=OFF \
     -DCLANG_ENABLE_STATIC_ANALYZER=OFF \
-    -DCMAKE_BUILD_TYPE=Release \
+		-DCLANG_ENABLE_CIR=OFF \
+		-DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/home/"${NON_ROOT_USER_NAME}"/.llvm-stage-1 \
     -DLLVM_DEFAULT_TARGET_TRIPLE="$(gcc -dumpmachine)" \
     -DLLVM_ENABLE_PROJECTS="clang;lld" \
@@ -255,7 +256,7 @@ RUN \
     -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
     -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
     -DCOMPILER_RT_EXCLUDE_ATOMIC_BUILTIN=OFF \
-    -DCOMPILER_RT_INSTALL_PATH:PATH=lib/clang/${CLANG_VER} \
+    -DCOMPILER_RT_INSTALL_PATH:PATH="lib/clang/${CLANG_VER}" \
     -DCOMPILER_RT_USE_LIBCXX=ON \
     -DCOMPILER_RT_USE_LLVM_UNWINDER=OFF \
     -DLIBCXX_INCLUDE_BENCHMARKS=OFF \
@@ -480,10 +481,8 @@ RUN \
     -DCLANG_ENABLE_ARCMT=OFF \
     -DCLANG_PLUGIN_SUPPORT=OFF \
     -DCLANG_ENABLE_STATIC_ANALYZER=OFF \
-    \
     -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
     -DCMAKE_INSTALL_RPATH="${LLVM_DIR}/lib/${TRIPLE}:${LLVM_DIR}/lib" \
-    \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_C_COMPILER="${LLVM_DIR}/bin/clang" \
     -DCMAKE_CXX_COMPILER="${LLVM_DIR}/bin/clang++" \
