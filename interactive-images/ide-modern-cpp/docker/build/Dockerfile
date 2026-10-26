@@ -7,12 +7,14 @@ USER root
 RUN \
 	--mount=type=cache,target=/var/cache/apk,sharing=locked \
 		apk add \
+		ccache=4.13.6-r0 \
 		ccmake=4.3.4-r0 \
 		cmake=4.3.4-r0 \
 		cmake-bash-completion=4.3.4-r0 \
 		neocmakelsp=0.11.2-r0 \
 		neocmakelsp-bash-completion=0.11.2-r0 \
 		samurai=1.3-r0 \
+		ccache-doc=4.13.6-r0 \
 		cmake-doc=4.3.4-r0 \
 		neocmakelsp-doc=0.11.2-r0 \
 		samurai-doc=1.3-r0
