@@ -179,12 +179,15 @@
 
 (use-package gptel :ensure t :pin melpa :defer t)
 
-(use-package gptel-agent :ensure t :after gptel :config (gptel-agent-update))
+(use-package
+ gptel-agent
+ :vc (:url "https://github.com/karthink/gptel-agent" :rev :newest)
+ :config (gptel-agent-update)) ;Read files from agents directories
 
 ;; LLM interactions
 (setq gptel-backend
       (gptel-make-openai
-       "rocmfpx"
+       "gptel-backend"
        :host
        (format "%s:%s"
                (or (getenv "IDE_INFERENCE_HOST") "localhost")
@@ -196,7 +199,9 @@
         (or (getenv "IDE_INFERENCE_MODEL")
             "Ornith-1.0-35B-ROCmFPX-Speed-StrixHalo.gguf"))))
 
-(setq gptel-model 'laguna-s21-rocmfp4-strixkvspine-v4)
+(setq gptel-model
+      (or (getenv "IDE_INFERENCE_MODEL")
+          "Ornith-1.0-35B-ROCmFPX-Speed-StrixHalo.gguf"))
 
 ;; auto highlighting
 (global-auto-highlight-symbol-mode t)
