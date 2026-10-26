@@ -31,9 +31,9 @@ USER root
 RUN \
 	--mount=type=cache,target=/var/cache/apk,sharing=locked \
 	apk add \
-	libncursesw=6.6_p20260822-r0 \
+	libncursesw=6.6_p20261017-r0 \
 	libxml2-dev=2.13.9-r2 \
-	ncurses-terminfo-base=6.6_p20260822-r0 \
+	ncurses-terminfo-base=6.6_p20261017-r0 \
 	tree-sitter=0.26.7-r1
 USER ${NON_ROOT_USER_NAME}
 COPY --chown=${NON_ROOT_USER_NAME} --from=emacs \
@@ -48,7 +48,7 @@ USER root
 RUN \
 	--mount=type=cache,target=/var/cache/apk,sharing=locked \
 	apk add \
-	bash-completion=2.17.0-r1 \
+	bash-completion=2.18.0-r0 \
 	bc=1.08.2-r1 \
 	btop=1.4.7-r0 \
 	coreutils=9.11-r2 \
@@ -74,7 +74,7 @@ RUN \
 	tmux=3.8-r0 \
 	unzip=6.0-r16 \
 	wget=1.25.0-r3 \
-	bash-completion-doc=2.17.0-r1 \
+	bash-completion-doc=2.18.0-r0 \
 	bc-doc=1.08.2-r1 \
 	btop-doc=1.4.7-r0 \
 	coreutils-doc=9.11-r2 \
@@ -103,23 +103,24 @@ ARG NON_ROOT_USER_NAME=
 # hadolint ignore=DL3066
 USER root
 RUN \
-	--mount=type=cache,target=/var/cache/apk,sharing=locked \
-	apk add \
-	jq=1.8.2-r0 \
-	nodejs-current=26.12.1-r0 \
-	npm=12.0.2-r0 \
-	npm-bash-completion=12.0.2-r0 \
-	py3-pip=26.2.1-r0 \
-	py3-pip-bash-completion=26.2.1-r0 \
-	python3=3.14.8-r0 \
-	python3-extra=3.14.8-r0 \
-	shellcheck=0.11.0-r2 \
-	jq-doc=1.8.2-r0 \
-	nodejs-current-doc=26.12.1-r0 \
-	npm-doc=12.0.2-r0 \
-	py3-pip-doc=26.2.1-r0 \
-	python3-doc=3.14.8-r0 \
-	shellcheck-doc=0.11.0-r2
+		--mount=type=cache,target=/var/cache/apk,sharing=locked \
+		apk fix && \
+		apk add \
+		jq=1.8.2-r0 \
+		nodejs=24.22.1-r0 \
+		npm=12.0.2-r0 \
+		npm-bash-completion=12.0.2-r0 \
+		py3-pip=26.2.1-r0 \
+		py3-pip-bash-completion=26.2.1-r0 \
+		python3=3.14.9-r2 \
+		python3-extra=3.14.9-r0 \
+		shellcheck=0.11.0-r2 \
+		jq-doc=1.8.2-r0 \
+		nodejs-doc=24.22.1-r0 \
+		npm-doc=12.0.2-r0 \
+		py3-pip-doc=26.2.1-r0 \
+		python3-doc=3.14.9-r2 \
+		shellcheck-doc=0.11.0-r2
 USER ${NON_ROOT_USER_NAME}
 
 FROM install_utility_packages AS install_global_python3_venv
