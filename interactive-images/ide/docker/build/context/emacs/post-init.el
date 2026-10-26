@@ -185,6 +185,8 @@
  :config (gptel-agent-update)) ;Read files from agents directories
 
 ;; LLM interactions
+(setq gptel-default-mode 'org-mode)
+
 (setq gptel-backend
       (gptel-make-openai
        "gptel-backend"
