@@ -84,9 +84,9 @@ USER root
 RUN \
     --mount=type=cache,target=/var/cache/apk,sharing=locked \
     apk add \
-    libncursesw=6.6_p20260822-r0 \
+    libncursesw=6.6_p20261017-r0 \
 		libxml2=2.13.9-r2 \
-    ncurses-terminfo-base=6.6_p20260822-r0 \
+    ncurses-terminfo-base=6.6_p20261017-r0 \
     tree-sitter=0.26.7-r1
 USER ${NON_ROOT_USER_NAME}
 WORKDIR /home/${NON_ROOT_USER_NAME}
