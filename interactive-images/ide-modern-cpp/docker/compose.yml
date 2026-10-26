@@ -8,7 +8,7 @@ services:
   ide-modern-cpp:
     build:
       args:
-        IDE_MODERN_CPP_IMAGE_NAME: ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${IDE_MODERN_CPP_IMAGE_NAME}
+        IDE_IMAGE_NAME: ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${IDE_IMAGE_NAME}
         NON_ROOT_USER_NAME: ${NON_ROOT_USER_NAME}
       context: build/context
       dockerfile: ../Dockerfile

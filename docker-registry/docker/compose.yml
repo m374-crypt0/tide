@@ -18,12 +18,12 @@ services:
     init: true
     image: ${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/${DOCKER_REGISTRY_IMAGE_NAME}
     ports:
-      - host_ip: 0.0.0.0
+      - host_ip: 127.0.0.1
         mode: host
         name: registry_port
         protocol: tcp
         published: "${DOCKER_REGISTRY_PORT}"
-        target: ${DOCKER_REGISTRY_PORT}
+        target: 5000
     volumes:
       - source: registry_storage
         target: /var/lib/registry

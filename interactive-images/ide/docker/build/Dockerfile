@@ -154,6 +154,7 @@ ENV PATH="${PATH}:${NPM_BIN_PATH}"
 
 FROM setup_global_npm AS install_interactive_tooling
 ARG NON_ROOT_USER_NAME=
+ARG IDE_BASH_IT_REVISION=
 USER ${NON_ROOT_USER_NAME}
 WORKDIR /home/${NON_ROOT_USER_NAME}
 RUN git clone \

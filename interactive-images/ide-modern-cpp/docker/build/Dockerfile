@@ -1,6 +1,6 @@
 ARG IDE_IMAGE_NAME=localhost:5000/tide-ide
 
-FROM ${IDE_IMAGE_NAME} AS install_cmake_packages
+FROM ${IDE_IMAGE_NAME} AS install_packages
 ARG NON_ROOT_USER_NAME=
 # hadolint ignore=DL3066
 USER root
@@ -20,7 +20,7 @@ RUN \
 		samurai-doc=1.3-r0
 USER ${NON_ROOT_USER_NAME}
 
-FROM install_cmake_packages AS install_cmake_lint
+FROM install_packages AS install_cmake_lint
 ARG NON_ROOT_USER_NAME=
 USER ${NON_ROOT_USER_NAME}
 RUN pip3 install --no-cache-dir cmakelint==1.4.3

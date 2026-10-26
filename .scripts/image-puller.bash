@@ -9,6 +9,8 @@ pull_image(){
 					 2>/dev/null &&
 			docker pull \
 						 "${DOCKER_REGISTRY_HOST}:${DOCKER_REGISTRY_PORT}/$image_name"
-	} ||
+	} || {
 		echo 'error: pull failed. Is registry service running?' >&2
+		return 1
+	}
 }

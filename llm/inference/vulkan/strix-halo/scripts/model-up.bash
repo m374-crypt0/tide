@@ -10,10 +10,9 @@ ensure_script_is_set(){
 }
 
 run_model(){
-	docker exec -d "$STRIX_HALO_CONTAINER_NAME" \
-				 bash -c \
-				 "cd /home/${NON_ROOT_USER_NAME}/inference-setup/${STRIX_HALO_MODEL} && \
-				 /home/${NON_ROOT_USER_NAME}/inference-setup/${STRIX_HALO_MODEL}/run.bash"
+	docker exec --workdir	"/home/${NON_ROOT_USER_NAME}/inference-setup/${STRIX_HALO_MODEL}" \
+				 -d "$STRIX_HALO_CONTAINER_NAME" \
+				 bash -c './run.bash'
 }
 
 main(){
