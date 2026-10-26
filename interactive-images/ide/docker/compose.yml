@@ -33,6 +33,10 @@ services:
       LANG: en_US.UTF-8
       COLORTERM: truecolor
       SSH_AUTH_SOCK: ${IDE_SSH_AUTH_SOCK_CONTAINER}
+      TIDE_PROJECT_NAME: ${TIDE_PROJECT_NAME}
+      IDE_INFERENCE_HOST: ${IDE_INFERENCE_HOST}
+      IDE_INFERENCE_PORT: ${IDE_INFERENCE_PORT}
+      IDE_INFERENCE_MODEL: ${IDE_INFERENCE_MODEL}
     extends:
       file: ${TIDE_ROOT_DIR}/base-images/docker-in-docker/docker/compose.yml
       service: shell

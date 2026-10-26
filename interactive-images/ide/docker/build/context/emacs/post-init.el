@@ -39,6 +39,8 @@
  :mode ("\\.el\\'" . emacs-lisp-mode)
  :hook ((emacs-lisp-mode . eglot-ensure) (emacs-lisp-mode . eldoc-mode)))
 
+(use-package elisp-autofmt :ensure t)
+
 (use-package
  company
  :ensure t
@@ -173,8 +175,30 @@
  :mode (("CMakeLists\\.txt\\'" . cmake-mode) ("\\.cmake\\'" . cmake-mode))
  :hook (cmake-mode . eglot-ensure))
 
-;; auto highlighting
 (use-package auto-highlight-symbol :ensure t)
+
+(use-package gptel :ensure t :pin melpa :defer t)
+
+(use-package gptel-agent :ensure t :after gptel :config (gptel-agent-update))
+
+;; LLM interactions
+(setq gptel-backend
+      (gptel-make-openai
+       "rocmfpx"
+       :host
+       (format "%s:%s"
+               (or (getenv "IDE_INFERENCE_HOST") "localhost")
+               (or (getenv "IDE_INFERENCE_PORT") "8000"))
+       :protocol "http"
+       :stream t
+       :models
+       (list
+        (or (getenv "IDE_INFERENCE_MODEL")
+            "Ornith-1.0-35B-ROCmFPX-Speed-StrixHalo.gguf"))))
+
+(setq gptel-model 'laguna-s21-rocmfp4-strixkvspine-v4)
+
+;; auto highlighting
 (global-auto-highlight-symbol-mode t)
 (add-to-list 'ahs-modes 'dockerfile-mode)
 
