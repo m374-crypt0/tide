@@ -1,5 +1,8 @@
 name: ${TIDE_PROJECT_NAME}
 
+include:
+  - path: "${TIDE_ROOT_DIR}/docker-registry/docker/compose.yml"
+
 services:
   docker-in-docker:
     build:
