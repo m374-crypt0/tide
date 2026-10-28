@@ -1,6 +1,6 @@
-# non-root-user
+# strix-halo
 
-A base image whose ancestor is `alpine-pinned` with a non-root user whose name
-match the host system user by default.
+A service image exposing local inference. Specifically built and optimized for a
+specific platform (here, AMF Strix Halo).
 
 Issue a `make help` command to see how it works.

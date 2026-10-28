@@ -1,8 +1,8 @@
 # strix-halo
 
-This project builds and runs a local inference infrastructure for the AMD Strix
-halo architecture hardware. It is base on a custom build of llama.cpp and can
-load and use various compatible models with the vulkan backend.
+This service project builds and runs a local inference infrastructure for the
+AMD Strix halo architecture hardware. It is base on a custom build of llama.cpp
+and can load and use various compatible models with the vulkan backend.
 
 This project can only work in a non-rootless docker as the running container
 need to access host's devices.

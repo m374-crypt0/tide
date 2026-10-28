@@ -9,14 +9,14 @@ ARG LLVM_OUTPUT_RESOURCE_DIR=
 # hadolint ignore=DL3066
 USER root
 RUN \
-	--mount=type=cache,target=/var/cache/apk,sharing=locked \
-	apk add \
-	musl-dev=1.2.6-r6 \
-	zlib=1.3.2-r1 \
-	zstd=1.5.7-r2
+    --mount=type=cache,target=/var/cache/apk,sharing=locked \
+    apk add \
+    musl-dev=1.2.6-r6 \
+    zlib=1.3.2-r1 \
+    zstd=1.5.7-r2
 USER ${NON_ROOT_USER_NAME}
 COPY --chown=${NON_ROOT_USER_NAME} --from=llvm \
-	${LLVM_OUTPUT_RESOURCE_DIR} ${LLVM_OUTPUT_RESOURCE_DIR}
+    ${LLVM_OUTPUT_RESOURCE_DIR} ${LLVM_OUTPUT_RESOURCE_DIR}
 ENV LLVM_OUTPUT_RESOURCE_DIR="${LLVM_OUTPUT_RESOURCE_DIR}"
 ENV PATH="${PATH}:${LLVM_OUTPUT_RESOURCE_DIR}/bin"
 
@@ -26,18 +26,18 @@ ARG NON_ROOT_USER_NAME=
 USER root
 RUN \
     --mount=type=cache,target=/var/cache/apk,sharing=locked \
-		apk add \
-		git=2.56.0-r0 \
-		cmake=4.3.4-r0 \
-		make=4.4.1-r4 \
-		pkgconf=3.0.10-r0 \
-		libssl3=3.5.9-r0 \
-		vulkan-loader-dev=1.4.360-r0 \
-		shaderc=2026.1-r0 \
-		glslang=1.4.341.0-r0 \
-		spirv-headers=1.4.357.0-r0 \
-		npm=12.0.2-r0 \
-		linux-headers=7.2.1-r0
+    apk add \
+    git=2.56.0-r0 \
+    cmake=4.3.4-r0 \
+    make=4.4.1-r4 \
+    pkgconf=3.0.10-r0 \
+    libssl3=3.5.9-r0 \
+    vulkan-loader-dev=1.4.360-r0 \
+    shaderc=2026.1-r0 \
+    glslang=1.4.341.0-r0 \
+    spirv-headers=1.4.357.0-r0 \
+    npm=12.0.2-r0 \
+    linux-headers=7.2.1-r0
 USER ${NON_ROOT_USER_NAME}
 
 FROM install_build_dependencies AS clone_repository
@@ -45,9 +45,9 @@ ARG NON_ROOT_USER_NAME=
 ARG STRIX_HALO_ROCMPFX_REVISION=
 WORKDIR "/home/${NON_ROOT_USER_NAME}"
 RUN git clone \
-		--depth 1 \
-		--rev=${STRIX_HALO_ROCMPFX_REVISION} \
-		https://github.com/m374-crypt0/ROCmFPX.git ROCmFPX
+    --depth 1 \
+    --rev=${STRIX_HALO_ROCMPFX_REVISION} \
+    https://github.com/m374-crypt0/ROCmFPX.git ROCmFPX
 WORKDIR "/home/${NON_ROOT_USER_NAME}/ROCmFPX"
 
 FROM clone_repository AS configure_rocmfpx
@@ -55,58 +55,58 @@ ARG NON_ROOT_USER_NAME=
 USER ${NON_ROOT_USER_NAME}
 WORKDIR "/home/${NON_ROOT_USER_NAME}/ROCmFPX/"
 RUN cmake -B build \
-		-DBUILD_SHARED_LIBS=OFF \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_C_COMPILER=clang \
-		-DCMAKE_CXX_COMPILER=clang++ \
-		-DCMAKE_CXX_FLAGS="-stdlib=libc++ -nostdlib++" \
-		-DCMAKE_CXX_STANDARD_LIBRARIES="" \
-		-DCMAKE_CXX_IMPLICIT_LINK_LIBRARIES="" \
-		-DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-		-DGGML_BUILD_TESTS=OFF \
-		-DGGML_VULKAN=ON \
-		-DLLAMA_BUILD_SERVER=ON \
-		-DLLAMA_BUILD_TESTS=OFF \
-		-DLLAMA_BUILD_WEBUI=ON \
-		-DLLAMA_USE_PREBUILT_WEBUI=OFF
+    -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_CXX_FLAGS="-stdlib=libc++ -nostdlib++" \
+    -DCMAKE_CXX_STANDARD_LIBRARIES="" \
+    -DCMAKE_CXX_IMPLICIT_LINK_LIBRARIES="" \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+    -DGGML_BUILD_TESTS=OFF \
+    -DGGML_VULKAN=ON \
+    -DLLAMA_BUILD_SERVER=ON \
+    -DLLAMA_BUILD_TESTS=OFF \
+    -DLLAMA_BUILD_WEBUI=ON \
+    -DLLAMA_USE_PREBUILT_WEBUI=OFF
 
 FROM configure_rocmfpx AS patch_rocmfpx
 ARG NON_ROOT_USER_NAME=
 USER ${NON_ROOT_USER_NAME}
 WORKDIR "/home/${NON_ROOT_USER_NAME}/ROCmFPX/"
 COPY \
-		--chown=${NON_ROOT_USER_NAME} \
-		tide.patch "/home/${NON_ROOT_USER_NAME}/ROCmFPX"
+    --chown=${NON_ROOT_USER_NAME} \
+    tide.patch "/home/${NON_ROOT_USER_NAME}/ROCmFPX"
 RUN git apply "/home/${NON_ROOT_USER_NAME}/ROCmFPX/tide.patch"
 
 FROM patch_rocmfpx AS build_rocmfpx
 ARG NON_ROOT_USER_NAME=
 USER ${NON_ROOT_USER_NAME}
 RUN \
-	  cmake --build build -j "$(nproc)" --target \
-		llama-cli \
-		llama-server \
-		llama-bench
+    cmake --build build -j "$(nproc)" --target \
+    llama-cli \
+    llama-server \
+    llama-bench
 
 FROM ${NON_ROOT_USER_IMAGE_NAME} AS install_rocmfpx
 ARG NON_ROOT_USER_NAME=
 # hadolint ignore=DL3066
 USER root
 RUN \
-		--mount=type=cache,target=/var/cache/apk,sharing=locked \
-		apk add \
-		vulkan-loader=1.4.360-r0 \
-		vulkan-tools=1.4.360-r0 \
-		mesa-vulkan-ati=26.2.5-r0 \
-		mesa-dri-gallium=26.2.5-r0
+    --mount=type=cache,target=/var/cache/apk,sharing=locked \
+    apk add \
+    vulkan-loader=1.4.360-r0 \
+    vulkan-tools=1.4.360-r0 \
+    mesa-vulkan-ati=26.2.5-r0 \
+    mesa-dri-gallium=26.2.5-r0
 USER ${NON_ROOT_USER_NAME}
 WORKDIR "/home/${NON_ROOT_USER_NAME}"
 RUN mkdir -p "/home/${NON_ROOT_USER_NAME}/.local/.ROCmFPX/bin"
 COPY --chown=${NON_ROOT_USER_NAME} --from=build_rocmfpx \
-		"/home/${NON_ROOT_USER_NAME}/ROCmFPX/build/bin/llama-cli" \
-		"/home/${NON_ROOT_USER_NAME}/ROCmFPX/build/bin/llama-server" \
-		"/home/${NON_ROOT_USER_NAME}/ROCmFPX/build/bin/llama-bench" \
-		"/home/${NON_ROOT_USER_NAME}/.local/.ROCmFPX/bin"/
+    "/home/${NON_ROOT_USER_NAME}/ROCmFPX/build/bin/llama-cli" \
+    "/home/${NON_ROOT_USER_NAME}/ROCmFPX/build/bin/llama-server" \
+    "/home/${NON_ROOT_USER_NAME}/ROCmFPX/build/bin/llama-bench" \
+    "/home/${NON_ROOT_USER_NAME}/.local/.ROCmFPX/bin"/
 ENV ROCMFPX_BIN_DIR="/home/${NON_ROOT_USER_NAME}/.local/.ROCmFPX/bin"
 ENV PATH="${PATH}:$ROCMFPX_BIN_DIR"
 
@@ -115,10 +115,10 @@ ARG NON_ROOT_USER_NAME=
 # hadolint ignore=DL3066
 USER root
 RUN \
-		--mount=type=cache,target=/var/cache/apk,sharing=locked \
-		apk add \
-		curl=8.23.0-r0 \
-		python3=3.14.9-r2
+    --mount=type=cache,target=/var/cache/apk,sharing=locked \
+    apk add \
+    curl=8.23.0-r0 \
+    python3=3.14.10-r1
 USER ${NON_ROOT_USER_NAME}
 WORKDIR "/home/${NON_ROOT_USER_NAME}"
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -132,5 +132,23 @@ ARG STRIX_HALO_VIDEO_GROUP_ID=
 # hadolint ignore=DL3066
 USER root
 RUN groupadd -fg "${STRIX_HALO_RENDER_GROUP_ID}" render \
-		&& groupmod -g "${STRIX_HALO_VIDEO_GROUP_ID}" video
+    && groupmod -g "${STRIX_HALO_VIDEO_GROUP_ID}" video
 USER ${NON_ROOT_USER_NAME}
+
+FROM install_huggingface_cli AS install_supported_model_scripts
+ARG NON_ROOT_USER_NAME=
+WORKDIR "/home/${NON_ROOT_USER_NAME}"
+RUN mkdir -p \
+    "inference-setup/julianmb/Ornith-1.0-35B-ROCmFPX-StrixHalo/Ornith-1.0-35B-ROCmFPX-Speed-StrixHalo.gguf" \
+    "inference-setup/julianmb/Ornith-1.0-35B-ROCmFPX-StrixHalo/Ornith-1.0-35B-ROCmFPX-Quality-StrixHalo.gguf" \
+    "inference-setup/jcbtc/Laguna-S-2.1-Chadrock-ROCmFP4-StrixKVSpine-V4-GGUF/laguna-s-2.1-ROCmFP4-StrixKVSpine-v4.gguf"
+WORKDIR "/home/${NON_ROOT_USER_NAME}/inference-setup"
+COPY --chown=${NON_ROOT_USER_NAME} \
+    "./model-run-scripts/julianmb/Ornith-1.0-35B-ROCmFPX-StrixHalo/Ornith-1.0-35B-ROCmFPX-Speed-StrixHalo.gguf/run.bash" \
+    "julianmb/Ornith-1.0-35B-ROCmFPX-StrixHalo/Ornith-1.0-35B-ROCmFPX-Speed-StrixHalo.gguf/"
+COPY --chown=${NON_ROOT_USER_NAME} \
+    "./model-run-scripts/julianmb/Ornith-1.0-35B-ROCmFPX-StrixHalo/Ornith-1.0-35B-ROCmFPX-Quality-StrixHalo.gguf/run.bash" \
+    "julianmb/Ornith-1.0-35B-ROCmFPX-StrixHalo/Ornith-1.0-35B-ROCmFPX-Quality-StrixHalo.gguf/"
+COPY --chown=${NON_ROOT_USER_NAME} \
+    "./model-run-scripts/jcbtc/Laguna-S-2.1-Chadrock-ROCmFP4-StrixKVSpine-V4-GGUF/laguna-s-2.1-ROCmFP4-StrixKVSpine-v4.gguf/run.bash" \
+    "jcbtc/Laguna-S-2.1-Chadrock-ROCmFP4-StrixKVSpine-V4-GGUF/laguna-s-2.1-ROCmFP4-StrixKVSpine-v4.gguf/"
