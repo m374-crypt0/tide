@@ -152,3 +152,4 @@ COPY --chown=${NON_ROOT_USER_NAME} \
 COPY --chown=${NON_ROOT_USER_NAME} \
     "./model-run-scripts/jcbtc/Laguna-S-2.1-Chadrock-ROCmFP4-StrixKVSpine-V4-GGUF/laguna-s-2.1-ROCmFP4-StrixKVSpine-v4.gguf/run.bash" \
     "jcbtc/Laguna-S-2.1-Chadrock-ROCmFP4-StrixKVSpine-V4-GGUF/laguna-s-2.1-ROCmFP4-StrixKVSpine-v4.gguf/"
+RUN find . -type f -name run.bash -exec chmod +x {} \;

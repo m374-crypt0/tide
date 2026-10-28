@@ -1,5 +1,4 @@
 ensure_script_is_set(){
-
 	if ! docker exec "$STRIX_HALO_CONTAINER_NAME" \
 			 [ -f "/home/${NON_ROOT_USER_NAME}/inference-setup/${STRIX_HALO_MODEL}/run.bash" ]; then
 		echo \
@@ -10,9 +9,10 @@ ensure_script_is_set(){
 }
 
 run_model(){
-	docker exec --workdir	"/home/${NON_ROOT_USER_NAME}/inference-setup/${STRIX_HALO_MODEL}" \
-				 -d "$STRIX_HALO_CONTAINER_NAME" \
-				 bash -c './run.bash'
+	echo 'model is loading. Press CTRL-C to detach log output.'
+
+	docker exec "$STRIX_HALO_CONTAINER_NAME" \
+				 bash -c "/home/${NON_ROOT_USER_NAME}/inference-setup/${STRIX_HALO_MODEL}/run.bash"
 }
 
 main(){

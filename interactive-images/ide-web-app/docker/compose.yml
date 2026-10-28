@@ -1,7 +1,6 @@
 name: ${TIDE_PROJECT_NAME}
 
 include:
-  - path: "${TIDE_ROOT_DIR}/docker-registry/docker/compose.yml"
   - path: "${TIDE_ROOT_DIR}/interactive-images/ide/docker/compose.yml"
 
 services:
