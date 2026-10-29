@@ -18,7 +18,7 @@ RUN \
     libffi-dev=3.8.0-r0 \
     linux-headers=7.2.1-r0 \
     musl-dev=1.2.6-r6 \
-    python3=3.14.9-r2 \
+    python3=3.14.10-r1 \
     samurai=1.3-r0 \
     zlib-dev=1.3.2-r1 \
     zstd-dev=1.5.7-r2
