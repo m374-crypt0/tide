@@ -7,7 +7,7 @@ THIS_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
 TIDE_ROOT_DIR := $(shell git -C '$(MAKEFILE_DIR)' rev-parse \
 	--show-toplevel 2>/dev/null)
 
-DOCKER_REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/docker-registry
+DOCKER_REGISTRY_ROOT_DIR := $(THIS_ROOT_DIR)
 
 include $(DOCKER_REGISTRY_ROOT_DIR)/.env
 
