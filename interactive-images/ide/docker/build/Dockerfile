@@ -107,19 +107,19 @@ RUN \
 		apk fix && \
 		apk add \
 		jq=1.8.2-r0 \
-		nodejs=24.22.1-r0 \
+		nodejs=24.22.1-r1 \
 		npm=12.0.2-r0 \
 		npm-bash-completion=12.0.2-r0 \
 		py3-pip=26.2.1-r0 \
 		py3-pip-bash-completion=26.2.1-r0 \
-		python3=3.14.9-r2 \
-		python3-extra=3.14.9-r0 \
+		python3=3.14.10-r1 \
+		python3-extra=3.14.10-r0 \
 		shellcheck=0.11.0-r2 \
 		jq-doc=1.8.2-r0 \
-		nodejs-doc=24.22.1-r0 \
+		nodejs-doc=24.22.1-r1 \
 		npm-doc=12.0.2-r0 \
 		py3-pip-doc=26.2.1-r0 \
-		python3-doc=3.14.9-r2 \
+		python3-doc=3.14.10-r1 \
 		shellcheck-doc=0.11.0-r2
 USER ${NON_ROOT_USER_NAME}
 
