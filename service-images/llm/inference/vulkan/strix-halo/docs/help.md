@@ -13,6 +13,8 @@ Local inference is the future.
 
 ## how
 
+> TODO: rename model-up and model-down to inference-up and inference down
+
 Edit the generated `.env` file to alter the behavior of the build.
 
 - `make help` to display this message

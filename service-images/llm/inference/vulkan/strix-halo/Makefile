@@ -7,6 +7,7 @@ THIS_ROOT_DIR := $(patsubst %/,%,$(dir $(abspath $(firstword \
 TIDE_ROOT_DIR := $(shell git -C '$(MAKEFILE_DIR)' rev-parse \
 	--show-toplevel 2>/dev/null)
 
+# TODO: rename to LIVSH (llm inference Vulkan Strix Halo)
 STRIX_HALO_ROOT_DIR := $(THIS_ROOT_DIR)
 DOCKER_REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/service-images/docker-registry
 NON_ROOT_USER_ROOT_DIR := $(TIDE_ROOT_DIR)/base-images/non-root-user
