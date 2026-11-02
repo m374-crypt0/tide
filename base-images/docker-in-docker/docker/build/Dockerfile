@@ -6,11 +6,11 @@ ARG NON_ROOT_USER_USER_NAME=
 USER root
 RUN \
     --mount=type=cache,target=/var/cache/apk,sharing=locked \
-		apk add \
-    docker-cli=29.9.2-r0 \
-    docker-cli-buildx=0.38.1-r0 \
-    docker-cli-compose=5.6.1-r0 \
-    docker-doc=29.9.2-r0
+    apk add \
+    docker-cli=29.9.2-r1 \
+    docker-cli-buildx=0.38.1-r1 \
+    docker-cli-compose=5.6.1-r1 \
+    docker-doc=29.9.2-r1
 USER ${NON_ROOT_USER_USER_NAME}
 
 FROM install_docker AS modify_non_root_user
@@ -19,6 +19,6 @@ ARG DOCKER_IN_DOCKER_DOCKER_GID=
 # hadolint ignore=DL3066
 USER root
 RUN	groupadd -g ${DOCKER_IN_DOCKER_DOCKER_GID} docker && \
-		usermod -a -G docker ${NON_ROOT_USER_NAME}
+    usermod -a -G docker ${NON_ROOT_USER_NAME}
 USER ${NON_ROOT_USER_NAME}
 WORKDIR /home/${NON_ROOT_USER_NAME}

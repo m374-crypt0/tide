@@ -1,4 +1,4 @@
 # shellcheck source=/dev/null
 . "${TIDE_ROOT_DIR}/.scripts/image-pusher.bash"
 
-push_image "$STRIX_HALO_IMAGE_NAME"
+push_image "$LIVSH_IMAGE_NAME"

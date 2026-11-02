@@ -1,9 +1,9 @@
 ensure_model_has_been_dowloaded(){
 	local file
-	file="$(basename "$STRIX_HALO_MODEL")"
+	file="$(basename "$LIVSH_MODEL")"
 
-	if  ! docker exec "$STRIX_HALO_CONTAINER_NAME" \
-				[ -L "/home/${NON_ROOT_USER_NAME}/inference-setup/${STRIX_HALO_MODEL}/$file" ]; then
+	if  ! docker exec "$LIVSH_CONTAINER_NAME" \
+				[ -L "/home/${NON_ROOT_USER_NAME}/inference-setup/${LIVSH_MODEL}/$file" ]; then
 		echo 'the model has not yet been downloaded, run make model-fetch first!' >&2
 		return 1
 	fi
@@ -24,9 +24,9 @@ validate_user_script(){
 cache_script() {
 	docker cp \
 				 "$script" \
-				 "$STRIX_HALO_CONTAINER_NAME":"/home/${NON_ROOT_USER_NAME}/inference-setup/$STRIX_HALO_MODEL/run.bash" && \
-		docker exec "$STRIX_HALO_CONTAINER_NAME" \
-					 chmod +x "/home/${NON_ROOT_USER_NAME}/inference-setup/$STRIX_HALO_MODEL/run.bash"
+				 "$LIVSH_CONTAINER_NAME":"/home/${NON_ROOT_USER_NAME}/inference-setup/$LIVSH_MODEL/run.bash" && \
+		docker exec "$LIVSH_CONTAINER_NAME" \
+					 chmod +x "/home/${NON_ROOT_USER_NAME}/inference-setup/$LIVSH_MODEL/run.bash"
 }
 
 main() {

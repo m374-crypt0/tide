@@ -42,11 +42,11 @@ USER ${NON_ROOT_USER_NAME}
 
 FROM install_build_dependencies AS clone_repository
 ARG NON_ROOT_USER_NAME=
-ARG STRIX_HALO_ROCMPFX_REVISION=
+ARG LIVSH_ROCMPFX_REVISION=
 WORKDIR "/home/${NON_ROOT_USER_NAME}"
 RUN git clone \
     --depth 1 \
-    --rev=${STRIX_HALO_ROCMPFX_REVISION} \
+    --rev=${LIVSH_ROCMPFX_REVISION} \
     https://github.com/m374-crypt0/ROCmFPX.git ROCmFPX
 WORKDIR "/home/${NON_ROOT_USER_NAME}/ROCmFPX"
 
@@ -97,8 +97,8 @@ RUN \
     apk add \
     vulkan-loader=1.4.360-r0 \
     vulkan-tools=1.4.360-r0 \
-    mesa-vulkan-ati=26.2.5-r0 \
-    mesa-dri-gallium=26.2.5-r0
+    mesa-vulkan-ati=26.2.6-r0 \
+    mesa-dri-gallium=26.2.6-r0
 USER ${NON_ROOT_USER_NAME}
 WORKDIR "/home/${NON_ROOT_USER_NAME}"
 RUN mkdir -p "/home/${NON_ROOT_USER_NAME}/.local/.ROCmFPX/bin"
@@ -127,12 +127,12 @@ ENV PATH="${PATH}:/home/${NON_ROOT_USER_NAME}/.local/bin"
 
 FROM install_huggingface_cli AS setup_groups
 ARG NON_ROOT_USER_NAME=
-ARG STRIX_HALO_RENDER_GROUP_ID=
-ARG STRIX_HALO_VIDEO_GROUP_ID=
+ARG LIVSH_RENDER_GROUP_ID=
+ARG LIVSH_VIDEO_GROUP_ID=
 # hadolint ignore=DL3066
 USER root
-RUN groupadd -fg "${STRIX_HALO_RENDER_GROUP_ID}" render \
-    && groupmod -g "${STRIX_HALO_VIDEO_GROUP_ID}" video
+RUN groupadd -fg "${LIVSH_RENDER_GROUP_ID}" render \
+    && groupmod -g "${LIVSH_VIDEO_GROUP_ID}" video
 USER ${NON_ROOT_USER_NAME}
 
 FROM install_huggingface_cli AS install_supported_model_scripts

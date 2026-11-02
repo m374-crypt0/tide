@@ -8,20 +8,20 @@ TIDE_ROOT_DIR := $(shell git -C '$(MAKEFILE_DIR)' rev-parse \
 	--show-toplevel 2>/dev/null)
 
 IDE_ROOT_DIR := $(THIS_ROOT_DIR)
-DOCKER_REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/service-images/docker-registry
+LOCAL_DOCKER_REGISTRY_ROOT_DIR := $(TIDE_ROOT_DIR)/service-images/local-docker-registry
 NON_ROOT_USER_ROOT_DIR := $(TIDE_ROOT_DIR)/base-images/non-root-user
 DOCKER_IN_DOCKER_ROOT_DIR := $(TIDE_ROOT_DIR)/base-images/docker-in-docker
 LLVM_ROOT_DIR := $(TIDE_ROOT_DIR)/resource-images/llvm
 EMACS_ROOT_DIR := $(TIDE_ROOT_DIR)/resource-images/emacs
 
-include $(DOCKER_REGISTRY_ROOT_DIR)/.env
+include $(LOCAL_DOCKER_REGISTRY_ROOT_DIR)/.env
 include $(NON_ROOT_USER_ROOT_DIR)/.env
 include $(DOCKER_IN_DOCKER_ROOT_DIR)/.env
 include $(LLVM_ROOT_DIR)/.env
 include $(EMACS_ROOT_DIR)/.env
 include $(IDE_ROOT_DIR)/.env
 
-$(DOCKER_REGISTRY_ROOT_DIR)/.env:
+$(LOCAL_DOCKER_REGISTRY_ROOT_DIR)/.env:
 $(NON_ROOT_USER_ROOT_DIR)/.env:
 $(DOCKER_IN_DOCKER_ROOT_DIR)/.env:
 $(LLVM_ROOT_DIR)/.env:

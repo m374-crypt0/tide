@@ -1,6 +1,6 @@
 main(){
 	local container_id&&
-		container_id="$(docker ps -q --filter "name=$STRIX_HALO_CONTAINER_NAME")"
+		container_id="$(docker ps -q --filter "name=$LIVSH_CONTAINER_NAME")"
 
 	if [ -z "$container_id" ];then
 		echo 'service stopped. Do make up first!' >&2

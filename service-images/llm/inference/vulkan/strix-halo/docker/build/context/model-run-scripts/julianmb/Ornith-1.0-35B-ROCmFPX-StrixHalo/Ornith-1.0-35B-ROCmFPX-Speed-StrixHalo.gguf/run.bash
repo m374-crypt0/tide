@@ -1,5 +1,5 @@
 ensure_model_has_been_fetched(){
-	if [ ! -L "${HOME}/inference-setup/$STRIX_HALO_MODEL/$(basename "$STRIX_HALO_MODEL")" ]; then
+	if [ ! -L "${HOME}/inference-setup/$LIVSH_MODEL/$(basename "$LIVSH_MODEL")" ]; then
 		echo 'model not found, run make model-fetch first!' >&2
 		return 1
 	fi
@@ -7,7 +7,7 @@ ensure_model_has_been_fetched(){
 
 run_model() {
 	llama-server \
-		-m "${HOME}/inference-setup/$STRIX_HALO_MODEL/$(basename "$STRIX_HALO_MODEL")" \
+		-m "${HOME}/inference-setup/$LIVSH_MODEL/$(basename "$LIVSH_MODEL")" \
 		-ngl 99 \
 		-fa on \
 		-c 262144 \
@@ -24,7 +24,7 @@ run_model() {
 		--cache-prompt \
 		--cache-ram 65536 \
 		--host 0.0.0.0 \
-		--port "${STRIX_HALO_MODEL_SERVER_PORT}"
+		--port "${LIVSH_MODEL_SERVER_PORT}"
 }
 
 main(){

@@ -1,7 +1,7 @@
-# registry
+# local-docker-registry
 
 This is the local docker image registry project for tide.
-It is designed to be used as a local store for all \`tide\` images.
+It is designed to be used as a local store for all `tide` images.
 
 ## why
 
