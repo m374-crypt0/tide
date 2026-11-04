@@ -1,0 +1,90 @@
+diff --git a/examples/bench/CMakeLists.txt b/examples/bench/CMakeLists.txt
+index f255f2d..db129aa 100644
+--- a/examples/bench/CMakeLists.txt
++++ b/examples/bench/CMakeLists.txt
+@@ -1,8 +1,20 @@
+ set(TARGET whisper-bench)
+ add_executable(${TARGET} bench.cpp)
+
++find_library(STATIC_LIBCXX NAMES libc++.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++find_library(STATIC_LIBCXXABI NAMES libc++abi.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++find_library(STATIC_LIBUNWIND NAMES libunwind.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++
+ include(DefaultTargetOptions)
+
+ target_link_libraries(${TARGET} PRIVATE whisper ${CMAKE_THREAD_LIBS_INIT})
+
++# Link the static C++ runtime archives
++target_link_libraries(${TARGET} PRIVATE
++    -Wl,-Bstatic
++    ${STATIC_LIBCXX}
++    ${STATIC_LIBCXXABI}
++    ${STATIC_LIBUNWIND}
++    -Wl,-Bdynamic)
++
+ install(TARGETS ${TARGET} RUNTIME)
+diff --git a/examples/cli/CMakeLists.txt b/examples/cli/CMakeLists.txt
+index 3a73776..b48f867 100644
+--- a/examples/cli/CMakeLists.txt
++++ b/examples/cli/CMakeLists.txt
+@@ -1,8 +1,20 @@
+ set(TARGET whisper-cli)
+ add_executable(${TARGET} cli.cpp)
+
++find_library(STATIC_LIBCXX NAMES libc++.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++find_library(STATIC_LIBCXXABI NAMES libc++abi.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++find_library(STATIC_LIBUNWIND NAMES libunwind.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++
+ include(DefaultTargetOptions)
+
+ target_link_libraries(${TARGET} PRIVATE common whisper ${FFMPEG_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+
++# Link the static C++ runtime archives
++target_link_libraries(${TARGET} PRIVATE
++    -Wl,-Bstatic
++    ${STATIC_LIBCXX}
++    ${STATIC_LIBCXXABI}
++    ${STATIC_LIBUNWIND}
++    -Wl,-Bdynamic)
++
+ install(TARGETS ${TARGET} RUNTIME)
+diff --git a/examples/server/CMakeLists.txt b/examples/server/CMakeLists.txt
+index c082546..d7613bf 100644
+--- a/examples/server/CMakeLists.txt
++++ b/examples/server/CMakeLists.txt
+@@ -4,10 +4,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ set(TARGET whisper-server)
+ add_executable(${TARGET} server.cpp httplib.h)
+
++find_library(STATIC_LIBCXX NAMES libc++.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++find_library(STATIC_LIBCXXABI NAMES libc++abi.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++find_library(STATIC_LIBUNWIND NAMES libunwind.a HINTS "$ENV{HOME}/.local/.llvm/lib/x86_64-alpine-linux-musl/" REQUIRED)
++
+ include(DefaultTargetOptions)
+
+ target_link_libraries(${TARGET} PRIVATE common json_cpp whisper ${CMAKE_THREAD_LIBS_INIT})
+
++# Link the static C++ runtime archives
++target_link_libraries(${TARGET} PRIVATE
++    -Wl,-Bstatic
++    ${STATIC_LIBCXX}
++    ${STATIC_LIBCXXABI}
++    ${STATIC_LIBUNWIND}
++    -Wl,-Bdynamic)
++
+ if (WIN32)
+     target_link_libraries(${TARGET} PRIVATE ws2_32)
+ endif()
+diff --git a/ggml/src/ggml-vulkan/CMakeLists.txt b/ggml/src/ggml-vulkan/CMakeLists.txt
+index d7dec92..0ca8401 100644
+--- a/ggml/src/ggml-vulkan/CMakeLists.txt
++++ b/ggml/src/ggml-vulkan/CMakeLists.txt
+@@ -190,6 +190,8 @@ if (Vulkan_FOUND)
+         CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/$<CONFIG>
+                    -DCMAKE_INSTALL_BINDIR=.
+                    -DCMAKE_BUILD_TYPE=$<CONFIG>
++		   "-DCMAKE_CXX_FLAGS=-static -stdlib=libc++"
++		   "-DCMAKE_EXE_LINKER_FLAGS=-static -stdlib=libc++ -lc++abi"
+                    ${VULKAN_SHADER_GEN_CMAKE_ARGS}
+
+         BUILD_COMMAND ${CMAKE_COMMAND} --build . --config $<CONFIG>

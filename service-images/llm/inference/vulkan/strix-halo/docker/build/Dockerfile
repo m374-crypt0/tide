@@ -50,6 +50,8 @@ RUN git clone \
     https://github.com/m374-crypt0/ROCmFPX.git ROCmFPX
 WORKDIR "/home/${NON_ROOT_USER_NAME}/ROCmFPX"
 
+# FIXME: patch before configure
+# TODO: use -DGGML_STATIC option
 FROM clone_repository AS configure_rocmfpx
 ARG NON_ROOT_USER_NAME=
 USER ${NON_ROOT_USER_NAME}
