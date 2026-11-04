@@ -1,4 +1,6 @@
 # shellcheck source=/dev/null
 . "${TIDE_ROOT_DIR}/.scripts/image-puller.bash"
+. "${TIDE_ROOT_DIR}/.scripts/docker-login.bash"
 
-pull_image "$LLVM_IMAGE_NAME"
+docker_login &&
+  pull_image "$LLVM_IMAGE_NAME"
