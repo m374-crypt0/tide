@@ -36,9 +36,9 @@ RUN \
     shaderc=2026.1-r0 \
     glslang=1.4.341.0-r0 \
     spirv-headers=1.4.357.0-r0 \
-    npm=12.0.2-r0 \
+    npm=12.2.1-r0 \
     linux-headers=7.2.1-r0 \
-    ffmpeg-dev=9.0.2-r1
+    ffmpeg-dev=9.0.2-r2
 USER ${NON_ROOT_USER_NAME}
 
 FROM install_build_dependencies AS clone_repository
@@ -130,19 +130,22 @@ FROM install_huggingface_cli AS setup_groups
 ARG NON_ROOT_USER_NAME=
 ARG ADVG_RENDER_GROUP_ID=
 ARG ADVG_VIDEO_GROUP_ID=
+ARG ADVG_AUDIO_GROUP_ID=
 # hadolint ignore=DL3066
 USER root
 RUN groupadd -fg "${ADVG_RENDER_GROUP_ID}" render \
-    && groupmod -g "${ADVG_VIDEO_GROUP_ID}" video
+    && groupmod -g "${ADVG_VIDEO_GROUP_ID}" video \
+    && groupmod -g "${ADVG_AUDIO_GROUP_ID}" audio
 USER ${NON_ROOT_USER_NAME}
 
-FROM install_huggingface_cli AS install_supported_model_scripts
+FROM setup_groups AS install_supported_model_scripts
 ARG NON_ROOT_USER_NAME=
 WORKDIR "/home/${NON_ROOT_USER_NAME}"
 RUN mkdir -p \
-    "decoding-setup/xkeyC/whisper-large-v3-turbo-gguf/model_q4_1.gguf"
+    "decoding-setup/ggerganov/whisper.cpp/ggml-large-v3-turbo-q5_0.bin" \
+		"decoding-setup/ggml-org/whisper-vad/ggml-silero-v6.2.0.bin"
 WORKDIR "/home/${NON_ROOT_USER_NAME}/decoding-setup"
 COPY --chown=${NON_ROOT_USER_NAME} \
-    "./model-run-scripts/xkeyC/whisper-large-v3-turbo-gguf/model_q4_1.gguf/run.bash" \
-    "xkeyC/whisper-large-v3-turbo-gguf/model_q4_1.gguf/"
+    "./model-run-scripts/ggerganov/whisper.cpp/ggml-large-v3-turbo-q5_0.bin/run.bash" \
+    "ggerganov/whisper.cpp/ggml-large-v3-turbo-q5_0.bin/"
 RUN find . -type f -name run.bash -exec chmod +x {} \;

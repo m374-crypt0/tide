@@ -137,7 +137,7 @@ RUN groupadd -fg "${LIVSH_RENDER_GROUP_ID}" render \
     && groupmod -g "${LIVSH_VIDEO_GROUP_ID}" video
 USER ${NON_ROOT_USER_NAME}
 
-FROM install_huggingface_cli AS install_supported_model_scripts
+FROM setup_groups AS install_supported_model_scripts
 ARG NON_ROOT_USER_NAME=
 WORKDIR "/home/${NON_ROOT_USER_NAME}"
 RUN mkdir -p \

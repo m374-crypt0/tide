@@ -11,6 +11,7 @@ services:
         ADVG_WHISPER_CPP_REVISION: ${ADVG_WHISPER_CPP_REVISION}
         ADVG_RENDER_GROUP_ID: ${ADVG_RENDER_GROUP_ID}
         ADVG_VIDEO_GROUP_ID: ${ADVG_VIDEO_GROUP_ID}
+        ADVG_AUDIO_GROUP_ID: ${ADVG_AUDIO_GROUP_ID}
       context: build/context
       dockerfile: ../Dockerfile
       tags:
@@ -28,9 +29,14 @@ services:
       - ADVG_SERVER_PORT
       - ADVG_HUGGING_FACE_TOKEN
       - ADVG_MODEL
+      - ADVG_VAD_MODEL
+      - PULSE_SERVER=/home/${NON_ROOT_USER_NAME}/tmp/pulse/native
+      - PULSE_COOKIE=/home/${NON_ROOT_USER_NAME}/tmp/pulse/cookie
+      - AUDIO_GID=${ADVG_AUDIO_GROUP_ID}
     group_add:
       - ${ADVG_RENDER_GROUP_ID}
       - ${ADVG_VIDEO_GROUP_ID}
+      - ${ADVG_AUDIO_GROUP_ID}
     image: ${LOCAL_DOCKER_REGISTRY_HOST}:${LOCAL_DOCKER_REGISTRY_PORT}/${ADVG_IMAGE_NAME}
     init: true
     # TODO: setup all host_ip to 127.0.0.1 then, make them configurable in .env
@@ -52,6 +58,12 @@ services:
       - type: volume
         source: advg_decoding_setup
         target: "/home/${NON_ROOT_USER_NAME}/decoding-setup"
+      - type: bind
+        source: /dev/snd
+        target: /dev/snd
+      - type: bind
+        source: ${XDG_RUNTIME_DIR}/pulse
+        target: /home/${NON_ROOT_USER_NAME}/tmp/pulse
 volumes:
   advg_hugging_face_cache:
   advg_decoding_setup:
