@@ -20,7 +20,7 @@ RUN \
     musl-dev=1.2.6-r6 \
     python3=3.14.10-r1 \
     samurai=1.3-r0 \
-    zlib-dev=1.3.2-r1 \
+    zlib-dev=1.4-r0 \
     zstd-dev=1.5.7-r2
 USER ${NON_ROOT_USER_NAME}
 
@@ -325,15 +325,16 @@ RUN \
     TRIPLE="$(${STAGE_4_DIR}/bin/clang -print-target-triple)" && \
     CLANG_VER="$(basename "$(${STAGE_4_DIR}/bin/clang -print-resource-dir)")" && \
     cmake -G Ninja -S runtimes -B runtimes-build \
-    -DCMAKE_BUILD_TYPE=Release \
+    -DClang_DIR="${STAGE_4_DIR}/lib/cmake/clang" \
+		-DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
-    -DCMAKE_INSTALL_RPATH="${STAGE_6_DIR}/lib" \
+    -DCMAKE_INSTALL_RPATH="${STAGE_4_DIR}/lib;${STAGE_4_DIR}/lib/${TRIPLE};${STAGE_6_DIR}/lib;${STAGE_6_DIR}/lib/${TRIPLE}" \
     -DCMAKE_C_COMPILER="${STAGE_4_DIR}/bin/clang" \
     -DCMAKE_C_COMPILER_TARGET="${TRIPLE}" \
     -DCMAKE_C_FLAGS="-resource-dir ${STAGE_5_DIR}/lib/clang/${CLANG_VER} -isystem ${STAGE_5_DIR}/lib/clang/${CLANG_VER}/include" \
     -DCMAKE_CXX_COMPILER="${STAGE_4_DIR}/bin/clang++" \
     -DCMAKE_CXX_COMPILER_TARGET="${TRIPLE}" \
-    -DCMAKE_CXX_FLAGS="-resource-dir ${STAGE_5_DIR}/lib/clang/${CLANG_VER} -isystem ${STAGE_5_DIR}/lib/clang/${CLANG_VER}/include" \
+    -DCMAKE_CXX_FLAGS="-nostdinc++ -isystem ${STAGE_4_DIR}/include/c++/v1 -isystem ${STAGE_4_DIR}/include/${TRIPLE}/c++/v1 -resource-dir ${STAGE_5_DIR}/lib/clang/${CLANG_VER} -isystem ${STAGE_5_DIR}/lib/clang/${CLANG_VER}/include" \
     -DCMAKE_INSTALL_PREFIX="${STAGE_6_DIR}" \
     -DCMAKE_LINKER="${STAGE_4_DIR}/bin/ld.lld" \
     -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY \
@@ -358,8 +359,9 @@ RUN \
     -DLIBCXXABI_USE_COMPILER_RT=ON \
     -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
     -DLLVM_DEFAULT_TARGET_TRIPLE="${TRIPLE}" \
-    -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=ON \
-    -DLLVM_ENABLE_RUNTIMES="compiler-rt;libunwind;libcxxabi;libcxx" \
+		-DLLVM_DIR="${STAGE_4_DIR}/lib/cmake/llvm" \
+		-DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=ON \
+    -DLLVM_ENABLE_RUNTIMES="compiler-rt;libunwind;libcxxabi;libcxx;openmp;offload" \
     -DLLVM_INCLUDE_BENCHMARKS=OFF \
     -DLLVM_INCLUDE_DOCS=OFF \
     -DLLVM_INCLUDE_EXAMPLES=OFF \
@@ -509,7 +511,7 @@ RUN \
     --mount=type=cache,target=/var/cache/apk,sharing=locked \
     apk add \
     musl-dev=1.2.6-r6 \
-    zlib=1.3.2-r1 \
+    zlib=1.4-r0 \
     zstd=1.5.7-r2
 ARG LLVM_OUTPUT_RESOURCE_DIR=
 ARG NON_ROOT_USER_NAME=
