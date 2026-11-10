@@ -16,7 +16,7 @@ RUN \
     make=4.4.1-r4 \
     ncurses-dev=6.6_p20261017-r0 \
     texinfo=7.3-r1 \
-    tree-sitter-dev=0.26.7-r1
+    tree-sitter-dev=0.27.1-r0
 USER ${NON_ROOT_USER_NAME}
 
 FROM install_packages AS clone_repository
@@ -87,7 +87,7 @@ RUN \
     libncursesw=6.6_p20261017-r0 \
 		libxml2=2.13.9-r2 \
     ncurses-terminfo-base=6.6_p20261017-r0 \
-    tree-sitter=0.26.7-r1
+    tree-sitter=0.27.1-r0
 USER ${NON_ROOT_USER_NAME}
 WORKDIR /home/${NON_ROOT_USER_NAME}
 COPY --chown=${NON_ROOT_USER_NAME} --from=build_emacs \
