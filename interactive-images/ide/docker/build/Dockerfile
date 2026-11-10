@@ -15,7 +15,7 @@ RUN \
 	--mount=type=cache,target=/var/cache/apk,sharing=locked \
 	apk add \
 	musl-dev=1.2.6-r6 \
-	zlib=1.3.2-r1 \
+	zlib=1.4-r0 \
 	zstd=1.5.7-r2
 USER ${NON_ROOT_USER_NAME}
 COPY --chown=${NON_ROOT_USER_NAME} --from=llvm \
@@ -34,7 +34,7 @@ RUN \
 	libncursesw=6.6_p20261017-r0 \
 	libxml2-dev=2.13.9-r2 \
 	ncurses-terminfo-base=6.6_p20261017-r0 \
-	tree-sitter=0.26.7-r1
+	tree-sitter=0.27.1-r0
 USER ${NON_ROOT_USER_NAME}
 COPY --chown=${NON_ROOT_USER_NAME} --from=emacs \
 	${EMACS_OUTPUT_RESOURCE_DIR} ${EMACS_OUTPUT_RESOURCE_DIR}
@@ -50,7 +50,7 @@ RUN \
 	apk add \
 	bash-completion=2.18.0-r0 \
 	bc=1.08.2-r1 \
-	btop=1.4.7-r0 \
+	btop=1.4.8-r0 \
 	coreutils=9.11-r2 \
 	coreutils-env=9.11-r2 \
 	coreutils-fmt=9.11-r2 \
@@ -65,7 +65,7 @@ RUN \
 	make=4.4.1-r4 \
 	musl-locales=0.1.0-r1 \
 	musl-locales-lang=0.1.0-r1 \
-	openssh-client-default=10.6_p1-r1 \
+	openssh-client-default=10.6_p2-r0 \
 	procps-ng=4.0.7-r2 \
 	ripgrep=15.2.0-r0 \
 	strace=7.2-r0 \
@@ -76,7 +76,7 @@ RUN \
 	wget=1.25.0-r3 \
 	bash-completion-doc=2.18.0-r0 \
 	bc-doc=1.08.2-r1 \
-	btop-doc=1.4.7-r0 \
+	btop-doc=1.4.8-r0 \
 	coreutils-doc=9.11-r2 \
 	curl-doc=8.23.0-r0 \
 	findutils-doc=4.11.0-r2 \
@@ -87,7 +87,7 @@ RUN \
 	inotify-tools-doc=4.25.9.0-r0 \
 	less-doc=710-r0 \
 	make-doc=4.4.1-r4 \
-	openssh-doc=10.6_p1-r1 \
+	openssh-doc=10.6_p2-r0 \
 	procps-ng-doc=4.0.7-r2 \
 	ripgrep-doc=15.2.0-r0 \
 	strace-doc=7.2-r0 \
@@ -107,17 +107,17 @@ RUN \
 		apk fix && \
 		apk add \
 		jq=1.8.2-r0 \
-		nodejs=24.22.1-r1 \
-		npm=12.0.2-r0 \
-		npm-bash-completion=12.0.2-r0 \
+		nodejs-current=26.12.1-r2 \
+		npm=12.2.1-r0 \
+		npm-bash-completion=12.2.1-r0 \
 		py3-pip=26.2.1-r0 \
 		py3-pip-bash-completion=26.2.1-r0 \
 		python3=3.14.10-r1 \
 		python3-extra=3.14.10-r0 \
 		shellcheck=0.11.0-r2 \
 		jq-doc=1.8.2-r0 \
-		nodejs-doc=24.22.1-r1 \
-		npm-doc=12.0.2-r0 \
+		nodejs-current-doc=26.12.1-r2 \
+		npm-doc=12.2.1-r0 \
 		py3-pip-doc=26.2.1-r0 \
 		python3-doc=3.14.10-r1 \
 		shellcheck-doc=0.11.0-r2
